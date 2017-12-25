@@ -1,9 +1,9 @@
-# 2017 Robot Code
+# 2018 Robot Code
 **Robot Code** | [Dashboard](https://github.com/frc1418/2018-dashboard)
 
 [![Build Status](https://travis-ci.com/frc1418/2018-robot.svg?token=xpnQFTGBHababzyAzqKV&branch=master)](https://travis-ci.com/frc1418/2018-robot)
 
-This code will be used to control FRC Team 1418's robot during the 2017 challenge, FIRST Steamworks.
+> Code for Team 1418's 2018 competition robot.
 
 ## Robot code features
 TODO

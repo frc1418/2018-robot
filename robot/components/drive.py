@@ -5,8 +5,7 @@ from networktables.util import ntproperty
 
 
 class Drive:
-    robot_drive = wpilib.RobotDrive
-    sd = NetworkTable
+    drive = wpilib.RobotDrive
 
     def __init__(self):
         self.enabled = False
