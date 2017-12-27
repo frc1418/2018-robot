@@ -1,11 +1,11 @@
 import wpilib
+import wpilib.drive
 
-from networktables import NetworkTable
 from networktables.util import ntproperty
 
 
 class Drive:
-    drive = wpilib.RobotDrive
+    drive = wpilib.drive.DifferentialDrive
 
     def __init__(self):
         self.enabled = False

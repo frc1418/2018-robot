@@ -2,6 +2,7 @@
 
 import magicbot
 import wpilib
+import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
 from components import drive
@@ -11,11 +12,9 @@ from networktables.util import ntproperty
 
 from robotpy_ext.common_drivers import navx
 
-from networktables.networktable import NetworkTable
-
 
 class Robot(magicbot.MagicRobot):
-    # TODO: Initialize components
+    drive = drive.Drive
 
     def createObjects(self):
         """
@@ -26,6 +25,13 @@ class Robot(magicbot.MagicRobot):
         self.joystick_right = wpilib.Joystick(1)
 
         # TODO: Motors, Drivetrain
+        self.lf_motor = wpilib.Victor(0)
+        self.lr_motor = wpilib.Victor(1)
+        self.rf_motor = wpilib.Victor(2)
+        self.rr_motor = wpilib.Victor(3)
+
+        self.robot_drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
+                                                          wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
@@ -65,7 +71,7 @@ class Robot(magicbot.MagicRobot):
         Executed periodically while robot is in teleoperated mode.
         """
         # Read from joysticks to move drivetrain accordingly
-        self.drive.move(self.joystick_left.getY(), self.joystick_right.getX())
+        self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
 
 if __name__ == '__main__':
