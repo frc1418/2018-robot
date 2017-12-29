@@ -1,0 +1,3 @@
+[submodule "robot/vision"]
+	path = robot/vision
+	url = https://github.com/frc1418/2018-vision.git
