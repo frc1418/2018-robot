@@ -8,7 +8,7 @@ from robotpy_ext.control.button_debouncer import ButtonDebouncer
 from components import drive
 #from automations import
 #from common import
-from networktables.util import ntproperty
+from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx
 
@@ -37,7 +37,7 @@ class Robot(magicbot.MagicRobot):
         self.navx = navx.AHRS.create_spi()
 
         self.timer = wpilib.Timer()
-        self.time = ntproperty('time')
+        self.time = tunable('time')
 
     def autonomous(self):
         """
