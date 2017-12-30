@@ -43,11 +43,8 @@ class Robot(magicbot.MagicRobot):
         """
         Prepare for and start autonomous mode.
         """
-
-        # Reset Gyro to 0
-        self.drive.reset_gyro_angle()
         # Call autonomous
-        magicbot.MagicRobot.autonomous(self)
+        super().autonomous()
 
     def disabledPeriodic(self):
         """
@@ -61,7 +58,8 @@ class Robot(magicbot.MagicRobot):
         """
         Executed once right away when robot is disabled.
         """
-        pass
+        # Reset Gyro to 0
+        self.navx.reset()
 
     def teleopInit(self):
         """
