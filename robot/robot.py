@@ -36,6 +36,9 @@ class Robot(magicbot.MagicRobot):
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
 
+        self.timer = wpilib.Timer()
+        self.time = ntproperty('time')
+
     def autonomous(self):
         """
         Prepare for and start autonomous mode.
@@ -72,6 +75,8 @@ class Robot(magicbot.MagicRobot):
         """
         # Read from joysticks to move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
+
+        self.time = self.timer.getMatchTime()
 
 
 if __name__ == '__main__':
