@@ -46,6 +46,13 @@ class Robot(magicbot.MagicRobot):
         # Call autonomous
         super().autonomous()
 
+    def disabledInit(self):
+        """
+        Executed once right away when robot is disabled.
+        """
+        # Reset Gyro to 0
+        self.navx.reset()
+
     def disabledPeriodic(self):
         """
         Executed periodically while robot is disabled.
@@ -53,13 +60,6 @@ class Robot(magicbot.MagicRobot):
         Useful for testing.
         """
         pass
-
-    def disabledInit(self):
-        """
-        Executed once right away when robot is disabled.
-        """
-        # Reset Gyro to 0
-        self.navx.reset()
 
     def teleopInit(self):
         """
