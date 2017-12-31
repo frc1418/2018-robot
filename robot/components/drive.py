@@ -19,7 +19,7 @@ class Drive:
         """
         pass
 
-    def move(self, y, rotation):
+    def move(self, y: float, rotation: float):
         """
         Move robot.
 
