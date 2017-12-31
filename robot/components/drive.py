@@ -1,8 +1,6 @@
 import wpilib
 import wpilib.drive
 
-from networktables.util import ntproperty
-
 
 class Drive:
     robot_drive: wpilib.drive.DifferentialDrive
