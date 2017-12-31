@@ -4,6 +4,6 @@ python:
 notifications:
     email: false
 install:
-    - "pip install -r tests/requirements.txt"
+    - "pip install -r tests/requirements.txt --no-deps"
 script:
     - ./test.sh
