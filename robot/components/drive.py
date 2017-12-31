@@ -8,7 +8,7 @@ class Drive:
 
     All drive interaction must go through this class.
     """
-    robot_drive: wpilib.drive.DifferentialDrive
+    train: wpilib.drive.DifferentialDrive
 
     def __init__(self):
         self.enabled = False
