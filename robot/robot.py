@@ -12,9 +12,12 @@ from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx
 
+TIME = 135
+
 
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
+    time = tunable(TIME)
 
     def createObjects(self):
         """
@@ -37,7 +40,6 @@ class Robot(magicbot.MagicRobot):
         self.navx = navx.AHRS.create_spi()
 
         self.timer = wpilib.Timer()
-        self.time = tunable('time')
 
     def autonomous(self):
         """
@@ -74,7 +76,7 @@ class Robot(magicbot.MagicRobot):
         # Read from joysticks to move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
-        self.time = self.timer.getMatchTime()
+        self.time = TIME - int(self.timer.getMatchTime())
 
 
 if __name__ == '__main__':
