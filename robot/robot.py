@@ -39,6 +39,12 @@ class Robot(magicbot.MagicRobot):
 
         self.timer = wpilib.Timer()
 
+    def robotPeriodic(self):
+        """
+        Executed periodically regardless of mode.
+        """
+        self.time = int(self.timer.getMatchTime())
+
     def autonomous(self):
         """
         Prepare for and start autonomous mode.
@@ -74,7 +80,6 @@ class Robot(magicbot.MagicRobot):
         # Read from joysticks to move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
-        self.time = int(self.timer.getMatchTime())
 
 
 if __name__ == '__main__':
