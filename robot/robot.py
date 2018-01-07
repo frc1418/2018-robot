@@ -36,7 +36,7 @@ class Robot(magicbot.MagicRobot):
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
-
+        self.ds = wpilib.DriverStation.getInstance()
         self.timer = wpilib.Timer()
 
     def robotPeriodic(self):
@@ -49,6 +49,12 @@ class Robot(magicbot.MagicRobot):
         """
         Prepare for and start autonomous mode.
         """
+        # Read data on plate colors from FMS.
+        # 3.10: "The FMS provides the ALLIANCE color assigned to each PLATE to the Driver Station software. Immediately following the assignment of PLATE color prior to the start of AUTO."
+        # Will fetch a string of three characters ('L' or 'R') denoting position of the current alliance's on the switches and scale, with the nearest structures first.
+        # More information: http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details
+        self.plates = list(self.ds.getGameSpecificMessage())
+
         # Call autonomous
         super().autonomous()
 
@@ -79,7 +85,6 @@ class Robot(magicbot.MagicRobot):
         """
         # Read from joysticks to move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
-
 
 
 if __name__ == '__main__':
