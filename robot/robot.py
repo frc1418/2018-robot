@@ -12,6 +12,8 @@ from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx
 
+from robotpy_ext.autonomous import AutonomousModeSelector
+
 
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive

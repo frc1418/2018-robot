@@ -17,7 +17,8 @@ class Drive:
         """
         Tasks for initialization upon injection.
         """
-        pass
+        self.y = 0
+        self.rotation = 0
 
     def move(self, y: float, rotation: float):
         """
@@ -26,10 +27,15 @@ class Drive:
         :param y: y-axis movement speed.
         :param rotation: Rotation speed.
         """
-        pass
+        self.y = y
+        self.rotation = rotation
 
     def execute(self):
         """
         Handle driving.
         """
-        pass
+        self.train.arcadeDrive(self.y, self.rotation)
+
+        # Prevent robot from driving by default
+        self.y = 0
+        self.rotation = 0
