@@ -1,4 +1,3 @@
 pyfrc>=2018.0.0
 robotpy-ctre>=2018.0.0
 pynetworktables>=2018.0.0
-robotpy-hal-base>=2018.0.0
