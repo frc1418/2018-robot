@@ -25,17 +25,20 @@ class Robot(magicbot.MagicRobot):
         self.joystick_left = wpilib.Joystick(0)
         self.joystick_right = wpilib.Joystick(1)
 
-        # TODO: Motors, Drivetrain
+        # Motor controllers
         self.lf_motor = wpilib.Victor(0)
         self.lr_motor = wpilib.Victor(1)
         self.rf_motor = wpilib.Victor(2)
         self.rr_motor = wpilib.Victor(3)
 
+        # Drivetrain object
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
+
+        # Utility
         self.ds = wpilib.DriverStation.getInstance()
         self.timer = wpilib.Timer()
 
