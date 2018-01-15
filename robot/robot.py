@@ -16,6 +16,7 @@ from robotpy_ext.common_drivers import navx
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
     time = tunable(0)
+    plates = tunable('')
 
     def createObjects(self):
         """
