@@ -11,7 +11,7 @@ from components import drive
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx
-
+from ctre.wpi_talonsrx import WPI_TalonSRX
 
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
@@ -27,10 +27,10 @@ class Robot(magicbot.MagicRobot):
         self.joystick_right = wpilib.Joystick(1)
 
         # Motor controllers
-        self.lf_motor = wpilib.Victor(0)
-        self.lr_motor = wpilib.Victor(1)
-        self.rf_motor = wpilib.Victor(2)
-        self.rr_motor = wpilib.Victor(3)
+        self.lf_motor = WPI_TalonSRX(5)
+        self.lr_motor = WPI_TalonSRX(10)
+        self.rf_motor = WPI_TalonSRX(15)
+        self.rr_motor = WPI_TalonSRX(20)
 
         # Drivetrain object
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
