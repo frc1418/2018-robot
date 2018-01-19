@@ -104,3 +104,5 @@ ENV/
 # RobotPy
 .deploy_cfg
 .installer_config
+
+*_cache
