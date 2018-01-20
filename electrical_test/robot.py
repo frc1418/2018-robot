@@ -12,6 +12,11 @@ class TestRobot(magicbot.MagicRobot):
         """
         Initialize testbench components.
         """
+        #self.lf_motor = wpilib.Victor(0)
+        #self.lr_motor = wpilib.Victor(1)
+        #self.rf_motor = wpilib.Victor(2)
+        #self.rr_motor = wpilib.Victor(3)
+
         self.lf_motor = WPI_TalonSRX(5)
         self.lr_motor = WPI_TalonSRX(10)
         self.rf_motor = WPI_TalonSRX(15)
