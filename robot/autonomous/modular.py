@@ -44,7 +44,7 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.6, 0)
 
-    @timed_state(duration=0.5)
+    @timed_state(duration=0.5, next_state='advance_rotate_final')
     def advance_rotate(self):
         """
         Rotate robot to face the outside of the arena, so it can curve back around.
