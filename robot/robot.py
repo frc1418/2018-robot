@@ -5,7 +5,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive
+from components import drive, lift
 #from automations import
 #from common import
 from magicbot import tunable
@@ -15,6 +15,8 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
+    lift = lift.Lift
+
     time = tunable(0)
     plates = tunable('')
 
@@ -35,6 +37,10 @@ class Robot(magicbot.MagicRobot):
         # Drivetrain object
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
+
+        # Climb motors
+        self.climb_motor_a = wpilib.Victor(0)
+        self.climb_motor_b = wpilib.Victor(1)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
@@ -89,6 +95,12 @@ class Robot(magicbot.MagicRobot):
         """
         # Read from joysticks to move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
+
+        # Lift
+        if self.joystick_left.getRawButton(3) or self.joystick_right.getRawButton(4):
+            self.lift.run(-1)
+        if self.joystick_right.getRawButton(6):
+            self.lift.run(-0.5)
 
 
 if __name__ == '__main__':
