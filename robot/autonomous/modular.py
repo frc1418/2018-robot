@@ -12,7 +12,13 @@ class Modular(AutonomousStateMachine):
 
     drive = drive.Drive
 
-    charge = 0.3 # Amount of time robot advances
+    position = ntproperty('/autonomous/position', '')
+    plates = ntproperty('/robot/plates', '')
+
+    advance = tunable(True)
+    switch = tunable(True)
+    scale = tunable(True)
+    initial_charge_time = tunable(0.3)
 
     def initialize(self):
         """
@@ -20,21 +26,13 @@ class Modular(AutonomousStateMachine):
 
         Autonomous configuration data should be input via dashboard.
         """
-        self.position = ntproperty('/autonomous/position')
-        self.plates = ntproperty('/robot/plates')
-        # TODO: This variable is ignored
-        # It's not likely we'll ever need to disable advancing,
-        # but in theory we should be able to do it.
-        self.advance = tunable(True)
-        self.switch = tunable(True)
-        self.scale = tunable(True)
+        pass
 
     @state(first=True)
     def start(self):
         """
         Decide how to begin the autonomous.
         """
-
         if self.advance:
             self.next_state('advance_initial')
         # If we are only advancing to cross the auto line,
@@ -42,12 +40,10 @@ class Modular(AutonomousStateMachine):
         # so that the robot will not crash into the switch.
         if not self.switch and not self.scale:
             if self.position == 'left' or self.position == 'right':
-                charge = 1.5
-        else:
-            charge = 0.3
+                self.initial_charge_time = 1.5
 
     # Duration needs to be short so that the robot does not crash into the cube stack if it is in the middle
-    @timed_state(duration=charge)
+    @timed_state(duration=initial_charge_time)
     def advance_initial(self):
         """
         Give the robot some distance from the starting point.
