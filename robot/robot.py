@@ -38,9 +38,9 @@ class Robot(magicbot.MagicRobot):
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
-        # Climb motors
-        self.climb_motor_a = wpilib.Victor(0)
-        self.climb_motor_b = wpilib.Victor(1)
+        # Lift motors
+        self.lift_motor_a = wpilib.Victor(0)
+        self.lift_motor_b = wpilib.Victor(1)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()

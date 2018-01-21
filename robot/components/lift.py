@@ -5,8 +5,8 @@ class Lift:
     """
     Operate robot lift.
     """
-    climb_motor_a: wpilib.Victor
-    climb_motor_b: wpilib.Victor
+    lift_motor_a: wpilib.Victor
+    lift_motor_b: wpilib.Victor
 
     def __init__(self):
         self._climb_speed = 0
@@ -23,7 +23,7 @@ class Lift:
         """
         Run climbing motors.
         """
-        self.climb_motor_a.set(self._climb_speed)
-        self.climb_motor_b.set(self._climb_speed)
+        self.lift_motor_a.set(self._climb_speed)
+        self.lift_motor_b.set(self._climb_speed)
 
         self._climb_speed = 0
