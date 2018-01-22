@@ -1,4 +1,5 @@
 import wpilib
+from magicbot import will_reset_to
 
 
 class Lift:
@@ -9,7 +10,7 @@ class Lift:
     lift_motor_b: wpilib.Victor
 
     def __init__(self):
-        self._climb_speed = 0
+        self._climb_speed = will_reset_to(0)
 
     def run(self, speed: float):
         """
@@ -25,5 +26,3 @@ class Lift:
         """
         self.lift_motor_a.set(self._climb_speed)
         self.lift_motor_b.set(self._climb_speed)
-
-        self._climb_speed = 0
