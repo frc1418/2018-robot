@@ -13,6 +13,7 @@ from magicbot import tunable
 from robotpy_ext.common_drivers import navx
 from ctre.wpi_talonsrx import WPI_TalonSRX
 
+
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
     lift = lift.Lift
@@ -97,10 +98,8 @@ class Robot(magicbot.MagicRobot):
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
         # Lift
-        if self.joystick_left.getRawButton(3) or self.joystick_right.getRawButton(4):
-            self.lift.run(-1)
-        if self.joystick_right.getRawButton(6):
-            self.lift.run(-0.5)
+        if self.joystick_left.getRawButton(3):
+            self.lift.run()
 
 
 if __name__ == '__main__':
