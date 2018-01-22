@@ -18,7 +18,6 @@ class Modular(AutonomousStateMachine):
     advance = tunable(True)
     switch = tunable(True)
     scale = tunable(True)
-    initial_charge_time = tunable(0.3)
 
     def initialize(self):
         """
@@ -33,28 +32,31 @@ class Modular(AutonomousStateMachine):
         """
         Decide how to begin the autonomous.
         """
-        if self.advance:
-            self.next_state('advance_initial')
         # If we are only advancing to cross the auto line,
         # make the charge sequence longer. Only charge if on the left or right,
         # so that the robot will not crash into the switch.
-        if not self.switch and not self.scale:
-            if self.position == 'left' or self.position == 'right':
-                self.initial_charge_time = 1.5
+        if self.switch or self.scale:
+            self.next_state('switch_initial')
+        elif self.advance and (self.position == 'left' or self.position == 'right'):
+                self.next_state('cross_auto_line')
+
+    @timed_state(duration = 1.5)
+    def cross_auto_line(self):
+        """
+        If we ONLY want to cross the auto line, run this method.
+        """
+        self.drive.move(0.8, 0)
 
     # Duration needs to be short so that the robot does not crash into the cube stack if it is in the middle
-    @timed_state(duration=initial_charge_time)
-    def advance_initial(self):
+    @timed_state(duration=0.3, next_state='switch_rotate')
+    def switch_initial(self):
         """
         Give the robot some distance from the starting point.
         """
         self.drive.move(0.6, 0)
-        # Stop here if we are only crossing auto line
-        if self.switch or self.scale:
-            self.next_state('advance_rotate')
 
-    @timed_state(duration=0.5, next_state='advance_curve')
-    def advance_rotate(self):
+    @timed_state(duration=0.5, next_state='switch_curve')
+    def switch_rotate(self):
         """
         Rotate robot to face the outside of the arena, so it can curve back around.
         """
@@ -80,14 +82,14 @@ class Modular(AutonomousStateMachine):
         # It can either try to score on the switch, the switch and the scale,
         # just the scale, or neither, depending on what is selected in the UI
         if self.switch:
-            self.next_state('advance_curve')
+            self.next_state('switch_curve')
         # TODO: If only scale is selected and not switch,
         # make a separate state path to go directly to scale
         # elif self.scale:
         #    self.next_state('lorem_ipsum')
 
     @timed_state(duration=3)
-    def advance_curve(self):
+    def switch_curve(self):
         """
         Curve robot around to switch.
         """
@@ -111,10 +113,10 @@ class Modular(AutonomousStateMachine):
             elif self.plates[0] == 'R':
                 self.drive.move(0.6, -0.5)
                 self.position = 'right'
-        self.next_state('advance_curve_final')
+        self.next_state('swtich_curve_final')
 
     @timed_state(duration=1, next_state='drop_switch')
-    def advance_curve_final(self):
+    def switch_curve_final(self):
         """
         Second part to curving maneuver to curve the robot back into the switch.
         If the robot was already on the correct side of the switch, this second
