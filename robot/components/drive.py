@@ -1,6 +1,6 @@
 import wpilib
 import wpilib.drive
-
+from magicbot import will_reset_to
 
 class Drive:
     """
@@ -17,8 +17,8 @@ class Drive:
         """
         Tasks for initialization upon injection.
         """
-        self.y = 0
-        self.rotation = 0
+        self.y = will_reset_to(0)
+        self.rotation = will_reset_to(0)
 
     def move(self, y: float, rotation: float):
         """
@@ -35,7 +35,3 @@ class Drive:
         Handle driving.
         """
         self.train.arcadeDrive(self.y, self.rotation)
-
-        # Prevent robot from driving by default
-        self.y = 0
-        self.rotation = 0
