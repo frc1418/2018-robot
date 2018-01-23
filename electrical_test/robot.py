@@ -17,6 +17,9 @@ class TestRobot(magicbot.MagicRobot):
         #self.rf_motor = wpilib.Victor(2)
         #self.rr_motor = wpilib.Victor(3)
 
+        # Test new Nidec Dynamo Brushless DC motor
+        self.brushless = wpilib.NidecBrushless(9, 9)
+
         self.lf_motor = WPI_TalonSRX(5)
         self.lr_motor = WPI_TalonSRX(10)
         self.rf_motor = WPI_TalonSRX(15)
@@ -30,6 +33,7 @@ class TestRobot(magicbot.MagicRobot):
         Spin all motors at full speed.
         """
         self.drive.arcadeDrive(1, 0)
+        self.brushless.set(1)
 
 
 if __name__ == '__main__':
