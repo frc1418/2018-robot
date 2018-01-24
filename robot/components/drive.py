@@ -2,6 +2,7 @@ import wpilib
 import wpilib.drive
 from magicbot import will_reset_to
 
+
 class Drive:
     """
     Handle robot drivetrain.
