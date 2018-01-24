@@ -24,17 +24,14 @@ class TestRobot(magicbot.MagicRobot):
         self.rf_talon = WPI_TalonSRX(15)
         self.rr_talon = WPI_TalonSRX(20)
 
-        self.victor_drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_victor, self.lr_victor),
-                                                           wpilib.SpeedControllerGroup(self.rf_victor, self.rr_talon))
-        self.talon_drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_talon, self.lr_talon),
-                                                          wpilib.SpeedControllerGroup(self.rf_talon, self.rr_talon))
+        self.drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_victor, self.lr_victor, self.lf_talon, self.lr_talon),
+                                                    wpilib.SpeedControllerGroup(self.rf_victor, self.rr_victor, self.rf_talon, self.rr_talon))
 
     def teleopPeriodic(self):
         """
         Spin all motors at full speed.
         """
-        self.victor_drive.arcadeDrive(1, 0)
-        self.talon_drive.arcadeDrive(1, 0)
+        self.drive.arcadeDrive(1, 0)
         self.brushless.set(1)
 
 
