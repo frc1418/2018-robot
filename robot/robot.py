@@ -6,8 +6,6 @@ import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
 from components import drive, lift
-#from automations import
-#from common import
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx

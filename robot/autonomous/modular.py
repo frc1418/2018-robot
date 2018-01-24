@@ -1,6 +1,4 @@
 from magicbot.state_machine import state, timed_state, AutonomousStateMachine
-#from automations import
-#from magicbot import tunable
 from components import drive
 from magicbot import tunable
 from networktables.util import ntproperty
@@ -21,7 +19,7 @@ class Modular(AutonomousStateMachine):
 
     def initialize(self):
         """
-        Set up NetworkTables values on which we will base the auto mode.
+        Perform tasks needed to start Autonomous.
 
         Autonomous configuration data should be input via dashboard.
         """
@@ -40,7 +38,7 @@ class Modular(AutonomousStateMachine):
         elif self.advance and (self.position == 'left' or self.position == 'right'):
                 self.next_state('cross_auto_line')
 
-    @timed_state(duration = 1.5)
+    @timed_state(duration=1.5)
     def cross_auto_line(self):
         """
         If we ONLY want to cross the auto line, run this method.
