@@ -12,27 +12,29 @@ class TestRobot(magicbot.MagicRobot):
         """
         Initialize testbench components.
         """
-        #self.lf_motor = wpilib.Victor(0)
-        #self.lr_motor = wpilib.Victor(1)
-        #self.rf_motor = wpilib.Victor(2)
-        #self.rr_motor = wpilib.Victor(3)
-
-        # Test new Nidec Dynamo Brushless DC motor
         self.brushless = wpilib.NidecBrushless(9, 9)
 
-        self.lf_motor = WPI_TalonSRX(5)
-        self.lr_motor = WPI_TalonSRX(10)
-        self.rf_motor = WPI_TalonSRX(15)
-        self.rr_motor = WPI_TalonSRX(20)
+        self.lf_victor = wpilib.Victor(0)
+        self.lr_victor = wpilib.Victor(1)
+        self.rf_victor = wpilib.Victor(2)
+        self.rr_victor = wpilib.Victor(3)
 
-        self.drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
-                                                    wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
+        self.lf_talon = WPI_TalonSRX(5)
+        self.lr_talon = WPI_TalonSRX(10)
+        self.rf_talon = WPI_TalonSRX(15)
+        self.rr_talon = WPI_TalonSRX(20)
+
+        self.victor_drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_victor, self.lr_victor),
+                                                           wpilib.SpeedControllerGroup(self.rf_victor, self.rr_talon))
+        self.talon_drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_talon, self.lr_talon),
+                                                          wpilib.SpeedControllerGroup(self.rf_talon, self.rr_talon))
 
     def teleopPeriodic(self):
         """
         Spin all motors at full speed.
         """
-        self.drive.arcadeDrive(1, 0)
+        self.victor_drive.arcadeDrive(1, 0)
+        self.talon_drive.arcadeDrive(1, 0)
         self.brushless.set(1)
 
 
