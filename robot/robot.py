@@ -5,7 +5,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive, lift
+from components import drive, lift, intake
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx
@@ -15,6 +15,7 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
     lift = lift.Lift
+    intake = intake.Intake
 
     time = tunable(0)
     plates = tunable('')
@@ -40,6 +41,9 @@ class Robot(magicbot.MagicRobot):
         # Lift motors
         self.lift_motor_a = wpilib.Victor(0)
         self.lift_motor_b = wpilib.Victor(1)
+
+        # Intake
+        self.intake_motor = wpilib.Victor(3)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
