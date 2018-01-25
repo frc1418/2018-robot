@@ -47,7 +47,8 @@ class Robot(magicbot.MagicRobot):
         self.elevator_motor = wpilib.Victor(2)
 
         # Intake
-        self.intake_motor = wpilib.Victor(3)
+        self.intake_motor_a = wpilib.Victor(3)
+        self.intake_motor_b = wpilib.Victor(4)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()

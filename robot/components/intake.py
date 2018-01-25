@@ -6,7 +6,8 @@ class Intake:
     """
     Operate robot intake.
     """
-    intake_motor: wpilib.Victor
+    intake_motor_a: wpilib.Victor
+    intake_motor_b: wpilib.Victor
 
     def __init__(self):
         self._intake_speed = will_reset_to(0)
@@ -39,6 +40,7 @@ class Intake:
 
     def execute(self):
         """
-        Run climbing motors.
+        Run intake motors.
         """
-        self.intake_motor.set(self._intake_speed)
+        self.intake_motor_a.set(-self._intake_speed)
+        self.intake_motor_a.set(self._intake_speed)
