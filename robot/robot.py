@@ -107,6 +107,17 @@ class Robot(magicbot.MagicRobot):
         if self.joystick_left.getRawButton(3):
             self.lift.run()
 
+        # Arm
+        if self.joystick_left.getRawButton(3):
+            self.arm.up()
+        elif self.joystick_left.getRawButton(2):
+            self.arm.down()
+
+        elif self.joystick_right.getRawButton(3):
+            self.arm.top()
+        elif self.joystick_right.getRawButton(2):
+            self.arm.bottom()
+
 
 if __name__ == '__main__':
     wpilib.run(Robot)
