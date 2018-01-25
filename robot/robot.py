@@ -5,7 +5,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive, lift, intake
+from components import drive, lift, arm, intake
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx
@@ -15,6 +15,7 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
     lift = lift.Lift
+    arm = arm.Arm
     intake = intake.Intake
 
     time = tunable(0)
@@ -41,6 +42,9 @@ class Robot(magicbot.MagicRobot):
         # Lift motors
         self.lift_motor_a = wpilib.Victor(0)
         self.lift_motor_b = wpilib.Victor(1)
+
+        # Arm components
+        self.elevator_motor = wpilib.Victor(2)
 
         # Intake
         self.intake_motor = wpilib.Victor(3)
