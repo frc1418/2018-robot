@@ -107,6 +107,10 @@ class Robot(magicbot.MagicRobot):
         if self.joystick_left.getRawButton(3):
             self.lift.run()
 
+        # Intake
+        if self.joystick_right.getRawButton(1):
+            self.intake.actuate()
+
         # Arm
         if self.joystick_left.getRawButton(3):
             self.arm.up()
