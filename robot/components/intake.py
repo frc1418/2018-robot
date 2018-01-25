@@ -31,6 +31,12 @@ class Intake:
         """
         pass
 
+    def actuate(self):
+        """
+        Open or close intake, depending on current state.
+        """
+        pass
+
     def execute(self):
         """
         Run climbing motors.
