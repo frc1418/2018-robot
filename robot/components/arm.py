@@ -19,15 +19,27 @@ class Arm:
         """
         self._elevator_speed = speed
 
-    def ascend(self):
+    def up(self):
         """
-        Move elevator to uppermost possible position.
+        Move elevator upward.
+        """
+        self.elevate(1)
+
+    def down(self):
+        """
+        Move elevator downward.
+        """
+        self.elevate(-1)
+
+    def top(self):
+        """
+        Move elevator to the topmost position.
         """
         pass
 
-    def descend(self):
+    def bottom(self):
         """
-        Move elevator to bottom.
+        Move elevator to the bottommost position.
         """
         pass
 
