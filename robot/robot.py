@@ -5,7 +5,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive, lift
+from components import drive, lift, arm, intake
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx
@@ -15,6 +15,8 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
     lift = lift.Lift
+    arm = arm.Arm
+    intake = intake.Intake
 
     time = tunable(0)
     plates = tunable('')
@@ -37,9 +39,28 @@ class Robot(magicbot.MagicRobot):
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
-        # Lift motors
+        # Lift
         self.lift_motor_a = wpilib.Victor(0)
         self.lift_motor_b = wpilib.Victor(1)
+        self.lift_hold = wpilib.Solenoid(0)
+
+        # Arm components
+        self.elevator_motor = wpilib.Victor(2)
+        self.forearm = wpilib.DoubleSolenoid(1, 2)
+        self.hand = wpilib.DoubleSolenoid(3, 4)
+
+        # Intake
+        self.intake_arm_left = wpilib.Victor(5)
+        self.intake_arm_left.setInverted(True)
+        self.intake_arm_right = wpilib.Victor(6)
+        self.intake_arms = wpilib.SpeedControllerGroup(self.intake_arm_left,
+                                                       self.intake_arm_right)
+
+        self.intake_wheel_left = wpilib.NidecBrushless(3, 8)
+        self.intake_wheel_left.setInverted(True)
+        self.intake_wheel_right = wpilib.NidecBrushless(4, 9)
+        self.intake_wheels = wpilib.SpeedControllerGroup(self.intake_wheel_left,
+                                                         self.intake_wheel_right)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
@@ -98,6 +119,21 @@ class Robot(magicbot.MagicRobot):
         # Lift
         if self.joystick_left.getRawButton(3):
             self.lift.run()
+
+        # Intake
+        if self.joystick_right.getRawButton(1):
+            self.intake.actuate()
+
+        # Arm
+        if self.joystick_left.getRawButton(3):
+            self.arm.up()
+        elif self.joystick_left.getRawButton(2):
+            self.arm.down()
+
+        elif self.joystick_right.getRawButton(3):
+            self.arm.top()
+        elif self.joystick_right.getRawButton(2):
+            self.arm.bottom()
 
 
 if __name__ == '__main__':
