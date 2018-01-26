@@ -7,6 +7,7 @@ class Arm:
     Operate robot arm (all components).
     """
     elevator_motor: wpilib.Victor
+    forearm: wpilib.DoubleSolenoid
 
     def __init__(self):
         self._elevator_speed = will_reset_to(0)
@@ -42,6 +43,24 @@ class Arm:
         Move elevator to the bottommost position.
         """
         pass
+
+    def extend_forearm(self):
+        """
+        Extend forearm.
+        """
+        self.forearm.set(1)
+
+    def retract_forearm(self):
+        """
+        Retract forearm.
+        """
+        self.forearm.set(2)
+
+    def actuate_forearm(self):
+        """
+        Extend or retract forearm based on current position.
+        """
+        self.forearm.set(2 if self.forearm.get() == 1 else 1)
 
     def execute(self):
         """
