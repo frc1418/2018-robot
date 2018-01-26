@@ -47,6 +47,7 @@ class Robot(magicbot.MagicRobot):
         # Arm components
         self.elevator_motor = wpilib.Victor(2)
         self.forearm = wpilib.DoubleSolenoid(1, 2)
+        self.hand = wpilib.DoubleSolenoid(3, 4)
 
         # Intake
         self.intake_motor_a = wpilib.Victor(3)
