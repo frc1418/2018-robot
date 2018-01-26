@@ -39,9 +39,10 @@ class Robot(magicbot.MagicRobot):
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
-        # Lift motors
+        # Lift
         self.lift_motor_a = wpilib.Victor(0)
         self.lift_motor_b = wpilib.Victor(1)
+        self.lift_hold = wpilib.Solenoid(0)
 
         # Arm components
         self.elevator_motor = wpilib.Victor(2)

@@ -8,6 +8,7 @@ class Lift:
     """
     lift_motor_a: wpilib.Victor
     lift_motor_b: wpilib.Victor
+    lift_hold: wpilib.Solenoid
 
     def __init__(self):
         self._climb_speed = will_reset_to(0)
@@ -19,6 +20,25 @@ class Lift:
         :param speed: The requested speed, between -1 and 1.
         """
         self._climb_speed = speed
+
+    # TODO: Check that these states aren't inverted.
+    def release(self):
+        """
+        Release winch.
+        """
+        self.lift_hold.set(False)
+
+    def hold(self):
+        """
+        Hold winch.
+        """
+        self.lift_hold.set(True)
+
+    def actuate(self):
+        """
+        Hold or release winch based on current state.
+        """
+        self.lift_hold.set(not self.lift_hold.get())
 
     def execute(self):
         """
