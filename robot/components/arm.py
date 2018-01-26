@@ -75,7 +75,7 @@ class Arm:
         """
         self.hand.set(2)
 
-    def actuate_forearm(self):
+    def actuate_hands(self):
         """
         Grip or release cube based on current state.
         """
