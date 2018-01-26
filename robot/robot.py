@@ -56,9 +56,9 @@ class Robot(magicbot.MagicRobot):
         self.intake_arms = wpilib.SpeedControllerGroup(self.intake_arm_left,
                                                        self.intake_arm_right)
 
-        self.intake_wheel_left = wpilib.Victor(3)
+        self.intake_wheel_left = wpilib.NidecBrushless(3, 8)
         self.intake_wheel_left.setInverted(True)
-        self.intake_wheel_right = wpilib.Victor(4)
+        self.intake_wheel_right = wpilib.NidecBrushless(4, 9)
         self.intake_wheels = wpilib.SpeedControllerGroup(self.intake_wheel_left,
                                                          self.intake_wheel_right)
 
