@@ -6,19 +6,41 @@ class Intake:
     """
     Operate robot intake.
     """
-    intake_motor_a: wpilib.Victor
-    intake_motor_b: wpilib.Victor
+    intake_arms: wpilib.SpeedControllerGroup
+    intake_wheels: wpilib.SpeedControllerGroup
 
     def __init__(self):
-        self._intake_speed = will_reset_to(0)
+        self._intake_arm_speed = will_reset_to(0)
+        self._intake_wheel_speed = will_reset_to(0)
 
     def move(self, speed: float=1):
         """
-        Set the motor speed of intake.
+        Set the speed of intake arms.
 
         :param speed: The requested speed, between -1 and 1.
         """
         self._intake_speed = speed
+
+    def spin(self, speed: float=1):
+        """
+        Set the speed of intake wheels.
+
+        :param speed: The requested speed, between -1 and 1.
+        """
+        self._intake_wheel_speed = speed
+
+    def pull(self):
+        """
+        Pull cube into intake.
+        """
+        # TODO: Automatically close intake arms if open.
+        self.spin(-1)
+
+    def push(self):
+        """
+        Push cube out of intake.
+        """
+        self.spin(1)
 
     def open(self):
         """
@@ -42,5 +64,5 @@ class Intake:
         """
         Run intake motors.
         """
-        self.intake_motor_a.set(-self._intake_speed)
-        self.intake_motor_a.set(self._intake_speed)
+        self.intake_arms.set(self._intake_arm_speed)
+        self.intake_wheels.set(self._intake_wheel_speed)
