@@ -50,8 +50,17 @@ class Robot(magicbot.MagicRobot):
         self.hand = wpilib.DoubleSolenoid(3, 4)
 
         # Intake
-        self.intake_motor_a = wpilib.Victor(3)
-        self.intake_motor_b = wpilib.Victor(4)
+        self.intake_arm_left = wpilib.Victor(5)
+        self.intake_arm_left.setInverted(True)
+        self.intake_arm_right = wpilib.Victor(6)
+        self.intake_arms = wpilib.SpeedControllerGroup(self.intake_arm_left,
+                                                       self.intake_arm_right)
+
+        self.intake_wheel_left = wpilib.Victor(3)
+        self.intake_wheel_left.setInverted(True)
+        self.intake_wheel_right = wpilib.Victor(4)
+        self.intake_wheels = wpilib.SpeedControllerGroup(self.intake_wheel_left,
+                                                         self.intake_wheel_right)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
