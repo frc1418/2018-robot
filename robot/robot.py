@@ -28,6 +28,7 @@ class Robot(magicbot.MagicRobot):
         # Joysticks
         self.joystick_left = wpilib.Joystick(0)
         self.joystick_right = wpilib.Joystick(1)
+        self.joystick_alt = wpilib.Joystick(2)
 
         # Motor controllers
         self.lf_motor = WPI_TalonSRX(5)
@@ -116,24 +117,34 @@ class Robot(magicbot.MagicRobot):
         # Read from joysticks to move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
-        # Lift
+        # Lift controls
         if self.joystick_left.getRawButton(3):
             self.lift.run()
 
-        # Intake
+        # Intake controls
         if self.joystick_right.getRawButton(1):
             self.intake.actuate()
 
-        # Arm
-        if self.joystick_left.getRawButton(3):
+        # Arm controls
+        # Use joystick axis to move arm instead of raw buttons
+        self.arm.elevate(self.joystick_alt.getY())
+        # Or to move up or down at full speed
+        if self.joystick_alt.getRawButton(1):
             self.arm.up()
-        elif self.joystick_left.getRawButton(2):
+        elif self.joystick_alt.getRawButton(2):
             self.arm.down()
-
+        # Move the arm to very top or very bottom
         elif self.joystick_right.getRawButton(3):
             self.arm.top()
-        elif self.joystick_right.getRawButton(2):
+        elif self.joystick_right.getRawButton(4):
             self.arm.bottom()
+        # Press trigger to grip or release cube
+        elif self.joystick_alt.getRawButton(5)
+            self.arm.actuate_forearm()
+        elif self.joystick_alt.getRawButton(6)
+        # Should be trigger button once actual buttons are set
+            self.arm.actuate_hands()
+
 
 
 if __name__ == '__main__':
