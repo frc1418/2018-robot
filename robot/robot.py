@@ -8,7 +8,7 @@ from robotpy_ext.control.button_debouncer import ButtonDebouncer
 from components import drive, lift, arm, intake
 from magicbot import tunable
 
-from robotpy_ext.common_drivers import navx
+from robotpy_ext.common_drivers import navx, pressure_sensors
 from ctre.wpi_talonsrx import WPI_TalonSRX
 
 
@@ -20,6 +20,7 @@ class Robot(magicbot.MagicRobot):
 
     time = tunable(0)
     plates = tunable('')
+    pressure = tunable(0)
 
     def createObjects(self):
         """
@@ -68,12 +69,14 @@ class Robot(magicbot.MagicRobot):
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
         self.timer = wpilib.Timer()
+        self.pressure_sensor = pressure_sensors.REVAnalogPressureSensor(5)
 
     def robotPeriodic(self):
         """
         Executed periodically regardless of mode.
         """
         self.time = int(self.timer.getMatchTime())
+        self.pressure = self.pressure_sensor.pressure
 
     def autonomous(self):
         """
