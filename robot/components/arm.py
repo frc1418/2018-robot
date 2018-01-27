@@ -15,7 +15,7 @@ class Arm:
 
     def elevate(self, speed: float=1):
         """
-        Set the motor speed of each climbing motor.
+        Set the motor speed of arm elbow.
 
         :param speed: The requested speed, between -1 and 1.
         """
