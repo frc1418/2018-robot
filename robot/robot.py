@@ -29,6 +29,7 @@ class Robot(magicbot.MagicRobot):
         # Joysticks
         self.joystick_left = wpilib.Joystick(0)
         self.joystick_right = wpilib.Joystick(1)
+        self.joystick_alt = wpilib.Joystick(2)
 
         # Motor controllers
         self.lf_motor = WPI_TalonSRX(10)
