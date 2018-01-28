@@ -41,25 +41,25 @@ class Robot(magicbot.MagicRobot):
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
         # Lift
-        self.lift_motor_a = wpilib.Victor(0)
-        self.lift_motor_b = wpilib.Victor(1)
-        self.lift_hold = wpilib.Solenoid(0)
+        self.lift_motor_a = wpilib.Victor(7)
+        self.lift_motor_b = wpilib.Victor(8)
+        self.lift_hold = wpilib.Solenoid(5)
 
         # Arm components
-        self.elevator_motor = wpilib.Victor(2)
-        self.forearm = wpilib.DoubleSolenoid(1, 2)
-        self.hand = wpilib.DoubleSolenoid(3, 4)
+        self.elevator_motor = wpilib.Victor(5)
+        self.forearm = wpilib.DoubleSolenoid(2, 3)
+        self.hand = wpilib.DoubleSolenoid(0, 1)
 
         # Intake
-        self.intake_arm_left = wpilib.Spark(5)
+        self.intake_arm_left = wpilib.Victor(6)
         self.intake_arm_left.setInverted(True)
-        self.intake_arm_right = wpilib.Spark(6)
+        self.intake_arm_right = wpilib.Victor(9)
         self.intake_arms = wpilib.SpeedControllerGroup(self.intake_arm_left,
                                                        self.intake_arm_right)
 
-        self.intake_wheel_left = wpilib.NidecBrushless(3, 8)
+        self.intake_wheel_left = wpilib.Spark(3)
         self.intake_wheel_left.setInverted(True)
-        self.intake_wheel_right = wpilib.NidecBrushless(4, 9)
+        self.intake_wheel_right = wpilib.Spark(4)
         self.intake_wheels = wpilib.SpeedControllerGroup(self.intake_wheel_left,
                                                          self.intake_wheel_right)
 
