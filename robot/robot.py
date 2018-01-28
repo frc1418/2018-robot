@@ -51,9 +51,9 @@ class Robot(magicbot.MagicRobot):
         self.hand = wpilib.DoubleSolenoid(3, 4)
 
         # Intake
-        self.intake_arm_left = wpilib.Victor(5)
+        self.intake_arm_left = wpilib.Spark(5)
         self.intake_arm_left.setInverted(True)
-        self.intake_arm_right = wpilib.Victor(6)
+        self.intake_arm_right = wpilib.Spark(6)
         self.intake_arms = wpilib.SpeedControllerGroup(self.intake_arm_left,
                                                        self.intake_arm_right)
 
