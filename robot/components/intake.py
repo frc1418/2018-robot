@@ -13,6 +13,7 @@ class Intake:
         self._shoulder_speed = will_reset_to(0)
         self._intake_wheel_speed = will_reset_to(0)
 
+    # TODO: New name
     def move(self, speed: float=1):
         """
         Set the speed of intake arms.
@@ -47,13 +48,15 @@ class Intake:
         """
         Open intake.
         """
-        pass
+        # TODO: Automatically open all the way
+        self.move(1)
 
     def close(self):
         """
         Close intake.
         """
-        pass
+        # TODO: Automatically close all the way
+        self.move(-1)
 
     def actuate(self):
         """
