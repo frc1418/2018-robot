@@ -33,12 +33,6 @@ class Winch:
         """
         self.winch_dog.set(True)
 
-    def actuate(self):
-        """
-        Hold or release winch based on current state.
-        """
-        self.winch_dog.set(not self.winch_dog.get())
-
     def execute(self):
         """
         Run climbing motors.
