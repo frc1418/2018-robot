@@ -55,9 +55,7 @@ class Robot(magicbot.MagicRobot):
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
         # Winch
-        self.winch_motor_a = wpilib.Victor(7)
-        self.winch_motor_b = wpilib.Victor(8)
-        self.winch_motors = wpilib.SpeedControllerGroup(self.winch_motor_a, self.winch_motor_b)
+        self.winch_motors = wpilib.SpeedControllerGroup(wpilib.Victor(7), wpilib.Victor(8))
         self.winch_hold = wpilib.Solenoid(5)
 
         # Crane
