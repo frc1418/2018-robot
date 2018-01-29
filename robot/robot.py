@@ -132,20 +132,18 @@ class Robot(magicbot.MagicRobot):
         if self.joystick_left.getRawButton(3):
             self.lift.run()
 
-        # Intake
-        if self.joystick_right.getRawButton(1):
-            self.intake.actuate()
-
         # Arm
-        if self.joystick_left.getRawButton(3):
-            self.arm.up()
-        elif self.joystick_left.getRawButton(2):
-            self.arm.down()
+        if self.btn_claw:
+            self.arm.actuate_hand()
 
-        elif self.joystick_right.getRawButton(3):
-            self.arm.top()
-        elif self.joystick_right.getRawButton(2):
-            self.arm.bottom()
+        if self.btn_forearm:
+            self.arm.actuate_forearm()
+
+        # TODO: Use top()/bottom() rather than up()/down() once encoders present
+        if self.btn_top:
+            self.arm.up()
+        elif self.btn_bottom:
+            self.arm.down()
 
 
 if __name__ == '__main__':
