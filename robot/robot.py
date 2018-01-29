@@ -135,8 +135,11 @@ class Robot(magicbot.MagicRobot):
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
         # Lift
-        if self.joystick_left.getRawButton(3):
+        if self.btn_climb:
+            self.lift.release()
             self.lift.run()
+        else:
+            self.lift.hold()
 
         # Arm
         if self.btn_claw:
