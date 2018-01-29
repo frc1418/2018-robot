@@ -5,7 +5,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive, winch, arm, intake
+from components import drive, winch, crane, intake
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx, pressure_sensors
@@ -15,7 +15,7 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
     winch = winch.Winch
-    arm = arm.Arm
+    crane = crane.Crane
     intake = intake.Intake
 
     time = tunable(0)
@@ -60,7 +60,7 @@ class Robot(magicbot.MagicRobot):
         self.winch_motors = wpilib.SpeedControllerGroup(self.winch_motor_a, self.winch_motor_b)
         self.winch_hold = wpilib.Solenoid(5)
 
-        # Arm components
+        # Crane
         self.elevator_motor = wpilib.Victor(5)
         self.forearm = wpilib.DoubleSolenoid(2, 3)
         self.claw = wpilib.DoubleSolenoid(0, 1)
@@ -141,18 +141,18 @@ class Robot(magicbot.MagicRobot):
         else:
             self.winch.hold()
 
-        # Arm
+        # Crane
         if self.btn_claw:
-            self.arm.actuate_claw()
+            self.crane.actuate_claw()
 
         if self.btn_forearm:
-            self.arm.actuate_forearm()
+            self.crane.actuate_forearm()
 
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
         if self.btn_top:
-            self.arm.up()
+            self.crane.up()
         elif self.btn_bottom:
-            self.arm.down()
+            self.crane.down()
 
 
 if __name__ == '__main__':

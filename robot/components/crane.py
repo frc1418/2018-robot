@@ -2,7 +2,7 @@ import wpilib
 from magicbot import will_reset_to
 
 
-class Arm:
+class Crane:
     """
     Operate robot arm (all components).
     """
@@ -15,7 +15,7 @@ class Arm:
 
     def elevate(self, speed: float=1):
         """
-        Set the motor speed of arm elbow.
+        Set the motor speed of claw elbow.
 
         :param speed: The requested speed, between -1 and 1.
         """
@@ -83,6 +83,6 @@ class Arm:
 
     def execute(self):
         """
-        Run arm motors.
+        Run elevator motors.
         """
         self.elevator_motor.set(self._elevator_speed)
