@@ -55,6 +55,7 @@ class Robot(magicbot.MagicRobot):
         # Lift
         self.lift_motor_a = wpilib.Victor(7)
         self.lift_motor_b = wpilib.Victor(8)
+        self.lift_motors = wpilib.SpeedControllerGroup(self.lift_motor_a, self.lift_motor_b)
         self.lift_hold = wpilib.Solenoid(5)
 
         # Arm components
