@@ -31,6 +31,14 @@ class Robot(magicbot.MagicRobot):
         self.joystick_right = wpilib.Joystick(1)
         self.joystick_alt = wpilib.Joystick(2)
 
+        # Buttons
+        # TODO: Add intake controls
+        # TODO: Add alt buttons
+        self.btn_claw = ButtonDebouncer(self.joystick_right, 1)
+        self.btn_forearm = ButtonDebouncer(self.joystick_right, 5)
+        self.btn_top = ButtonDebouncer(self.joystick_right, 3)
+        self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
+
         # Motor controllers
         self.lf_motor = WPI_TalonSRX(10)
         self.lr_motor = WPI_TalonSRX(15)
