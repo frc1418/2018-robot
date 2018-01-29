@@ -6,8 +6,7 @@ class Lift:
     """
     Operate robot lift.
     """
-    lift_motor_a: wpilib.Victor
-    lift_motor_b: wpilib.Victor
+    lift_motors: wpilib.SpeedControllerGroup
     lift_hold: wpilib.Solenoid
 
     def __init__(self):
@@ -44,5 +43,4 @@ class Lift:
         """
         Run climbing motors.
         """
-        self.lift_motor_a.set(self._climb_speed)
-        self.lift_motor_b.set(self._climb_speed)
+        self.lift_motors.set(self._climb_speed)
