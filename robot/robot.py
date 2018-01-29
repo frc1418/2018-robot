@@ -39,13 +39,16 @@ class Robot(magicbot.MagicRobot):
         self.btn_top = ButtonDebouncer(self.joystick_right, 3)
         self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
 
-        # Motor controllers
+        # Drive motor controllers
+        # ID SCHEME:
+        #   10^1: 1 = left, 2 = right
+        #   10^0: 0 = front, 5 = rear
         self.lf_motor = WPI_TalonSRX(10)
         self.lr_motor = WPI_TalonSRX(15)
         self.rf_motor = WPI_TalonSRX(20)
         self.rr_motor = WPI_TalonSRX(25)
 
-        # Drivetrain object
+        # Drivetrain
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
