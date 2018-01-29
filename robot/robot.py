@@ -45,6 +45,16 @@ class Robot(magicbot.MagicRobot):
         self.btn_top = ButtonDebouncer(self.joystick_right, 3)
         self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
 
+        self.btn_climb_alt = ButtonDebouncer(self.joystick_alt, 3)
+
+        self.btn_shoulders_open_alt = ButtonDebouncer(self.joystick_alt, 9)
+        self.btn_shoulders_close_alt = ButtonDebouncer(self.joystick_alt, 10)
+        self.btn_push_alt = ButtonDebouncer(self.joystick_alt, 11)
+        self.btn_pull_alt = ButtonDebouncer(self.joystick_alt, 12)
+
+        self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
+        self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 5)
+
         # Drive motor controllers
         # ID SCHEME:
         #   10^1: 1 = left, 2 = right
@@ -143,35 +153,35 @@ class Robot(magicbot.MagicRobot):
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
         # Winch
-        if self.btn_climb:
+        if self.btn_climb or self.btn_climb_alt:
             self.winch.release()
             self.winch.run()
         else:
             self.winch.hold()
 
         # Intake
-        if self.btn_shoulders_open:
+        if self.btn_shoulders_open or self.btn_shoulders_open_alt:
             self.intake.open()
-        elif self.btn_shoulders_close:
+        elif self.btn_shoulders_close or self.btn_shoulders_close_alt:
             self.intake.close()
 
-        if self.btn_pull:
+        if self.btn_pull or self.btn_pull_alt:
             self.intake.pull()
-        elif self.btn_push:
+        elif self.btn_push or self.btn_pull_alt:
             self.intake.push()
 
         # Crane
-        if self.btn_claw:
+        if self.btn_claw or self.btn_claw_alt:
             self.crane.actuate_claw()
 
-        if self.btn_forearm:
+        if self.btn_forearm or self.btn_forearm_alt:
             self.crane.actuate_forearm()
 
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
-        if self.btn_top:
+        if self.btn_top or self.joystick_alt.getY() > 0:
             self.crane.retract_forearm()
             self.crane.up()
-        elif self.btn_bottom:
+        elif self.btn_bottom or self.joystick_alt.getY() < 0:
             self.crane.down()
 
 
