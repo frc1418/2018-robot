@@ -5,7 +5,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive, lift, arm, intake
+from components import drive, winch, arm, intake
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx, pressure_sensors
@@ -14,7 +14,7 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 
 class Robot(magicbot.MagicRobot):
     drive = drive.Drive
-    lift = lift.Lift
+    winch = winch.Winch
     arm = arm.Arm
     intake = intake.Intake
 
@@ -54,11 +54,11 @@ class Robot(magicbot.MagicRobot):
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
 
-        # Lift
-        self.lift_motor_a = wpilib.Victor(7)
-        self.lift_motor_b = wpilib.Victor(8)
-        self.lift_motors = wpilib.SpeedControllerGroup(self.lift_motor_a, self.lift_motor_b)
-        self.lift_hold = wpilib.Solenoid(5)
+        # Winch
+        self.winch_motor_a = wpilib.Victor(7)
+        self.winch_motor_b = wpilib.Victor(8)
+        self.winch_motors = wpilib.SpeedControllerGroup(self.winch_motor_a, self.winch_motor_b)
+        self.winch_hold = wpilib.Solenoid(5)
 
         # Arm components
         self.elevator_motor = wpilib.Victor(5)
@@ -134,12 +134,12 @@ class Robot(magicbot.MagicRobot):
         # Read from joysticks to move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
-        # Lift
+        # Winch
         if self.btn_climb:
-            self.lift.release()
-            self.lift.run()
+            self.winch.release()
+            self.winch.run()
         else:
-            self.lift.hold()
+            self.winch.hold()
 
         # Arm
         if self.btn_claw:

@@ -2,12 +2,12 @@ import wpilib
 from magicbot import will_reset_to
 
 
-class Lift:
+class Winch:
     """
-    Operate robot lift.
+    Operate robot winch.
     """
-    lift_motors: wpilib.SpeedControllerGroup
-    lift_hold: wpilib.Solenoid
+    winch_motors: wpilib.SpeedControllerGroup
+    winch_hold: wpilib.Solenoid
 
     def __init__(self):
         self._climb_speed = will_reset_to(0)
@@ -25,22 +25,22 @@ class Lift:
         """
         Release winch.
         """
-        self.lift_hold.set(False)
+        self.winch_hold.set(False)
 
     def hold(self):
         """
         Hold winch.
         """
-        self.lift_hold.set(True)
+        self.winch_hold.set(True)
 
     def actuate(self):
         """
         Hold or release winch based on current state.
         """
-        self.lift_hold.set(not self.lift_hold.get())
+        self.winch_hold.set(not self.winch_hold.get())
 
     def execute(self):
         """
         Run climbing motors.
         """
-        self.lift_motors.set(self._climb_speed)
+        self.winch_motors.set(self._climb_speed)
