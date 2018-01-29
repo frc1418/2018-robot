@@ -8,7 +8,7 @@ class Arm:
     """
     elevator_motor: wpilib.Victor
     forearm: wpilib.DoubleSolenoid
-    hand: wpilib.DoubleSolenoid
+    claw: wpilib.DoubleSolenoid
 
     def __init__(self):
         self._elevator_speed = will_reset_to(0)
@@ -65,21 +65,21 @@ class Arm:
 
     def grip(self):
         """
-        Grip cube in hand.
+        Grip cube in claw.
         """
-        self.hand.set(1)
+        self.claw.set(1)
 
     def release(self):
         """
-        Release cube from hand.
+        Release cube from claw.
         """
-        self.hand.set(2)
+        self.claw.set(2)
 
-    def actuate_hand(self):
+    def actuate_claw(self):
         """
         Grip or release cube based on current state.
         """
-        self.hand.set(2 if self.hand.get() == 1 else 1)
+        self.claw.set(2 if self.claw.get() == 1 else 1)
 
     def execute(self):
         """
