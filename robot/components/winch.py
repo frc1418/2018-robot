@@ -7,7 +7,7 @@ class Winch:
     Operate robot winch.
     """
     winch_motors: wpilib.SpeedControllerGroup
-    winch_hold: wpilib.Solenoid
+    winch_dog: wpilib.Solenoid
 
     def __init__(self):
         self._climb_speed = will_reset_to(0)
@@ -23,21 +23,21 @@ class Winch:
     # TODO: Check that these states aren't inverted.
     def release(self):
         """
-        Release winch.
+        Release dog.
         """
-        self.winch_hold.set(False)
+        self.winch_dog.set(False)
 
     def hold(self):
         """
-        Hold winch.
+        Hold dog.
         """
-        self.winch_hold.set(True)
+        self.winch_dog.set(True)
 
     def actuate(self):
         """
         Hold or release winch based on current state.
         """
-        self.winch_hold.set(not self.winch_hold.get())
+        self.winch_dog.set(not self.winch_dog.get())
 
     def execute(self):
         """
