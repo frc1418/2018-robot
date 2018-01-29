@@ -39,6 +39,8 @@ class Robot(magicbot.MagicRobot):
         self.btn_top = ButtonDebouncer(self.joystick_right, 3)
         self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
 
+        self.btn_climb = ButtonDebouncer(self.joystick_left, 8)
+
         # Drive motor controllers
         # ID SCHEME:
         #   10^1: 1 = left, 2 = right
