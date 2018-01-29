@@ -148,6 +148,7 @@ class Robot(magicbot.MagicRobot):
 
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
         if self.btn_top:
+            self.crane.retract_forearm()
             self.crane.up()
         elif self.btn_bottom:
             self.crane.down()
