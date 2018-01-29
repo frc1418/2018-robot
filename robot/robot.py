@@ -63,7 +63,7 @@ class Robot(magicbot.MagicRobot):
         # Arm components
         self.elevator_motor = wpilib.Victor(5)
         self.forearm = wpilib.DoubleSolenoid(2, 3)
-        self.hand = wpilib.DoubleSolenoid(0, 1)
+        self.claw = wpilib.DoubleSolenoid(0, 1)
 
         # Intake
         self.intake_arm_left = wpilib.Victor(6)
@@ -143,7 +143,7 @@ class Robot(magicbot.MagicRobot):
 
         # Arm
         if self.btn_claw:
-            self.arm.actuate_hand()
+            self.arm.actuate_claw()
 
         if self.btn_forearm:
             self.arm.actuate_forearm()
