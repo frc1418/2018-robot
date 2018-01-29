@@ -54,6 +54,12 @@ class Robot(magicbot.MagicRobot):
         self.rf_motor = WPI_TalonSRX(20)
         self.rr_motor = WPI_TalonSRX(25)
 
+        # Configure drive ramp speed
+        self.lf_motor.configOpenLoopRamp(0.2, 0)
+        self.lr_motor.configOpenLoopRamp(0.2, 0)
+        self.rf_motor.configOpenLoopRamp(0.2, 0)
+        self.rr_motor.configOpenLoopRamp(0.2, 0)
+
         # Drivetrain
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
                                                     wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
