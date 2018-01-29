@@ -32,14 +32,18 @@ class Robot(magicbot.MagicRobot):
         self.joystick_alt = wpilib.Joystick(2)
 
         # Buttons
-        # TODO: Add intake controls
         # TODO: Add alt buttons
+        self.btn_climb = ButtonDebouncer(self.joystick_left, 8)
+
+        self.btn_shoulders_open = ButtonDebouncer(self.joystick_left, 4)
+        self.btn_shoulders_close = ButtonDebouncer(self.joystick_left, 5)
+        self.btn_pull = ButtonDebouncer(self.joystick_left, 2)
+        self.btn_push = ButtonDebouncer(self.joystick_left, 3)
+
         self.btn_claw = ButtonDebouncer(self.joystick_right, 1)
         self.btn_forearm = ButtonDebouncer(self.joystick_right, 5)
         self.btn_top = ButtonDebouncer(self.joystick_right, 3)
         self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
-
-        self.btn_climb = ButtonDebouncer(self.joystick_left, 8)
 
         # Drive motor controllers
         # ID SCHEME:
@@ -138,6 +142,17 @@ class Robot(magicbot.MagicRobot):
             self.winch.run()
         else:
             self.winch.hold()
+
+        # Intake
+        if self.btn_shoulders_open:
+            self.intake.open()
+        elif self.btn_shoulders_close:
+            self.intake.close()
+
+        if self.btn_pull:
+            self.intake.pull()
+        elif self.btn_push:
+            self.intake.push()
 
         # Crane
         if self.btn_claw:

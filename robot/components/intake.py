@@ -42,6 +42,7 @@ class Intake:
         """
         self.spin(1)
 
+    # TODO: Check these directions aren't inverted
     def open(self):
         """
         Open intake.
