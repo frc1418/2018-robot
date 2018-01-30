@@ -6,21 +6,31 @@ class Intake:
     """
     Operate robot intake.
     """
-    shoulders: wpilib.SpeedControllerGroup
+    shoulder_left: wpilib.Victor
+    shoulder_right: wpilib.Victor
     intake_wheels: wpilib.SpeedControllerGroup
 
     def __init__(self):
-        self._shoulder_speed = will_reset_to(0)
+        self._shoulder_left_speed = will_reset_to(0)
+        self._shoulder_right_speed = will_reset_to(0)
         self._intake_wheel_speed = will_reset_to(0)
 
-    # TODO: New name
-    def move(self, speed: float=0.1):
+    # TODO: New names
+    def move_left(self, speed: float=0.1):
         """
-        Set the speed of intake arms.
+        Set the speed of left intake arm.
 
         :param speed: The requested speed, between -1 and 1.
         """
-        self._shoulder_speed = speed
+        self._shoulder_left_speed = speed
+
+    def move_right(self, speed: float=0.1):
+        """
+        Set the speed of right intake arm.
+
+        :param speed: The requested speed, between -1 and 1.
+        """
+        self._shoulder_right_speed = speed
 
     def spin(self, speed: float=0.5):
         """
@@ -68,5 +78,6 @@ class Intake:
         """
         Run intake motors.
         """
-        self.shoulders.set(self._shoulder_speed)
+        self.shoulder_left.set(self._shoulder_left_speed)
+        self.shoulder_right.set(self._shoulder_right_speed)
         self.intake_wheels.set(self._intake_wheel_speed)

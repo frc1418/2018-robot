@@ -82,8 +82,6 @@ class Robot(magicbot.MagicRobot):
         self.shoulder_left = wpilib.Victor(6)
         self.shoulder_left.setInverted(True)
         self.shoulder_right = wpilib.Victor(9)
-        self.shoulders = wpilib.SpeedControllerGroup(self.shoulder_left,
-                                                     self.shoulder_right)
 
         self.intake_wheel_left = wpilib.Spark(3)
         self.intake_wheel_left.setInverted(True)
