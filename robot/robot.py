@@ -69,7 +69,7 @@ class Robot(magicbot.MagicRobot):
         self.winch_dog = wpilib.Solenoid(4)
 
         # Crane
-        self.elevator_motor = wpilib.Victor(5)
+        self.elevator = wpilib.Victor(5)
         self.forearm = wpilib.DoubleSolenoid(2, 3)
         self.claw = wpilib.DoubleSolenoid(0, 1)
 
