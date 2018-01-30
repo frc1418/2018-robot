@@ -53,26 +53,29 @@ class Intake:
         """
         self.spin(1)
 
-    # TODO: Check these directions aren't inverted
-    def open(self):
+    def open_left(self):
         """
-        Open intake.
+        Open left side of intake.
         """
-        # TODO: Automatically open all the way
-        self.move(1)
+        self.move_left(1)
 
-    def close(self):
+    def open_right(self):
         """
-        Close intake.
+        Open left side of intake.
         """
-        # TODO: Automatically close all the way
-        self.move(-1)
+        self.move_right(1)
 
-    def actuate(self):
+    def close_left(self):
         """
-        Open or close intake, depending on current state.
+        Close left side of intake.
         """
-        pass
+        self.move_left(-1)
+
+    def close_right(self):
+        """
+        Close right side of intake.
+        """
+        self.move_right(-1)
 
     def execute(self):
         """
