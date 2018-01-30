@@ -16,8 +16,16 @@ class Drive:
 
     def __init__(self):
         self.enabled = False
+        self.y = will_reset_to(0)
+        self.rotation = will_reset_to(0)
 
-    def move(self, y: float, rot: float):
+    def on_enable(self):
+        """
+        Tasks for initialization upon injection.
+        """
+        pass
+
+    def move(self, y: float, rotation: float):
         """
         Move robot.
 

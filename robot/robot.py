@@ -5,12 +5,8 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-<<<<<<< HEAD
 from components import drive, winch, crane, intake
-=======
-from components import drive, lift, arm, intake
 from controllers import motion_profile
->>>>>>> Add layout for robot pathfinding
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx, pressure_sensors
