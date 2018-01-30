@@ -18,21 +18,21 @@ class Drive:
         """
         Tasks for initialization upon injection.
         """
-        self.y = will_reset_to(0)
-        self.rotation = will_reset_to(0)
+        self.left = will_reset_to(0)
+        self.right = will_reset_to(0)
 
-    def move(self, y: float, rotation: float):
+    def move(self, left: float, right: float):
         """
         Move robot.
 
-        :param y: y-axis movement speed.
-        :param rotation: Rotation speed.
+        :param left: Speed of left side motors.
+        :param right: Speed of right side motors.
         """
-        self.y = y
-        self.rotation = rotation
+        self.right = right
+        self.left = left
 
     def execute(self):
         """
         Handle driving.
         """
-        self.train.arcadeDrive(self.y, self.rotation)
+        self.train.tankDrive(self.left, self.right)
