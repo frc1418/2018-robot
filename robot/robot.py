@@ -37,18 +37,13 @@ class Robot(magicbot.MagicRobot):
         self.btn_pull = ButtonDebouncer(self.joystick_left, 2)
         self.btn_push = ButtonDebouncer(self.joystick_left, 3)
 
-        self.btn_claw = ButtonDebouncer(self.joystick_right, 1)
-        self.btn_forearm = ButtonDebouncer(self.joystick_right, 5)
-        self.btn_top = ButtonDebouncer(self.joystick_right, 3)
-        self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
-
         # Buttons on alternative joystick
         self.btn_dog_alt = ButtonDebouncer(self.joystick_alt, 8)
 
-        self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
-        self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 5)
-        self.btn_top_alt = ButtonDebouncer(self.joystick_alt, 6)
-        self.btn_bottom_alt = ButtonDebouncer(self.joystick_alt, 4)
+        self.btn_claw = ButtonDebouncer(self.joystick_alt, 1)
+        self.btn_forearm = ButtonDebouncer(self.joystick_alt, 5)
+        self.btn_top = ButtonDebouncer(self.joystick_alt, 6)
+        self.btn_bottom = ButtonDebouncer(self.joystick_alt, 4)
 
         # Drive motor controllers
         # ID SCHEME:
@@ -170,19 +165,19 @@ class Robot(magicbot.MagicRobot):
             self.intake.push()
 
         # Crane
-        if self.btn_claw.get() or self.btn_claw_alt.get():
+        if self.btn_claw.get():
             self.crane.actuate_claw()
 
-        if self.btn_forearm.get() or self.btn_forearm_alt.get():
+        if self.btn_forearm.get():
             self.crane.actuate_forearm()
 
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
         # TODO: Remove calls to Joystick.getRawButton()
-        if self.btn_top.get() or self.btn_top_alt.get() or self.joystick_right.getRawButton(3) or self.joystick_alt.getRawButton(6):
+        if self.btn_top.get() or self.joystick_alt.getRawButton(6):
             # TODO: DRY
             self.crane.retract_forearm()
             self.crane.up()
-        elif self.btn_bottom.get() or self.btn_bottom_alt.get() or self.joystick_right.getRawButton(2) or self.joystick_alt.getRawButton(4):
+        elif self.btn_bottom.get() or self.joystick_alt.getRawButton(4):
             self.crane.retract_forearm()
             self.crane.down()
 
