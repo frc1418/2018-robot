@@ -9,8 +9,7 @@ class Winch:
     winch_motors: wpilib.SpeedControllerGroup
     winch_dog: wpilib.Solenoid
 
-    def __init__(self):
-        self._climb_speed = will_reset_to(0)
+    _climb_speed = will_reset_to(0)
 
     def run(self, speed: float=1):
         """

@@ -11,15 +11,11 @@ class Drive:
     """
     train: wpilib.drive.DifferentialDrive
 
+    y = will_reset_to(0)
+    rot = will_reset_to(0)
+
     def __init__(self):
         self.enabled = False
-
-    def on_enable(self):
-        """
-        Tasks for initialization upon injection.
-        """
-        self.y = will_reset_to(0)
-        self.rot = will_reset_to(0)
 
     def move(self, y: float, rot: float):
         """
