@@ -49,13 +49,13 @@ class Crane:
         """
         Extend forearm.
         """
-        self.forearm.set(1)
+        self.forearm.set(2)
 
     def retract_forearm(self):
         """
         Retract forearm.
         """
-        self.forearm.set(2)
+        self.forearm.set(1)
 
     def actuate_forearm(self):
         """
