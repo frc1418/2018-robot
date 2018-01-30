@@ -16,8 +16,6 @@ class Drive:
 
     def __init__(self):
         self.enabled = False
-        self.y = will_reset_to(0)
-        self.rotation = will_reset_to(0)
 
     def on_enable(self):
         """
@@ -25,7 +23,7 @@ class Drive:
         """
         pass
 
-    def move(self, y: float, rotation: float):
+    def move(self, y: float, rot: float):
         """
         Move robot.
 
