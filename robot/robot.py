@@ -32,10 +32,8 @@ class Robot(magicbot.MagicRobot):
         self.joystick_alt = wpilib.Joystick(2)
 
         # Buttons
-        self.btn_climb = ButtonDebouncer(self.joystick_left, 8)
+        self.btn_dog = ButtonDebouncer(self.joystick_left, 8)
 
-        self.btn_shoulders_open = ButtonDebouncer(self.joystick_left, 4)
-        self.btn_shoulders_close = ButtonDebouncer(self.joystick_left, 5)
         self.btn_pull = ButtonDebouncer(self.joystick_left, 2)
         self.btn_push = ButtonDebouncer(self.joystick_left, 3)
 
@@ -45,12 +43,7 @@ class Robot(magicbot.MagicRobot):
         self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
 
         # Buttons on alternative joystick
-        self.btn_climb_alt = ButtonDebouncer(self.joystick_alt, 3)
-
-        self.btn_shoulders_open_alt = ButtonDebouncer(self.joystick_alt, 9)
-        self.btn_shoulders_close_alt = ButtonDebouncer(self.joystick_alt, 10)
-        self.btn_push_alt = ButtonDebouncer(self.joystick_alt, 11)
-        self.btn_pull_alt = ButtonDebouncer(self.joystick_alt, 12)
+        self.btn_dog_alt = ButtonDebouncer(self.joystick_alt, 8)
 
         self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
         self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 5)
@@ -78,7 +71,7 @@ class Robot(magicbot.MagicRobot):
 
         # Winch
         self.winch_motors = wpilib.SpeedControllerGroup(wpilib.Victor(7), wpilib.Victor(8))
-        self.winch_dog = wpilib.Solenoid(5)
+        self.winch_dog = wpilib.Solenoid(4)
 
         # Crane
         self.elevator_motor = wpilib.Victor(5)
@@ -155,21 +148,22 @@ class Robot(magicbot.MagicRobot):
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
         # Winch
-        if self.btn_climb.get() or self.btn_climb_alt.get():
+        if self.joystick_left.getRawButton(10) or self.joystick_alt.getRawButton(3):
             self.winch.release()
             self.winch.run()
-        else:
-            self.winch.hold()
+
+        if self.btn_dog.get() or self.btn_dog_alt.get():
+            self.winch.actuate()
 
         # Intake
-        if self.btn_shoulders_open.get() or self.btn_shoulders_open_alt.get():
+        if self.joystick_left.getRawButton(4) or self.joystick_alt.getRawButton(9):
             self.intake.open()
-        elif self.btn_shoulders_close.get() or self.btn_shoulders_close_alt.get():
+        elif self.joystick_left.getRawButton(5) or self.joystick_alt.getRawButton(10):
             self.intake.close()
 
-        if self.btn_pull.get() or self.btn_pull_alt.get():
+        if self.joystick_left.getRawButton(2) or self.joystick_alt.getRawButton(12):
             self.intake.pull()
-        elif self.btn_push.get() or self.btn_pull_alt.get():
+        elif self.joystick_left.getRawButton(3) or self.joystick_alt.getRawButton(11):
             self.intake.push()
 
         # Crane
@@ -180,10 +174,13 @@ class Robot(magicbot.MagicRobot):
             self.crane.actuate_forearm()
 
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
-        if self.btn_top.get() or self.btn_top_alt.get():
+        # TODO: Remove calls to Joystick.getRawButton()
+        if self.btn_top.get() or self.btn_top_alt.get() or self.joystick_right.getRawButton(3) or self.joystick_alt.getRawButton(6):
+            # TODO: DRY
             self.crane.retract_forearm()
             self.crane.up()
-        elif self.btn_bottom.get() or self.btn_bottom_alt.get():
+        elif self.btn_bottom.get() or self.btn_bottom_alt.get() or self.joystick_right.getRawButton(2) or self.joystick_alt.getRawButton(4):
+            self.crane.retract_forearm()
             self.crane.down()
 
 
