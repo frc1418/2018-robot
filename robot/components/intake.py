@@ -10,10 +10,9 @@ class Intake:
     shoulder_right: wpilib.Victor
     intake_wheels: wpilib.SpeedControllerGroup
 
-    def __init__(self):
-        self._shoulder_left_speed = will_reset_to(0)
-        self._shoulder_right_speed = will_reset_to(0)
-        self._intake_wheel_speed = will_reset_to(0)
+    _shoulder_left_speed = will_reset_to(0)
+    _shoulder_right_speed = will_reset_to(0)
+    _intake_wheel_speed = will_reset_to(0)
 
     # TODO: New names
     def move_left(self, speed: float=0.1):

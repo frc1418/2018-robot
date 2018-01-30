@@ -10,8 +10,7 @@ class Crane:
     forearm: wpilib.DoubleSolenoid
     claw: wpilib.DoubleSolenoid
 
-    def __init__(self):
-        self._elevator_speed = will_reset_to(0)
+    _elevator_speed = will_reset_to(0)
 
     def elevate(self, speed: float=1):
         """
