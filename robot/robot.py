@@ -169,11 +169,8 @@ class Robot(magicbot.MagicRobot):
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
         # TODO: Remove calls to Joystick.getRawButton()
         if self.btn_top.get() or self.joystick_alt.getRawButton(6):
-            # TODO: DRY
-            self.crane.retract_forearm()
             self.crane.up()
         elif self.btn_bottom.get() or self.joystick_alt.getRawButton(4):
-            self.crane.retract_forearm()
             self.crane.down()
 
 
