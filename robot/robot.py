@@ -154,10 +154,15 @@ class Robot(magicbot.MagicRobot):
             self.winch.actuate()
 
         # Intake
-        if self.joystick_left.getRawButton(4) or self.joystick_alt.getRawButton(9):
-            self.intake.open()
-        elif self.joystick_left.getRawButton(5) or self.joystick_alt.getRawButton(10):
-            self.intake.close()
+        if self.joystick_left.getRawButton(3):
+            self.intake.open_left()
+        elif self.joystick_left.getRawButton(2):
+            self.intake.close_left()
+
+        if self.joystick_right.getRawButton(3):
+            self.intake.open_right()
+        elif self.joystick_right.getRawButton(2):
+            self.intake.close_right()
 
         if self.joystick_left.getRawButton(2) or self.joystick_alt.getRawButton(12):
             self.intake.pull()
