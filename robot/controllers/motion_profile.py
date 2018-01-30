@@ -64,13 +64,11 @@ class PositionController:
         while True:
             with self.cond:
                 if len(self.trajectories) < 1:
-                    self.cond.wait_for(len(self.trajectories) > 0)
-
-            with self.lock:
-                if self.right_follower.isFinished() and self.left_follower.isFinished():
+                    self.cond.wait_for(lambda: len(self.trajectories) > 0)
                     if len(self.trajectories) < 1:
                         continue
 
+                if self.right_follower.isFinished() and self.left_follower.isFinished():
                     trajectory = self.trajectories.popleft()
                     self.right_follower.setTrajectory(trajectory['right'])
                     self.left_follower.setTrajectory(trajectory['left'])
