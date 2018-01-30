@@ -32,7 +32,6 @@ class Robot(magicbot.MagicRobot):
         self.joystick_alt = wpilib.Joystick(2)
 
         # Buttons
-        # TODO: Add alt buttons
         self.btn_climb = ButtonDebouncer(self.joystick_left, 8)
 
         self.btn_shoulders_open = ButtonDebouncer(self.joystick_left, 4)
@@ -153,35 +152,35 @@ class Robot(magicbot.MagicRobot):
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
         # Winch
-        if self.btn_climb or self.btn_climb_alt:
+        if self.btn_climb.get() or self.btn_climb_alt.get():
             self.winch.release()
             self.winch.run()
         else:
             self.winch.hold()
 
         # Intake
-        if self.btn_shoulders_open or self.btn_shoulders_open_alt:
+        if self.btn_shoulders_open.get() or self.btn_shoulders_open_alt.get():
             self.intake.open()
-        elif self.btn_shoulders_close or self.btn_shoulders_close_alt:
+        elif self.btn_shoulders_close.get() or self.btn_shoulders_close_alt.get():
             self.intake.close()
 
-        if self.btn_pull or self.btn_pull_alt:
+        if self.btn_pull.get() or self.btn_pull_alt.get():
             self.intake.pull()
-        elif self.btn_push or self.btn_pull_alt:
+        elif self.btn_push.get() or self.btn_pull_alt.get():
             self.intake.push()
 
         # Crane
-        if self.btn_claw or self.btn_claw_alt:
+        if self.btn_claw.get() or self.btn_claw_alt.get():
             self.crane.actuate_claw()
 
-        if self.btn_forearm or self.btn_forearm_alt:
+        if self.btn_forearm.get() or self.btn_forearm_alt.get():
             self.crane.actuate_forearm()
 
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
-        if self.btn_top or self.joystick_alt.getY() > 0:
+        if self.btn_top.get() or self.joystick_alt.getY() > 0:
             self.crane.retract_forearm()
             self.crane.up()
-        elif self.btn_bottom or self.joystick_alt.getY() < 0:
+        elif self.btn_bottom.get() or self.joystick_alt.getY() < 0:
             self.crane.down()
 
 
