@@ -44,6 +44,7 @@ class Robot(magicbot.MagicRobot):
         self.btn_top = ButtonDebouncer(self.joystick_right, 3)
         self.btn_bottom = ButtonDebouncer(self.joystick_right, 2)
 
+        # Buttons on alternative joystick
         self.btn_climb_alt = ButtonDebouncer(self.joystick_alt, 3)
 
         self.btn_shoulders_open_alt = ButtonDebouncer(self.joystick_alt, 9)
@@ -53,6 +54,8 @@ class Robot(magicbot.MagicRobot):
 
         self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
         self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 5)
+        self.btn_top_alt = ButtonDebouncer(self.joystick_alt, 6)
+        self.btn_bottom_alt = ButtonDebouncer(self.joystick_alt, 4)
 
         # Drive motor controllers
         # ID SCHEME:
@@ -177,10 +180,10 @@ class Robot(magicbot.MagicRobot):
             self.crane.actuate_forearm()
 
         # TODO: Use top()/bottom() rather than up()/down() once encoders present
-        if self.btn_top.get() or self.joystick_alt.getY() > 0:
+        if self.btn_top.get() or self.btn_top_alt.get():
             self.crane.retract_forearm()
             self.crane.up()
-        elif self.btn_bottom.get() or self.joystick_alt.getY() < 0:
+        elif self.btn_bottom.get() or self.btn_bottom_alt.get():
             self.crane.down()
 
 
