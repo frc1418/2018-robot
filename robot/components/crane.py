@@ -6,7 +6,7 @@ class Crane:
     """
     Operate robot arm (all components).
     """
-    elevator_motor: wpilib.Victor
+    elevator: wpilib.Victor
     forearm: wpilib.DoubleSolenoid
     claw: wpilib.DoubleSolenoid
 
@@ -85,4 +85,4 @@ class Crane:
         """
         Run elevator motors.
         """
-        self.elevator_motor.set(self._elevator_speed)
+        self.elevator.set(self._elevator_speed)
