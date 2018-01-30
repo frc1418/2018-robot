@@ -103,7 +103,7 @@ class Modular(AutonomousStateMachine):
             elif self.plates[0] == 'R':
                 self.drive.move(0.6, -0.5)
                 self.position = 'right'
-        self.next_state('swtich_curve_final')
+        self.next_state('switch_curve_final')
 
     @timed_state(duration=1, next_state='drop_switch')
     def switch_curve_final(self):
