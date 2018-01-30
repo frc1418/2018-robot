@@ -14,7 +14,7 @@ class Intake:
         self._intake_wheel_speed = will_reset_to(0)
 
     # TODO: New name
-    def move(self, speed: float=0.25):
+    def move(self, speed: float=0.1):
         """
         Set the speed of intake arms.
 
@@ -22,7 +22,7 @@ class Intake:
         """
         self._shoulder_speed = speed
 
-    def spin(self, speed: float=1):
+    def spin(self, speed: float=0.5):
         """
         Set the speed of intake wheels.
 
