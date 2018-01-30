@@ -159,11 +159,6 @@ class Robot(magicbot.MagicRobot):
         elif self.joystick_right.getRawButton(2):
             self.intake.close_right()
 
-        if self.joystick_left.getRawButton(2) or self.joystick_alt.getRawButton(12):
-            self.intake.pull()
-        elif self.joystick_left.getRawButton(3) or self.joystick_alt.getRawButton(11):
-            self.intake.push()
-
         # Crane
         if self.btn_claw.get():
             self.crane.actuate_claw()
