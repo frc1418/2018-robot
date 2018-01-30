@@ -20,7 +20,7 @@ class Intake:
 
         :param speed: The requested speed, between -1 and 1.
         """
-        self._intake_speed = speed
+        self._shoulder_speed = speed
 
     def spin(self, speed: float=1):
         """
