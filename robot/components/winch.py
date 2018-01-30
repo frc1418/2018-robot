@@ -33,6 +33,12 @@ class Winch:
         """
         self.winch_dog.set(True)
 
+    def actuate(self):
+        """
+        Actuate dog.
+        """
+        self.winch_dog.set(not self.winch_dog.get())
+
     def execute(self):
         """
         Run climbing motors.
