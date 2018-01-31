@@ -27,6 +27,14 @@ of the code by running robot.py directly.
 
     python3 robot.py sim
 
+## Setting up `git` hooks:
+
+`git` hooks change the process of committing by adding processes before or after the process of committing. After cloning, you should run
+
+		./setup.sh
+
+This will set up hooks to run tests before committing to help avoid easy-to-fix errors in the code.
+
 ## File Structure
 
     robot/
