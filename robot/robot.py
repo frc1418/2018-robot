@@ -142,11 +142,11 @@ class Robot(magicbot.MagicRobot):
 
         # Winch
         if self.joystick_left.getRawButton(10) or self.joystick_alt.getRawButton(3):
-            self.winch.release()
+            self.winch.unlock()
             self.winch.run()
 
         if self.btn_dog.get() or self.btn_dog_alt.get():
-            self.winch.hold()
+            self.winch.lock()
 
         # Intake
         if self.joystick_left.getRawButton(3):
