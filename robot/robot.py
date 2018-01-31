@@ -32,13 +32,13 @@ class Robot(magicbot.MagicRobot):
         self.joystick_alt = wpilib.Joystick(2)
 
         # Buttons
-        self.btn_dog = ButtonDebouncer(self.joystick_left, 8)
+        self.btn_winch_lock = ButtonDebouncer(self.joystick_left, 8)
 
         self.btn_pull = ButtonDebouncer(self.joystick_left, 2)
         self.btn_push = ButtonDebouncer(self.joystick_left, 3)
 
         # Buttons on alternative joystick
-        self.btn_dog_alt = ButtonDebouncer(self.joystick_alt, 8)
+        self.btn_winch_lock_alt = ButtonDebouncer(self.joystick_alt, 8)
 
         self.btn_claw = ButtonDebouncer(self.joystick_alt, 1)
         self.btn_forearm = ButtonDebouncer(self.joystick_alt, 5)
@@ -66,7 +66,7 @@ class Robot(magicbot.MagicRobot):
 
         # Winch
         self.winch_motors = wpilib.SpeedControllerGroup(wpilib.Victor(7), wpilib.Victor(8))
-        self.winch_dog = wpilib.Solenoid(4)
+        self.winch_lock = wpilib.Solenoid(4)
 
         # Crane
         self.elevator = wpilib.Victor(5)
@@ -145,7 +145,7 @@ class Robot(magicbot.MagicRobot):
             self.winch.unlock()
             self.winch.run()
 
-        if self.btn_dog.get() or self.btn_dog_alt.get():
+        if self.btn_winch_lock.get() or self.btn_winch_lock_alt.get():
             self.winch.lock()
 
         # Intake
