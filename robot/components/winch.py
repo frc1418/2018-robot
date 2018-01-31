@@ -7,7 +7,7 @@ class Winch:
     Operate robot winch.
     """
     winch_motors: wpilib.SpeedControllerGroup
-    winch_dog: wpilib.Solenoid
+    winch_lock: wpilib.Solenoid
 
     _climb_speed = will_reset_to(0)
 
@@ -24,19 +24,19 @@ class Winch:
         """
         Release dog.
         """
-        self.winch_dog.set(False)
+        self.winch_lock.set(False)
 
     def lock(self):
         """
         Hold dog.
         """
-        self.winch_dog.set(True)
+        self.winch_lock.set(True)
 
     def actuate(self):
         """
         Actuate dog.
         """
-        self.winch_dog.set(not self.winch_dog.get())
+        self.winch_lock.set(not self.winch_lock.get())
 
     def execute(self):
         """
