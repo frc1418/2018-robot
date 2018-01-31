@@ -92,6 +92,9 @@ class Robot(magicbot.MagicRobot):
         self.timer = wpilib.Timer()
         self.pressure_sensor = pressure_sensors.REVAnalogPressureSensor(5)
 
+        # Camera server
+        wpilib.CameraServer.launch()
+
     def robotPeriodic(self):
         """
         Executed periodically regardless of mode.
