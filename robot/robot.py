@@ -41,7 +41,7 @@ class Robot(magicbot.MagicRobot):
         self.btn_winch_lock_alt = ButtonDebouncer(self.joystick_alt, 8)
 
         self.btn_claw = ButtonDebouncer(self.joystick_alt, 1)
-        self.btn_forearm = ButtonDebouncer(self.joystick_alt, 5)
+        self.btn_forearm = ButtonDebouncer(self.joystick_alt, 2)
         self.btn_top = ButtonDebouncer(self.joystick_alt, 6)
         self.btn_bottom = ButtonDebouncer(self.joystick_alt, 4)
 
