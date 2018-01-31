@@ -146,7 +146,7 @@ class Robot(magicbot.MagicRobot):
             self.winch.run()
 
         if self.btn_dog.get() or self.btn_dog_alt.get():
-            self.winch.actuate()
+            self.winch.hold()
 
         # Intake
         if self.joystick_left.getRawButton(3):
