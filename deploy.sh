@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
 robot_network=1418
 
