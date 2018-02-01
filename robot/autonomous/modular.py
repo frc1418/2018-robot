@@ -36,7 +36,7 @@ class Modular(AutonomousStateMachine):
         if self.switch or self.scale:
             self.next_state('switch_initial')
         elif self.advance and (self.position == 'left' or self.position == 'right'):
-                self.next_state('cross_auto_line')
+            self.next_state('cross_auto_line')
 
     @timed_state(duration=1.5)
     def cross_auto_line(self):
