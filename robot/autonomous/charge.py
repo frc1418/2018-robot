@@ -11,4 +11,4 @@ class Charge(AutonomousStateMachine):
     @timed_state(duration=3, first=True)
     def charge(self, initial_call):
         # Move forward
-        self.drive.move(1, 0)
+        self.drive.move(0.6, 0)
