@@ -17,14 +17,6 @@ class Modular(AutonomousStateMachine):
     switch = tunable(True)
     scale = tunable(True)
 
-    def initialize(self):
-        """
-        Perform tasks needed to start Autonomous.
-
-        Autonomous configuration data should be input via dashboard.
-        """
-        pass
-
     @state(first=True)
     def start(self):
         """
