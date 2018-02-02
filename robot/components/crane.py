@@ -23,12 +23,6 @@ class Crane:
 
         self._elevator_speed = speed
 
-    def up(self):
-        """
-        Move elevator upward.
-        """
-        self.elevate(1)
-
     def extend_forearm(self):
         """
         Extend forearm.
