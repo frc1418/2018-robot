@@ -30,7 +30,7 @@ class Crane:
         """
         Move elevator downward.
         """
-        self.elevate(-1)
+        self.elevate(-0.5)
 
     def top(self):
         """
