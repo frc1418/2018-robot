@@ -18,6 +18,9 @@ class Crane:
 
         :param speed: The requested speed, between -1 and 1.
         """
+        if speed < 0:
+            speed /= 2
+
         self._elevator_speed = speed
 
     def up(self):
@@ -30,7 +33,7 @@ class Crane:
         """
         Move elevator downward.
         """
-        self.elevate(-1)
+        self.elevate(-0.5)
 
     def top(self):
         """
