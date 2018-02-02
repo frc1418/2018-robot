@@ -29,24 +29,6 @@ class Crane:
         """
         self.elevate(1)
 
-    def down(self):
-        """
-        Move elevator downward.
-        """
-        self.elevate(-0.5)
-
-    def top(self):
-        """
-        Move elevator to the topmost position.
-        """
-        pass
-
-    def bottom(self):
-        """
-        Move elevator to the bottommost position.
-        """
-        pass
-
     def extend_forearm(self):
         """
         Extend forearm.
