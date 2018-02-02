@@ -12,7 +12,7 @@ class Crane:
 
     _elevator_speed = will_reset_to(0)
 
-    def elevate(self, speed: float=1):
+    def move(self, speed: float=1):
         """
         Set the motor speed of claw elbow.
 
