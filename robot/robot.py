@@ -13,10 +13,10 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 
 
 class Robot(magicbot.MagicRobot):
-    drive = drive.Drive
-    winch = winch.Winch
-    crane = crane.Crane
-    intake = intake.Intake
+    drive: drive.Drive
+    winch: winch.Winch
+    crane: crane.Crane
+    intake: intake.Intake
 
     time = tunable(0)
     plates = tunable('')
