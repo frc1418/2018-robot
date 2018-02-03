@@ -144,7 +144,7 @@ class Robot(magicbot.MagicRobot):
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
         # Winch
-        if self.joystick_left.getRawButton(10) or self.joystick_alt.getRawButton(3):
+        if self.joystick_alt.getRawButton(3):
             self.winch.unlock()
             self.winch.run()
 
