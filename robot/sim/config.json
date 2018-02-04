@@ -1,13 +1,17 @@
 {
 	"pyfrc": {
 		"robot": {
-			"w": 3,
-			"h": 2,
+			"w": 3.1,
+			"h": 3.9,
 			"starting_x": 25,
 			"starting_y": 25,
 			"starting_angle": 180
 		},
-		"analog": {},
+		"analog": {
+			"0": "Left Rotation Encoder",
+			"1": "Right Rotation Encoder",
+			"5": "Pressure Sensor"
+		},
 		"dio": {},
 		"solenoid": {
 			"5": "Winch Dog",
@@ -18,11 +22,13 @@
 
 		},
 		"pwm": {
-			"7": "Winch Motor A",
-			"8": "Winch Motor B",
+            "3": "Left Intake Wheel",
+            "4": "Right Intake Wheel",
 			"5": "Elevator",
-			"": "Shoulder Left",
-			"": "Shoulder Right"
+            "6": "Left Shoulder",
+            "7": "Left Winch Motor",
+            "8": "Right Winch Motor",
+            "9": "Right Shoulder"
 		},
 		"spark": {
 			"3": "Intake Wheel Left",
@@ -47,6 +53,11 @@
 				},
 				"buttons": {}
 			}
+		},
+		"field": {
+			"w": 27,
+			"h": 27,
+			"px_per_ft": 10
 		}
 	}
 }
