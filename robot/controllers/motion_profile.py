@@ -1,16 +1,16 @@
-import wpilib
-from components import drive
-import pathfinder as pf
-import math
 from collections import deque
-import threading
+from components import drive
+from math import radians
+import pathfinder as pf
+from threading import Lock, Condition, Thread
+import wpilib
 
 
 class PositionController:
     """
     Controls the position of the robot using motion profile based movement.
     """
-    train = wpilib.drive.DifferentialDrive
+    train: wpilib.drive.DifferentialDrive
 
     def __init__(self):
         self.trajectories = deque()
@@ -18,9 +18,9 @@ class PositionController:
         self.right_follower = None
         self.left_follower = None
 
-        self.lock = threading.Lock()
-        self.cond = threading.Condition(self.lock)
-        self.thread = threading.Thread(target=self._run, daemon=True)
+        self.lock = Lock()
+        self.cond = Condition(self.lock)
+        self.thread = Thread(target=self._run, daemon=True)
         self.thread.start()
 
         wpilib.Resource._add_global_resource(self)
@@ -35,7 +35,7 @@ class PositionController:
         :param first: Whether or not this path should be completed next.
         """
         waypoint = pf.Waypoint(float(x_position),
-                               float(y_position), math.radians(angle))
+                               float(y_position), radians(angle))
 
         info, trajectory = pf.generate([waypoint],
                                        pf.FIT_HERMITE_CUBIC, pf.SAMPLES_HIGH,
@@ -65,8 +65,6 @@ class PositionController:
             with self.cond:
                 if len(self.trajectories) < 1:
                     self.cond.wait_for(lambda: len(self.trajectories) > 0)
-                    if len(self.trajectories) < 1:
-                        continue
 
                 if self.right_follower.isFinished() and self.left_follower.isFinished():
                     trajectory = self.trajectories.popleft()
