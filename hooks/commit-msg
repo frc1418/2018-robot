@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ! grep -q '^[^a-z]' "$1"; then
+if ! head -1 "$1" | grep -q '^[^a-z]'; then
     echo "First letter of commit message must be capitalized!"
     exit 1
 fi
