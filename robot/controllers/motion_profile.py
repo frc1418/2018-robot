@@ -8,7 +8,7 @@ from threading import Lock, Condition, Thread
 import wpilib
 
 # TODO Get actual values
-ENCODER_TICKS = 1000
+ENCODER_TICKS = 1023
 WHEEL_DIAMETER = 7.639
 MAX_VELOCITY = 25
 
@@ -68,8 +68,8 @@ class PositionController:
                 self.right_follower = pf.followers.EncoderFollower(right_trajectory)
                 self.left_follower = pf.followers.EncoderFollower(left_trajectory)
 
-                right_pos = self._encoder_position()
-                left_pos = self._encoder_position(right=False)
+                right_pos = self.rf_motor.getQuadraturePosition()
+                left_pos = self.lf_motor.getQuadraturePosition()
 
                 self.right_follower.configureEncoder(right_pos, ENCODER_TICKS, WHEEL_DIAMETER)
                 self.left_follower.configureEncoder(left_pos, ENCODER_TICKS, WHEEL_DIAMETER)
@@ -98,8 +98,8 @@ class PositionController:
                     self.right_follower.setTrajectory(trajectory['right'])
                     self.left_follower.setTrajectory(trajectory['left'])
                 else:
-                    right = self.right_follower.calculate(self._encoder_position())
-                    left = self.left_follower.calculate(self._encoder_position(right=False))
+                    right = self.right_follower.calculate(self.rf_motor.getQuadraturePosition)
+                    left = self.left_follower.calculate(self.lf_motor.getQuadraturePosition())
 
                     gyro_heading = self.navx.getAngle()
                     desired_heading = math.degrees(self.left_follower.getHeading())
@@ -112,19 +112,6 @@ class PositionController:
                             motor.set(left + turn)
                         else:
                             motor.set(right - turn)
-
-    def _encoder_position(self, right=True):
-        """
-        Returns averaged encoder position on either side of the robot.
-
-        :param right: True is the right side false is the left.
-        """
-        if right:
-            return (self.rf_motor.getQuadraturePosition() +
-                    self.rr_motor.getQuadraturePosition()) / 2
-        else:
-            return (self.lf_motor.getQuadraturePosition() +
-                    self.lr_motor.getQuadraturePosition()) / 2
 
     def _bound_half_degrees(self, angle_degrees):
         """
