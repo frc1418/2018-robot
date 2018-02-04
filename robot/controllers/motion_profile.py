@@ -17,11 +17,11 @@ class PositionController:
     """
     Controls the position of the robot using motion profile based movement.
     """
-    lf_motor: WPI_TalonSRX
-    lr_motor: WPI_TalonSRX
-    rf_motor: WPI_TalonSRX
-    rr_motor: WPI_TalonSRX
-    navx: navx
+    lf_motor = WPI_TalonSRX
+    lr_motor = WPI_TalonSRX
+    rf_motor = WPI_TalonSRX
+    rr_motor = WPI_TalonSRX
+    navx = navx
 
     def __init__(self):
         self.trajectories = deque()

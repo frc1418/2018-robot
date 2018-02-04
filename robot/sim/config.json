@@ -1,63 +1,62 @@
 {
-	"pyfrc": {
-		"robot": {
-			"w": 3.1,
-			"h": 3.9,
-			"starting_x": 25,
-			"starting_y": 25,
-			"starting_angle": 180
-		},
-		"analog": {
-			"0": "Left Rotation Encoder",
-			"1": "Right Rotation Encoder",
-			"5": "Pressure Sensor"
-		},
-		"dio": {},
-		"solenoid": {
-			"5": "Winch Dog",
-			"2": "Forearm A",
-			"3": "Forearm B",
-			"0": "Claw A",
-			"1": "Claw B"
-
-		},
-		"pwm": {
+    "pyfrc": {
+        "robot": {
+                "w": 3.1,
+                "h": 3.9,
+                "starting_x": 25,
+                "starting_y": 25,
+                "starting_angle": 180
+            },
+        "analog": {
+            "0": "Left Rotation Encoder",
+            "1": "Right Rotation Encoder",
+            "5": "Pressure Sensor"
+        },
+        "dio": {},
+        "solenoid": {
+            "5": "Winch Dog",
+            "2": "Forearm A",
+            "3": "Forearm B",
+            "0": "Claw A",
+            "1": "Claw B"
+        },
+        "pwm": {
             "3": "Left Intake Wheel",
             "4": "Right Intake Wheel",
-			"5": "Elevator",
+            "5": "Elevator",
             "6": "Left Shoulder",
             "7": "Left Winch Motor",
             "8": "Right Winch Motor",
             "9": "Right Shoulder"
-		},
-		"spark": {
-			"3": "Intake Wheel Left",
-			"4": "Intake Wheel Right"
-		},
-		"CAN": {
-			"10": "Left Front",
-			"15": "Left Rear",
-			"20": "Right Front",
-			"25": "Right Rear"
-		},
-		"joysticks": {
-			"0": {
-				"axes": {
-					"Y": "Left Side"
-				},
-				"buttons": {}
-			},
-			"1": {
-				"axes": {
-					"Y": "Right Side"
-				},
-				"buttons": {}
-			}
-		},
-		"field": {
-			"w": 27,
-			"h": 27,
-			"px_per_ft": 10
-		}
-	}
+        },
+        "spark": {
+            "3": "Intake Wheel Left",
+            "4": "Intake Wheel Right"
+        },
+        "CAN": {
+            "10": "Left Front",
+            "15": "Left Rear",
+            "20": "Right Front",
+            "25": "Right Rear"
+        },
+        "joysticks": {
+            "0": {
+                "axes": {
+                    "Y": "Left Side"
+                },
+                "buttons": {}
+            },
+            "1": {
+                "axes": {
+                    "Y": "Right Side"
+                },
+                "buttons": {}
+            }
+        },
+        "field": {
+            "w": 27,
+            "h": 27,
+            "px_per_ft": 10
+        }
+    }
 }
