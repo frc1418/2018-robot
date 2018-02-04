@@ -109,9 +109,9 @@ class PositionController:
 
                     for i, motor in enumerate(self.motors):
                         if i < 2:
-                            motor.pidWrite(left + turn)
+                            motor.set(left + turn)
                         else:
-                            motor.pidWrite(right - turn)
+                            motor.set(right - turn)
 
     def _encoder_position(self, right=True):
         """
