@@ -1,6 +1,7 @@
 import wpilib
 import wpilib.drive
 from magicbot import will_reset_to
+from magicbot import tunable
 
 
 class Drive:
@@ -13,6 +14,9 @@ class Drive:
 
     y = will_reset_to(0)
     rot = will_reset_to(0)
+
+    speed_constant = tunable(1.0)
+    rotational_constant = tunable(0.8)
 
     def __init__(self):
         self.enabled = False
@@ -31,4 +35,6 @@ class Drive:
         """
         Handle driving.
         """
-        self.train.arcadeDrive(1.0 * self.y, 0.8 * self.rot, squaredInputs=False)
+        self.train.arcadeDrive(self.speed_constant * self.y,
+                               self.rotational_constant * self.rot,
+                               squaredInputs=False)
