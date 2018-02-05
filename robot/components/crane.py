@@ -39,7 +39,8 @@ class Crane:
         """
         Extend or retract forearm based on current position.
         """
-        self.forearm.set(2 if self.forearm.get() == 1 else 1)
+        # Switch between 1 and 2
+        self.forearm.set(3 - self.forearm.get())
 
     def grip(self):
         """
@@ -57,7 +58,8 @@ class Crane:
         """
         Grip or release cube based on current state.
         """
-        self.claw.set(2 if self.claw.get() == 1 else 1)
+        # Switch between 1 and 2
+        self.claw.set(3 - self.claw.get())
 
     def execute(self):
         """
