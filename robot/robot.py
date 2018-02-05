@@ -13,10 +13,10 @@
      /___\_\/__/\      \ \_\/___\_\/__/\\ \___\ \ \
      \_________\/       \/_/\_________\/ \_______\/
 
-                             2018 Competition Robot Code
-                                 Created by FRC Team 1418
-                           1418.team // github.com/frc1418
-                                                        """
+                           2018 Competition Robot Code
+                               Created by FRC Team 1418
+                         1418.team // github.com/frc1418
+                                                      """
 
 import magicbot
 import wpilib
