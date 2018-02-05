@@ -159,7 +159,7 @@ class Robot(magicbot.MagicRobot):
         if self.btn_forearm.get():
             self.crane.actuate_forearm()
 
-        self.crane.move(self.joystick_alt.getY())
+        self.crane.move(-self.joystick_alt.getY())
 
 
 if __name__ == '__main__':

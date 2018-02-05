@@ -60,4 +60,4 @@ class Crane:
         """
         Run elevator motors.
         """
-        self.elevator.set(self._elevator_speed)
+        self.elevator.set(-self._elevator_speed)
