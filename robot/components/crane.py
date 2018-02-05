@@ -42,13 +42,13 @@ class Crane:
         """
         Grip cube in claw.
         """
-        self.claw.set(1)
+        self.claw.set(2)
 
     def release(self):
         """
         Release cube from claw.
         """
-        self.claw.set(2)
+        self.claw.set(1)
 
     def actuate_claw(self):
         """
