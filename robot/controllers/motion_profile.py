@@ -5,6 +5,7 @@ from math import radians
 import pathfinder as pf
 from robotpy_ext.common_drivers import navx
 from threading import Lock, Condition, Thread
+import time
 import wpilib
 
 # TODO Get actual values
@@ -82,7 +83,8 @@ class PositionController:
                                               'left': left_trajectory})
             else:
                 self.trajectories.append({'right': right_trajectory, 'left': left_trajectory})
-            self.cond.notify()
+
+        self.cond.notify()
 
     def _run(self):
         """

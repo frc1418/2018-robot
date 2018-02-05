@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 from pyfrc.physics.drivetrains import FourMotorDrivetrain
 import pathfinder as pf
 import math
 
 
 class PhysicsEngine():
+=======
+from pyfrc.physics.drivetrains import four_motor_drivetrain
+
+
+class PhysicsEngine(object):
+>>>>>>> Make the Physics Engine work
     """
     Simulates a 4-wheel robot using Tank Drive joystick control
     """
@@ -15,10 +22,13 @@ class PhysicsEngine():
 
         self.controller = controller
         self.controller.add_device_gyro_channel('navxmxp_spi_4_angle')
+<<<<<<< HEAD
         self.drivetrain = FourMotorDrivetrain(x_wheelbase=1.6, speed=7)
         self.encoder_ticks = 1440 / (0.5 * math.pi)
         self.left_encoder = 0
         self.right_encoder = 0
+=======
+>>>>>>> Make the Physics Engine work
 
     def update_sim(self, hal_data, now, tm_diff):
         """
@@ -36,6 +46,7 @@ class PhysicsEngine():
         rf_motor = hal_data['CAN'][20]['value']
         rr_motor = hal_data['CAN'][25]['value']
 
+<<<<<<< HEAD
         speed, rotation = self.drivetrain.get_vector(-lr_motor, -rr_motor, -lf_motor, -rf_motor)
 
         self.controller.drive(speed, rotation, tm_diff)
@@ -45,3 +56,8 @@ class PhysicsEngine():
 
         hal_data['encoder'][0]['count'] = int(self.right_encoder * self.encoder_ticks)
         hal_data['encoder'][1]['count'] = int(self.left_encoder * self.encoder_ticks)
+=======
+        speed, rotation = four_motor_drivetrain(rr_motor, lr_motor, rf_motor, lf_motor)
+
+        self.controller.drive(speed, rotation, tm_diff)
+>>>>>>> Make the Physics Engine work
