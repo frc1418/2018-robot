@@ -165,7 +165,7 @@ class Robot(magicbot.MagicRobot):
 if __name__ == '__main__':
     wpilib.run(Robot)
 
-    print("""
+    print(r"""
      ___      ___ ________  _______
     |\  \    /  /|\   __  \|\  ___ \
     \ \  \  /  / | \  \|\  \ \   __/|
