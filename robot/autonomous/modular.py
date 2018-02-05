@@ -1,5 +1,5 @@
 from magicbot.state_machine import state, timed_state, AutonomousStateMachine
-from components import drive
+from components import drive, crane
 from magicbot import tunable
 from networktables.util import ntproperty
 
@@ -9,6 +9,7 @@ class Modular(AutonomousStateMachine):
     DEFAULT = False
 
     drive = drive.Drive
+    crane = crane.Crane
 
     position = ntproperty('/autonomous/position', '')
     plates = ntproperty('/robot/plates', '')
@@ -22,6 +23,7 @@ class Modular(AutonomousStateMachine):
         """
         Decide how to begin the autonomous.
         """
+        self.crane.grip()
         # If we are only advancing to cross the auto line,
         # make the charge sequence longer. Only charge if on the left or right,
         # so that the robot will not crash into the switch.
