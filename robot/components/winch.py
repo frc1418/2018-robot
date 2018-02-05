@@ -19,7 +19,6 @@ class Winch:
         """
         self._climb_speed = speed
 
-    # TODO: Check that these states aren't inverted.
     def unlock(self):
         """
         Release dog.
