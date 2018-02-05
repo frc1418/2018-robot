@@ -5,7 +5,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive, winch, crane, intake
+from components import drive, winch, crane
 from controllers import motion_profile
 from magicbot import tunable
 
@@ -17,7 +17,6 @@ class Robot(magicbot.MagicRobot):
     drive: drive.Drive
     winch: winch.Winch
     crane: crane.Crane
-    intake: intake.Intake
 
     time = tunable(0)
     plates = tunable('')
@@ -34,9 +33,6 @@ class Robot(magicbot.MagicRobot):
 
         # Buttons
         self.btn_winch_lock = ButtonDebouncer(self.joystick_left, 8)
-
-        self.btn_pull = ButtonDebouncer(self.joystick_left, 2)
-        self.btn_push = ButtonDebouncer(self.joystick_left, 3)
 
         # Buttons on alternative joystick
         self.btn_winch_lock_alt = ButtonDebouncer(self.joystick_alt, 8)
@@ -70,17 +66,6 @@ class Robot(magicbot.MagicRobot):
         self.elevator = wpilib.Victor(5)
         self.forearm = wpilib.DoubleSolenoid(2, 3)
         self.claw = wpilib.DoubleSolenoid(0, 1)
-
-        # Intake
-        self.shoulder_left = wpilib.Victor(6)
-        self.shoulder_left.setInverted(True)
-        self.shoulder_right = wpilib.Victor(9)
-
-        self.intake_wheel_left = wpilib.Spark(3)
-        self.intake_wheel_left.setInverted(True)
-        self.intake_wheel_right = wpilib.Spark(4)
-        self.intake_wheels = wpilib.SpeedControllerGroup(self.intake_wheel_left,
-                                                         self.intake_wheel_right)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
@@ -148,17 +133,6 @@ class Robot(magicbot.MagicRobot):
 
         if self.btn_winch_lock.get() or self.btn_winch_lock_alt.get():
             self.winch.lock()
-
-        # Intake
-        if self.joystick_left.getRawButton(3):
-            self.intake.open_left()
-        elif self.joystick_left.getRawButton(2):
-            self.intake.close_left()
-
-        if self.joystick_right.getRawButton(3):
-            self.intake.open_right()
-        elif self.joystick_right.getRawButton(2):
-            self.intake.close_right()
 
         # Crane
         if self.btn_claw.get():
