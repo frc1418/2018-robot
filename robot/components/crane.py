@@ -18,9 +18,6 @@ class Crane:
 
         :param speed: The requested speed, between -1 and 1.
         """
-        if speed < 0:
-            speed /= 2
-
         self._elevator_speed = speed
 
     def extend_forearm(self):
