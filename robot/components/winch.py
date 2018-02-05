@@ -21,19 +21,19 @@ class Winch:
 
     def unlock(self):
         """
-        Release dog.
+        Release winch lock.
         """
         self.winch_lock.set(False)
 
     def lock(self):
         """
-        Hold dog.
+        Hold winch lock.
         """
         self.winch_lock.set(True)
 
     def actuate(self):
         """
-        Actuate dog.
+        Actuate winch lock.
         """
         self.winch_lock.set(not self.winch_lock.get())
 
