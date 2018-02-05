@@ -31,4 +31,4 @@ class Drive:
         """
         Handle driving.
         """
-        self.train.arcadeDrive(self.y, self.rot, squaredInputs=False)
+        self.train.arcadeDrive(1.0 * self.y, 0.8 * self.rot, squaredInputs=False)
