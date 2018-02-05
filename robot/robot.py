@@ -91,6 +91,8 @@ class Panthera(magicbot.MagicRobot):
 
         # Motion Profiling
         self.position_controller = motion_profile.PositionController()
+        self.left_encoder = wpilib.Encoder(0, 1)
+        self.right_encoder = wpilib.Encoder(2, 3)
 
         # Arm
         self.elevator = wpilib.Victor(5)

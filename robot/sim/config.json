@@ -9,7 +9,7 @@
             },
         "analog": {
             "0": "Left Rotation Encoder",
-            "1": "Right Rotation Encoder",
+            "2": "Right Rotation Encoder",
             "5": "Pressure Sensor"
         },
         "dio": {},

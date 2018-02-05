@@ -14,6 +14,9 @@ class PhysicsEngine(object):
         self.controller = controller
         self.controller.add_device_gyro_channel('navxmxp_spi_4_angle')
 
+        self.rf_rotate_encoder = 0
+        self.lf_rotate_encoder = 0
+
     def update_sim(self, hal_data, now, tm_diff):
         """
         Called when the simulation parameters for the program need to be
@@ -24,12 +27,24 @@ class PhysicsEngine(object):
                             time that this function was called
         """
 
+        try:
+            hal_data['analog_in'][0]['avg_voltage'] = self.lf_rotate_encoder
+            hal_data['analog_in'][2]['avg_voltage'] = self.rf_rotate_encoder
+        except Exception:
+            pass
+
+        # LF Motor
+        hal_data['CAN'][10]['quad_position'] += hal_data['CAN'][10]['value'] / 1023 * tm_diff * 300000
+
+        # RF Motor
+        hal_data['CAN'][20]['quad_position'] += hal_data['CAN'][20]['value'] / 1023 * tm_diff * 300000
+
         # Simulate the drivetrain
         lf_motor = hal_data['CAN'][10]['value']
         lr_motor = hal_data['CAN'][15]['value']
         rf_motor = hal_data['CAN'][20]['value']
         rr_motor = hal_data['CAN'][25]['value']
 
-        speed, rotation = four_motor_drivetrain(rr_motor, lr_motor, rf_motor, lf_motor)
+        speed, rotation = four_motor_drivetrain(rf_motor, lf_motor, rr_motor, lr_motor)
 
         self.controller.drive(speed, rotation, tm_diff)

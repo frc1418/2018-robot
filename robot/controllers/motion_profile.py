@@ -100,7 +100,7 @@ class PositionController:
                     self.right_follower.setTrajectory(trajectory['right'])
                     self.left_follower.setTrajectory(trajectory['left'])
                 else:
-                    right = self.right_follower.calculate(self.rf_motor.getQuadraturePosition)
+                    right = self.right_follower.calculate(self.rf_motor.getQuadraturePosition())
                     left = self.left_follower.calculate(self.lf_motor.getQuadraturePosition())
 
                     gyro_heading = self.navx.getAngle()
