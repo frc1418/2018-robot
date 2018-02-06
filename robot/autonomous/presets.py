@@ -36,6 +36,6 @@ class LeftScale(Scale):
 
 
 class RightScale(Scale):
-    MODE_NAME = 'RightSwitch'
+    MODE_NAME = 'RightScale'
     DEFAULT = False
     position = 'right'
