@@ -79,7 +79,8 @@ class Modular(AutonomousStateMachine):
         self.crane.move(0.5)
         self.drive.move(0.7, 0)
         if not self.correct_side():
-            self.next_state = ''
+            # self.next_state = ''
+            pass
 
     @timed_state(duration=0.6, next_state='switch_side_drop')
     def switch_side_rotate(self):
@@ -162,54 +163,64 @@ class Modular(AutonomousStateMachine):
         """
         self.next_state('scale_side_advance')
 
-    @timed_state(duration=2.0, next_state='scale_side_rotate')
+    @timed_state(duration=2.4, next_state='scale_side_rotate')
     def scale_side_advance(self):
         """
         Advance toward scale.
         """
-        self.drive.move(0.7, 0)
+        self.drive.move(1, 0)
 
-    @timed_state(duration=0.6, next_state='scale_side_extend')
+    @timed_state(duration=0.7, next_state='scale_side_windup')
     def scale_side_rotate(self):
         """
         Turn towards scale.
         """
-        self.crane.move(0.5)
-        self.drive.move(0.2, 1.0 * self.direction())
+        self.drive.move(0.5, -1 * self.direction())
 
-    @timed_state(duration=0.5, next_state='scale_side_approach')
-    def scale_side_extend(self):
+    @timed_state(duration=1.6, next_state='scale_side_raise')
+    def scale_side_windup(self):
         """
-        Extend crane toward scale plate.
+        Move backward toward side wall, raising arm.
         """
-        self.crane.move(0.2)
-        self.crane.extend_forearm()
+        self.drive.move(-0.5, 0)
 
-    @timed_state(duration=0.5, next_state='scale_side_drop')
+    @timed_state(duration=1.5, next_state='scale_side_approach')
+    def scale_side_raise(self):
+        """
+        Raise arm before scoring.
+        """
+        self.crane.move(0.7)
+
+    @timed_state(duration=1.5, next_state='scale_side_drop')
     def scale_side_approach(self):
         """
         Approach scale from side before scoring.
         """
+        self.crane.extend_forearm()
+        self.crane.move(0.2)
         self.drive.move(0.3, 0)
 
-    @timed_state(duration=0.5, next_state='scale_side_retract')
+    @timed_state(duration=1, next_state='scale_side_retreat')
     def scale_side_drop(self):
         """
         Drop cube on scale.
         """
+        self.crane.move(0.1)
         self.crane.release()
 
-    @timed_state(duration=1, next_state='scale_side_return')
-    def scale_side_retract(self):
+    @timed_state(duration=1, next_state='scale_side_retract')
+    def scale_side_retreat(self):
         """
         Retract crane and move away from plate.
         """
-        self.drive.move(-0.5, -1.0 * self.direction())
-        self.crane.move(-0.5)
+        self.drive.move(-0.6, -1.0 * self.direction())
+        self.crane.move(0.2)
 
-    @timed_state(duration=1)
-    def scale_side_return(self):
+    @timed_state(duration=3)
+    def scale_side_retract(self):
         """
         Move back toward driverstation in preparation for teleop.
         """
-        self.drive.move(1.0, 0)
+        self.crane.retract_forearm()
+        self.crane.move(-0.2)
+        self.drive.move(0.8, 0.6 * self.direction())
