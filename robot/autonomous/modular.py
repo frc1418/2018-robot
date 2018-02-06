@@ -87,7 +87,38 @@ class Modular(AutonomousStateMachine):
         """
         Drop preloaded cube in switch.
         """
-        if self.scale:
-            self.next_state('scale_advance')
-        elif self.switch:
-            self.crane.release()
+        self.crane.release()
+
+    ########
+    # SWITCH
+    # MIDDLE
+    ########
+    @state
+    def switch_middle_start(self):
+        """
+        Set up and start switch autonomous in middle position.
+        """
+        self.next_state('switch_middle_advance_initial')
+
+    @timed_state(duration=1.0, next_state='switch_middle_advance_final')
+    def switch_middle_advance_initial(self):
+        """
+        Get off wall and turn toward correct goal.
+        """
+        self.crane.move(0.4)
+        self.drive.move(0.6, 1.0 * self.direction())
+
+    @timed_state(duration=1.2, next_state='switch_middle_drop')
+    def switch_middle_advance_final(self):
+        """
+        Turn back to switch and approach.
+        """
+        self.crane.move(0.4)
+        self.drive.move(0.8, -1.0 * self.direction())
+
+    @timed_state(duration=0.5)
+    def switch_middle_drop(self):
+        """
+        Drop in switch from middle position.
+        """
+        self.crane.release()
