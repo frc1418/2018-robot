@@ -4,7 +4,6 @@ from .modular import Modular
 class Switch(Modular):
     MODE_NAME = 'Switch'
     DEFAULT = False
-    advance = True
     switch = True
     scale = False
 
@@ -24,7 +23,6 @@ class RightSwitch(Switch):
 class Scale(Modular):
     MODE_NAME = 'Scale'
     DEFAULT = False
-    advance = True
     switch = False
     scale = True
 

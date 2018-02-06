@@ -18,7 +18,6 @@ class Modular(AutonomousStateMachine):
     position = ntproperty('/autonomous/position', '')
     plates = ntproperty('/robot/plates', '')
 
-    advance = tunable(True)
     switch = tunable(True)
     scale = tunable(False)
 
@@ -47,19 +46,9 @@ class Modular(AutonomousStateMachine):
         # so that the robot will not crash into the switch.
         if self.switch or self.scale:
             self.next_state('switch_initial')
-        elif self.advance and (self.position == 'left' or self.position == 'right'):
-            self.next_state('cross_auto_line')
 
-    @timed_state(duration=1.5)
-    def cross_auto_line(self):
-        """
-        If we ONLY want to cross the auto line, run this method.
-        """
-        self.drive.move(0.8, 0)
-
-    # Duration needs to be short so that the robot does not crash into the cube stack if it is in the middle
     @timed_state(duration=1.7, next_state='switch_rotate_side')
-    def switch_initial(self):
+    def switch_side_initial(self):
         """
         Give the robot some distance from the starting point.
         """
