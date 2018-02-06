@@ -5,14 +5,18 @@ from networktables.util import ntproperty
 
 
 class Modular(AutonomousStateMachine):
-    MODE_NAME = 'Modular'
+    """
+    Modular autonomous.
+
+    Should not be executed on its own.
+    """
     DEFAULT = False
 
     drive = drive.Drive
     crane = crane.Crane
 
-    position = ntproperty('/autonomous/position', 'left')
-    plates = ntproperty('/robot/plates', 'LRL')
+    position = ntproperty('/autonomous/position', '')
+    plates = ntproperty('/robot/plates', '')
 
     advance = tunable(True)
     switch = tunable(True)
