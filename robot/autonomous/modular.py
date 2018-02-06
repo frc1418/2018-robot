@@ -48,6 +48,9 @@ class Modular(AutonomousStateMachine):
                 self.next_state('switch_middle_start')
             else:
                 self.next_state('switch_side_start')
+        elif self.scale:
+            # Assume robot is on side
+            self.next_state('scale_side_start')
 
     ########
     # SWITCH
@@ -142,6 +145,13 @@ class Modular(AutonomousStateMachine):
     # SCALE
     # SIDE
     ########
+    @state
+    def scale_side_start(self):
+        """
+        Initialize scale autonomous from side position.
+        """
+        self.next_state('scale_side_advance')
+
     @timed_state(duration=2.0, next_state='scale_side_rotate')
     def scale_side_advance(self):
         """
