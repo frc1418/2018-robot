@@ -21,18 +21,20 @@ class Modular(AutonomousStateMachine):
     switch = tunable(True)
     scale = tunable(False)
 
-    def direction(self):
+    def direction(self, target=0):
         """
         Return directional multiplier based on position (or owned plate if in middle position).
+
+        :param target: ID of target obstacle.
         """
         if self.position == 'left':
             return -1
-        elif self.postiion == 'right':
+        elif self.position == 'right':
             return 1
         else:
-            if self.plates[0] == 'L':
+            if self.plates[target] == 'L':
                 return -1
-            if self.plates[0] == 'R':
+            if self.plates[target] == 'R':
                 return 1
 
     @state(first=True)
