@@ -52,14 +52,14 @@ class Robot(magicbot.MagicRobot):
         # Buttons
         self.btn_winch_lock = ButtonDebouncer(self.joystick_left, 8)
 
+        self.btn_claw = ButtonDebouncer(self.joystick_left, 1)
+        self.btn_forearm = ButtonDebouncer(self.joystick_right, 1)
+
         # Buttons on alternative joystick
         self.btn_winch_lock_alt = ButtonDebouncer(self.joystick_alt, 8)
 
-        self.btn_claw = ButtonDebouncer(self.joystick_alt, 1)
-        self.btn_forearm = ButtonDebouncer(self.joystick_alt, 2)
-        self.btn_top = ButtonDebouncer(self.joystick_alt, 6)
-        self.btn_bottom = ButtonDebouncer(self.joystick_alt, 4)
-
+        self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
+        self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 2)
         # Drive motor controllers
         # ID SCHEME:
         #   10^1: 1 = left, 2 = right
@@ -151,7 +151,7 @@ class Robot(magicbot.MagicRobot):
             self.compressor.start()
 
         # Winch
-        if self.joystick_alt.getRawButton(3):
+        if self.joystick_alt.getRawButton(3) or self.joystick_right.getRawButton(11):
             self.winch.unlock()
             self.winch.run()
 
@@ -159,11 +159,16 @@ class Robot(magicbot.MagicRobot):
             self.winch.lock()
 
         # Crane
-        if self.btn_claw.get():
+        if self.btn_claw.get() or self.btn_claw_alt.get():
             self.crane.actuate_claw()
 
-        if self.btn_forearm.get():
+        if self.btn_forearm.get() or self.btn_forearm_alt.get():
             self.crane.actuate_forearm()
+
+        if self.joystick_right.getRawButton(3):
+            self.crane.move(1)
+        if self.joystick_right.getRawButton(2):
+            self.crane.move(-1)
 
         self.crane.move(-self.joystick_alt.getY())
 
