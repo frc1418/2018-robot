@@ -31,9 +31,9 @@ class Modular(AutonomousStateMachine):
         elif self.postiion == 'right':
             return 1
         else:
-            if self.position[0] == 'L':
+            if self.plates[0] == 'L':
                 return -1
-            if self.position[0] == 'R':
+            if self.plates[0] == 'R':
                 return 1
 
     @state(first=True)
