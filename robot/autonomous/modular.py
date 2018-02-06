@@ -18,6 +18,20 @@ class Modular(AutonomousStateMachine):
     switch = tunable(True)
     scale = tunable(False)
 
+    def direction(self):
+        """
+        Return directional multiplier based on position (or owned plate if in middle position).
+        """
+        if self.position == 'left':
+            return -1
+        elif self.postiion == 'right':
+            return 1
+        else:
+            if self.position[0] == 'L':
+                return -1
+            if self.position[0] == 'R':
+                return 1
+
     @state(first=True)
     def start(self):
         """
