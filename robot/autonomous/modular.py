@@ -216,11 +216,11 @@ class Modular(AutonomousStateMachine):
         self.drive.move(-0.6, -1.0 * self.direction())
         self.crane.move(0.2)
 
-    @timed_state(duration=3)
+    @timed_state(duration=2)
     def scale_side_retract(self):
         """
         Move back toward driverstation in preparation for teleop.
         """
         self.crane.retract_forearm()
         self.crane.move(-0.2)
-        self.drive.move(0.8, 0.6 * self.direction())
+        self.drive.move(0.8, 0.3 * self.direction())
