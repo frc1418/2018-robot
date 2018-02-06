@@ -92,6 +92,7 @@ class Robot(magicbot.MagicRobot):
         self.ds = wpilib.DriverStation.getInstance()
         self.timer = wpilib.Timer()
         self.pressure_sensor = pressure_sensors.REVAnalogPressureSensor(5)
+        self.compressor = wpilib.Compressor()
 
         # Camera server
         wpilib.CameraServer.launch()
