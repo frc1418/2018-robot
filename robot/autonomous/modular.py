@@ -74,7 +74,7 @@ class Modular(AutonomousStateMachine):
         Rotate robot to face the switch.
         """
         self.crane.move(0.4)
-        self.drive.move(0.2, 1.0 * self.direction())
+        self.drive.move(0.2, -1.0 * self.direction())
 
     @timed_state(duration=0.5)
     def switch_side_drop(self):
