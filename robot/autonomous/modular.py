@@ -83,12 +83,26 @@ class Modular(AutonomousStateMachine):
         """
         self.crane.release()
 
-    @timed_state(duration=0.8)
+    @timed_state(duration=0.8, next_state='switch_side_second_offwall')
     def switch_side_retreat(self):
         """
         Retreat to side wall.
         """
-        self.drive.move(-1, 0)
+        self.drive.move(-0.8, 0)
+
+    @timed_state(duration=1.2, next_state='switch_side_second_approach')
+    def switch_side_second_offwall(self):
+        """
+        Turn and move toward second cube.
+        """
+        self.drive.move(0.6, 0.8 * self.direction())
+
+    @timed_state(duration=1.2)
+    def switch_side_second_approach(self):
+        """
+        Approach second cube.
+        """
+        self.drive.move(0.8, -0.5 * self.direction())
 
     ########
     # SWITCH
