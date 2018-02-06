@@ -65,7 +65,7 @@ class Modular(AutonomousStateMachine):
         """
         Give the robot some distance from the starting point.
         """
-        self.crane.move(0.4)
+        self.crane.move(0.5)
         self.drive.move(0.7, 0)
 
     @timed_state(duration=0.6, next_state='switch_side_drop')
@@ -73,7 +73,7 @@ class Modular(AutonomousStateMachine):
         """
         Rotate robot to face the switch.
         """
-        self.crane.move(0.4)
+        self.crane.move(0.5)
         self.drive.move(0.2, -1.0 * self.direction())
 
     @timed_state(duration=0.5)
