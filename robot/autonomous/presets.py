@@ -14,6 +14,12 @@ class LeftSwitch(Switch):
     position = 'left'
 
 
+class MiddleSwitch(Switch):
+    MODE_NAME = 'MiddleSwitch'
+    DEFAULT = False
+    position = 'middle'
+
+
 class RightSwitch(Switch):
     MODE_NAME = 'RightSwitch'
     DEFAULT = False
