@@ -37,6 +37,14 @@ class Modular(AutonomousStateMachine):
             if self.plates[target] == 'R':
                 return 1
 
+    def correct_side(self, target=0):
+        """
+        Return whether robot is on correct side to score on given target.
+
+        :param target: ID of target obstacle.
+        """
+        return (self.direction == -1 and self.plates[target] == 'L') or (self.direction == 1 and self.plates[target] == 'R')
+
     @state(first=True)
     def start(self):
         """
@@ -70,6 +78,8 @@ class Modular(AutonomousStateMachine):
         """
         self.crane.move(0.5)
         self.drive.move(0.7, 0)
+        if not self.correct_side():
+            self.next_state = ''
 
     @timed_state(duration=0.6, next_state='switch_side_drop')
     def switch_side_rotate(self):
