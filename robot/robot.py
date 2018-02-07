@@ -103,6 +103,13 @@ class Panthera(magicbot.MagicRobot):
         self.navx = navx.AHRS.create_spi()
         self.navx.reset()
 
+        # Motion Profiling
+        self.left_encoder = wpilib.Encoder(0, 1)
+        self.right_encoder = wpilib.Encoder(2, 3)
+        self.pos_controller = motion_profile.PositionController(self.lf_motor, self.lr_motor, self.rf_motor,
+                                                 self.rr_motor, self.navx, self.right_encoder,
+                                                 self.left_encoder)
+
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
         self.timer = wpilib.Timer()
