@@ -21,6 +21,12 @@ class Drive:
     def __init__(self):
         self.enabled = False
 
+    def setup(self):
+        """
+        Set control threshold.
+        """
+        self.train.setDeadband(0.1)
+
     def move(self, y: float, rot: float):
         """
         Move robot.
