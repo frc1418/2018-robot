@@ -8,8 +8,6 @@ import wpilib
 
 # TODO Get actual values
 MAX_VELOCITY = 200
-ENCODER_TICKS = 1023
-WHEEL_DIAMETER = 0.4
 
 TIME_DIFF = 0.05
 # TODO
@@ -24,7 +22,13 @@ class PositionController:
 
     def __init__(self, lf_motor, lr_motor, rf_motor, rr_motor, navx, right_encoder, left_encoder):
         """
-
+        :param lf_motor: The left front motor
+        :param lr_motor: The left rear motor
+        :param rf_motor: The right front motor
+        :param rr_motor: The right rear motor
+        :param navx: The navx
+        :param right_encoder: Right encoder which hooks into right front motor
+        :param left_encoder: Left encoder which hooks into left front motor
         """
         self.trajectories = deque()
 
@@ -59,7 +63,6 @@ class PositionController:
         :param angle: The angle difference in degrees.
         :param first: Whether or not this path should be completed next.
         """
-        print(len(self.trajectories))
         waypoint = pf.Waypoint(float(x_position),
                                float(y_position), radians(angle))
 
@@ -73,11 +76,8 @@ class PositionController:
 
         with self.cond:
             if self.left_follower or self.right_follower is None:
-                self.right_follower = pf.followers.EncoderFollower(right_trajectory)
-                self.left_follower = pf.followers.EncoderFollower(left_trajectory)
-
-                self.right_follower.configureEncoder(self.right_encoder.get(), ENCODER_TICKS, WHEEL_DIAMETER)
-                self.left_follower.configureEncoder(self.left_encoder.get(), ENCODER_TICKS, WHEEL_DIAMETER)
+                self.right_follower = pf.followers.DistanceFollower(right_trajectory)
+                self.left_follower = pf.followers.DistanceFollower(left_trajectory)
 
                 self.right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
                 self.left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
@@ -97,13 +97,9 @@ class PositionController:
         while True:
             with self.cond:
                 if len(self.trajectories) < 1:
-                    print('-'*50)
-                    print('waiting')
-                    print('-'*50)
                     self.cond.wait_for(lambda: len(self.trajectories) > 0)
 
                 if self.right_follower.isFinished() and self.left_follower.isFinished():
-                    print('finished')
                     del self.trajectories[0]
                     if len(self.trajectories) < 1:
                         continue
@@ -113,19 +109,14 @@ class PositionController:
                     self.right_follower.setTrajectory(trajectory['right'])
                     self.left_follower.setTrajectory(trajectory['left'])
                 else:
-                    right = self.right_follower.calculate(self.right_encoder.get())
-                    left = self.left_follower.calculate(self.left_encoder.get())
+                    right = self.right_follower.calculate(self.right_encoder.getDistance())
+                    left = self.left_follower.calculate(self.left_encoder.getDistance())
 
                     gyro_heading = self.navx.getAngle()
                     desired_heading = degrees(self.left_follower.getHeading())
 
                     angleDifference = self._bound_half_degrees(desired_heading - gyro_heading)
                     turn = 0.8 * (-1.0 / 80.0) * angleDifference
-
-                    print('Turn: ' + str(turn))
-                    print('Left: ' + str(left))
-                    print('Right: ' + str(right))
-                    print('-'*50)
 
                     for i, motor in enumerate(self.motors):
                         if i < 2:
