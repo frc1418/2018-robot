@@ -1,45 +1,51 @@
 from collections import deque
 from components import drive
-from ctre import WPI_TalonSRX
-from math import radians
+from math import radians, degrees
 import pathfinder as pf
-from robotpy_ext.common_drivers import navx
 from threading import Lock, Condition, Thread
 import time
 import wpilib
 
 # TODO Get actual values
+MAX_VELOCITY = 200
 ENCODER_TICKS = 1023
-WHEEL_DIAMETER = 7.639
-MAX_VELOCITY = 25
+WHEEL_DIAMETER = 0.4
+
+TIME_DIFF = 0.05
+# TODO
+# Also add a file + class to generate trajectories in multiple threads. (or 1)
+# Save these trajectories to files or have them generate when robot is disabled
 
 
 class PositionController:
     """
     Controls the position of the robot using motion profile based movement.
     """
-    lf_motor = WPI_TalonSRX
-    lr_motor = WPI_TalonSRX
-    rf_motor = WPI_TalonSRX
-    rr_motor = WPI_TalonSRX
-    navx = navx
 
-    def __init__(self):
+    def __init__(self, lf_motor, lr_motor, rf_motor, rr_motor, navx, right_encoder, left_encoder):
+        """
+
+        """
         self.trajectories = deque()
 
         self.right_follower = None
         self.left_follower = None
 
+        self.right_encoder = right_encoder
+        self.left_encoder = left_encoder
+
+        self.navx = navx
+
         self.lock = Lock()
         self.cond = Condition(self.lock)
-        self.thread = Thread(target=self._run, daemon=True)
+        self.thread = Thread(target=self._control_loop, daemon=True)
         self.thread.start()
 
         self.motors = [
-            self.lf_motor,
-            self.lr_motor,
-            self.rf_motor,
-            self.rr_motor
+            lf_motor,
+            lr_motor,
+            rf_motor,
+            rr_motor
         ]
 
         wpilib.Resource._add_global_resource(self)
@@ -53,14 +59,15 @@ class PositionController:
         :param angle: The angle difference in degrees.
         :param first: Whether or not this path should be completed next.
         """
+        print(len(self.trajectories))
         waypoint = pf.Waypoint(float(x_position),
                                float(y_position), radians(angle))
 
         info, trajectory = pf.generate([pf.Waypoint(0, 0, 0), waypoint],
                                        pf.FIT_HERMITE_CUBIC, pf.SAMPLES_HIGH,
-                                       0.05, 1.7, 2.0, 60.0)
+                                       TIME_DIFF, 1.7, 2.0, 60.0)
 
-        modifier = pf.modifiers.TankModifier(trajectory).modify(0.5)
+        modifier = pf.modifiers.TankModifier(trajectory).modify(0.6)
         right_trajectory = modifier.getRightTrajectory()
         left_trajectory = modifier.getLeftTrajectory()
 
@@ -69,11 +76,8 @@ class PositionController:
                 self.right_follower = pf.followers.EncoderFollower(right_trajectory)
                 self.left_follower = pf.followers.EncoderFollower(left_trajectory)
 
-                right_pos = self.rf_motor.getQuadraturePosition()
-                left_pos = self.lf_motor.getQuadraturePosition()
-
-                self.right_follower.configureEncoder(right_pos, ENCODER_TICKS, WHEEL_DIAMETER)
-                self.left_follower.configureEncoder(left_pos, ENCODER_TICKS, WHEEL_DIAMETER)
+                self.right_follower.configureEncoder(self.right_encoder.get(), ENCODER_TICKS, WHEEL_DIAMETER)
+                self.left_follower.configureEncoder(self.left_encoder.get(), ENCODER_TICKS, WHEEL_DIAMETER)
 
                 self.right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
                 self.left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
@@ -84,36 +88,51 @@ class PositionController:
             else:
                 self.trajectories.append({'right': right_trajectory, 'left': left_trajectory})
 
-        self.cond.notify()
+            self.cond.notify()
 
-    def _run(self):
+    def _control_loop(self):
         """
         Actually move the robot along the path.
         """
         while True:
             with self.cond:
                 if len(self.trajectories) < 1:
+                    print('-'*50)
+                    print('waiting')
+                    print('-'*50)
                     self.cond.wait_for(lambda: len(self.trajectories) > 0)
 
                 if self.right_follower.isFinished() and self.left_follower.isFinished():
-                    trajectory = self.trajectories.popleft()
+                    print('finished')
+                    del self.trajectories[0]
+                    if len(self.trajectories) < 1:
+                        continue
+
+                    trajectory = self.trajectories[0]
+
                     self.right_follower.setTrajectory(trajectory['right'])
                     self.left_follower.setTrajectory(trajectory['left'])
                 else:
-                    right = self.right_follower.calculate(self.rf_motor.getQuadraturePosition())
-                    left = self.left_follower.calculate(self.lf_motor.getQuadraturePosition())
+                    right = self.right_follower.calculate(self.right_encoder.get())
+                    left = self.left_follower.calculate(self.left_encoder.get())
 
                     gyro_heading = self.navx.getAngle()
-                    desired_heading = math.degrees(self.left_follower.getHeading())
+                    desired_heading = degrees(self.left_follower.getHeading())
 
                     angleDifference = self._bound_half_degrees(desired_heading - gyro_heading)
                     turn = 0.8 * (-1.0 / 80.0) * angleDifference
+
+                    print('Turn: ' + str(turn))
+                    print('Left: ' + str(left))
+                    print('Right: ' + str(right))
+                    print('-'*50)
 
                     for i, motor in enumerate(self.motors):
                         if i < 2:
                             motor.set(left + turn)
                         else:
                             motor.set(right - turn)
+                    time.sleep(TIME_DIFF)
 
     def _bound_half_degrees(self, angle_degrees):
         """
