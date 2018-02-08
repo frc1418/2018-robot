@@ -185,21 +185,20 @@ class Modular(AutonomousStateMachine):
         """
         self.next_state('switch_middle_advance_initial')
 
-    @timed_state(duration=1.0, next_state='switch_middle_advance_final')
+    @timed_state(duration=1.2, next_state='switch_middle_advance_final')
     def switch_middle_advance_initial(self):
         """
         Get off wall and turn toward correct goal.
         """
-        self.crane.move(0.4)
-        self.drive.move(0.6, 1.0 * self.direction())
+        self.drive.move(0.7, 0.5 * self.direction())
 
-    @timed_state(duration=1.2, next_state='switch_middle_drop')
+    @timed_state(duration=1.3, next_state='switch_middle_drop')
     def switch_middle_advance_final(self):
         """
         Turn back to switch and approach.
         """
-        self.crane.move(0.4)
-        self.drive.move(0.8, -1.0 * self.direction())
+        self.crane.move(0.6)
+        self.drive.move(0.7, -0.7 * self.direction())
 
     @timed_state(duration=0.5)
     def switch_middle_drop(self):
