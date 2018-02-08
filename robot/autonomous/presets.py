@@ -48,3 +48,18 @@ class Optimum(Modular):
     """
     MODE_NAME = 'Optimum'
     optimize = True
+
+
+class LeftOptimum(Optimum):
+    MODE_NAME = 'LeftOptimum'
+    position = 'left'
+
+
+class MiddleOptimum(Optimum):
+    MODE_NAME = 'MiddleOptimum'
+    position = 'middle'
+
+
+class RightOptimum(Optimum):
+    MODE_NAME = 'RightOptimum'
+    position = 'right'
