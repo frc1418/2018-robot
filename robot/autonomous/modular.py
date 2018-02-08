@@ -61,10 +61,13 @@ class Modular(AutonomousStateMachine):
         self.crane.retract_forearm()
         if self.optimize:
             if self.position == 'middle':
+                # If in the middle, score on appropriate side of switch.
                 self.next_state('switch_middle_start')
             if self.correct_side(target=SCALE):
+                # If we own this side of the scale, score there
                 self.next_state('scale_side_start')
             else:
+                # If not, score on other side
                 self.next_state('switch_side_start')
         if self.switch:
             if self.position == 'middle':
