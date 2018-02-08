@@ -44,7 +44,7 @@ class Modular(AutonomousStateMachine):
             if self.plates[target] == 'R':
                 return 1
 
-    def correct_side(self, target=0):
+    def correct_side(self, target=SWITCH):
         """
         Return whether robot is on correct side to score on given target.
 
@@ -58,6 +58,13 @@ class Modular(AutonomousStateMachine):
         Decide how to begin the autonomous.
         """
         self.crane.grip()
+        if self.optimize:
+            if self.position == 'middle':
+                self.next_state('switch_middle_start')
+            if self.correct_side(target=SCALE):
+                self.next_state('scale_side_start')
+            else:
+                self.next_state('switch_side_start')
         if self.switch:
             if self.position == 'middle':
                 self.next_state('switch_middle_start')
@@ -76,7 +83,7 @@ class Modular(AutonomousStateMachine):
         """
         Initialize switch side autonomous portion.
         """
-        if self.correct_side(0):
+        if self.correct_side(target=SWITCH):
             # We are already on the side of the plate we own.
             self.next_state('switch_side_advance')
         else:
