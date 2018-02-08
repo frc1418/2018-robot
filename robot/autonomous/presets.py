@@ -36,3 +36,15 @@ class LeftScale(Scale):
 class RightScale(Scale):
     MODE_NAME = 'RightScale'
     position = 'right'
+
+
+class Optimum(Modular):
+    """
+    Given the position of the robot, choose the best path.
+
+    If in the middle, score on appropriate side of switch. Otherwise, if
+    we own this side of the scale, score there, otherwise score on the
+    appropriate side of the switch.
+    """
+    MODE_NAME = 'Optimum'
+    optimize = True
