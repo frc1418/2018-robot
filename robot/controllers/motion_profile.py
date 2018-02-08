@@ -43,6 +43,7 @@ class PositionController:
         self.lock = Lock()
         self.cond = Condition(self.lock)
         self.thread = Thread(target=self._control_loop, daemon=True)
+        self.thread.start()
 
         self.motors = [
             lf_motor,

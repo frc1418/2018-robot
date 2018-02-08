@@ -6,10 +6,10 @@ class ProfileGenerator():
     Generate and load motion profiles from files.
     """
     TIME_DIFF = 0.03
-    WHEELBASE_WIDTH = 0.5
+    WHEELBASE_WIDTH = 0.6
 
     waypoint_list = {
-        'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(5, 0, 0)]
+        'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(1, 0, 0)]
     }
 
     def __init__(self):
@@ -25,6 +25,7 @@ class ProfileGenerator():
         """
         _, trajectory = pf.generate(waypoints, pf.FIT_HERMITE_CUBIC,
                                     pf.SAMPLES_HIGH, time_diff, 1.7, 2.0, 60.0)
+        print('Generated Trajectory: ' + name)
         return trajectory
 
     def generate_all_lists(self):
