@@ -78,9 +78,6 @@ class Modular(AutonomousStateMachine):
         """
         self.crane.move(0.5)
         self.drive.move(0.7, 0)
-        if not self.correct_side():
-            # self.next_state = ''
-            pass
 
     @timed_state(duration=0.6, next_state='switch_side_drop')
     def switch_side_rotate(self):
