@@ -7,18 +7,18 @@ class Switch(Modular):
     scale = False
 
 
-class LeftSwitch(Switch):
-    MODE_NAME = 'LeftSwitch'
+class SwitchLeft(Switch):
+    MODE_NAME = 'SwitchLeft'
     position = 'left'
 
 
-class MiddleSwitch(Switch):
-    MODE_NAME = 'MiddleSwitch'
+class SwitchMiddle(Switch):
+    MODE_NAME = 'SwitchMiddle'
     position = 'middle'
 
 
-class RightSwitch(Switch):
-    MODE_NAME = 'RightSwitch'
+class SwitchRight(Switch):
+    MODE_NAME = 'SwitchRight'
     position = 'right'
 
 
@@ -28,13 +28,13 @@ class Scale(Modular):
     scale = True
 
 
-class LeftScale(Scale):
-    MODE_NAME = 'LeftScale'
+class ScaleLeft(Scale):
+    MODE_NAME = 'ScaleLeft'
     position = 'left'
 
 
-class RightScale(Scale):
-    MODE_NAME = 'RightScale'
+class ScaleRight(Scale):
+    MODE_NAME = 'ScaleRight'
     position = 'right'
 
 
@@ -50,16 +50,16 @@ class Optimum(Modular):
     optimize = True
 
 
-class LeftOptimum(Optimum):
-    MODE_NAME = 'LeftOptimum'
+class OptimumLeft(Optimum):
+    MODE_NAME = 'OptimumLeft'
     position = 'left'
 
 
-class MiddleOptimum(Optimum):
-    MODE_NAME = 'MiddleOptimum'
+class OptimumMiddle(Optimum):
+    MODE_NAME = 'OptimumMiddle'
     position = 'middle'
 
 
-class RightOptimum(Optimum):
-    MODE_NAME = 'RightOptimum'
+class OptimumRight(Optimum):
+    MODE_NAME = 'OptimumRight'
     position = 'right'
