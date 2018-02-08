@@ -73,7 +73,12 @@ class Modular(AutonomousStateMachine):
         """
         Initialize switch side autonomous portion.
         """
-        self.next_state('switch_side_advance')
+        if self.correct_side(0):
+            # We are already on the side of the plate we own.
+            self.next_state('switch_side_advance')
+        else:
+            # We'll need to cross the field before dumping our cube.
+            self.next_state('switch_side_opposite_advance')
 
     @timed_state(duration=1.7, next_state='switch_side_rotate')
     def switch_side_advance(self):
