@@ -1,7 +1,9 @@
 from collections import deque
 from components import drive
+from ctre.trajectorypoint import TrajectoryPoint
 from math import radians, degrees
 import pathfinder as pf
+from .profile_generator import ProfileGenerator
 from threading import Lock, Condition, Thread
 import time
 import wpilib
@@ -9,7 +11,6 @@ import wpilib
 # TODO Get actual values
 MAX_VELOCITY = 200
 
-TIME_DIFF = 0.05
 # TODO
 # Also add a file + class to generate trajectories in multiple threads. (or 1)
 # Save these trajectories to files or have them generate when robot is disabled
@@ -30,20 +31,18 @@ class PositionController:
         :param right_encoder: Right encoder which hooks into right front motor
         :param left_encoder: Left encoder which hooks into left front motor
         """
-        self.trajectories = deque()
+        self.profile_generator = ProfileGenerator()
+        self.queued_trajectories = deque()
+        self.current_trajectory = None
 
-        self.right_follower = None
-        self.left_follower = None
+        self.navx = navx
 
         self.right_encoder = right_encoder
         self.left_encoder = left_encoder
 
-        self.navx = navx
-
         self.lock = Lock()
         self.cond = Condition(self.lock)
         self.thread = Thread(target=self._control_loop, daemon=True)
-        self.thread.start()
 
         self.motors = [
             lf_motor,
@@ -52,78 +51,86 @@ class PositionController:
             rr_motor
         ]
 
+        self.notifier = wpilib.Notifier(run=self._push_trajectory)
+
         wpilib.Resource._add_global_resource(self)
 
-    def move_to(self, x_position, y_position, angle=0, first=False):
+    def move_along(self, trajectory_name, first=False):
         """
         Generate path and set path variable
 
-        :param x_position: The x distance.
-        :param y_position: The y distance.
-        :param angle: The angle difference in degrees.
+        :param trajectory_name: The name of the pre-generated trajectory.
         :param first: Whether or not this path should be completed next.
         """
-        waypoint = pf.Waypoint(float(x_position),
-                               float(y_position), radians(angle))
-
-        info, trajectory = pf.generate([pf.Waypoint(0, 0, 0), waypoint],
-                                       pf.FIT_HERMITE_CUBIC, pf.SAMPLES_HIGH,
-                                       TIME_DIFF, 1.7, 2.0, 60.0)
-
-        modifier = pf.modifiers.TankModifier(trajectory).modify(0.6)
-        right_trajectory = modifier.getRightTrajectory()
-        left_trajectory = modifier.getLeftTrajectory()
-
+        trajectory = self.possible_trajectories[trajectory_name]
         with self.cond:
-            if self.left_follower or self.right_follower is None:
-                self.right_follower = pf.followers.DistanceFollower(right_trajectory)
-                self.left_follower = pf.followers.DistanceFollower(left_trajectory)
-
-                self.right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
-                self.left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
-
             if first:
-                self.trajectories.appendLeft({'right': right_trajectory,
-                                              'left': left_trajectory})
+                self.queued_trajectories.appendLeft(trajectory)
             else:
-                self.trajectories.append({'right': right_trajectory, 'left': left_trajectory})
-
+                self.queued_trajectories.append(trajectory)
             self.cond.notify()
 
     def _control_loop(self):
         """
-        Actually move the robot along the path.
+        Pushes trajectory points to the TalonSRX top level buffer
         """
+        current_segment = 0
+        segments = None
         while True:
             with self.cond:
-                if len(self.trajectories) < 1:
-                    self.cond.wait_for(lambda: len(self.trajectories) > 0)
+                if self.current_trajectory is None:
+                    if len(self.queued_trajectories) < 1:
+                        self.cond.wait_for(lambda: len(self.queued_trajectories) > 0)
+                    self.current_trajectory = self.queued_trajectories.popleft()
+                    segments = list(zip(self.current_trajectory[0], self.current_trajectory[1]))
 
-                if self.right_follower.isFinished() and self.left_follower.isFinished():
-                    del self.trajectories[0]
-                    if len(self.trajectories) < 1:
-                        continue
+                is_last = False
+                if current_segment == 0:
+                    first = segments[0]
+                    last = segments[-1]
 
-                    trajectory = self.trajectories[0]
+                if current_segment == len(segments) - 1:
+                    is_last = True
+                elif current_segment >= len(segments):
+                    self.current_trajectory = None
+                    current_segment = 0
+                    first = None
+                    last = None
+                    segments = None
+                    continue
 
-                    self.right_follower.setTrajectory(trajectory['right'])
-                    self.left_follower.setTrajectory(trajectory['left'])
-                else:
-                    right = self.right_follower.calculate(self.right_encoder.getDistance())
-                    left = self.left_follower.calculate(self.left_encoder.getDistance())
+                seg = segments[current_segment]
+                right_point = TrajectoryPoint(seg[0].position, seg[0].velocity, seg[0].heading,
+                                              0, 1, is_last, True if first[0] == seg[0] else False,
+                                              int(self.profile_generator.TIME_DIFF * 1000))
 
-                    gyro_heading = self.navx.getAngle()
-                    desired_heading = degrees(self.left_follower.getHeading())
+                left_point = TrajectoryPoint(seg[1].position, seg[1].velocity, seg[1].heading,
+                                             0, 1, is_last, True if first[1] == seg[1] else False,
+                                             int(self.profile_generator.TIME_DIFF * 1000))
 
-                    angleDifference = self._bound_half_degrees(desired_heading - gyro_heading)
-                    turn = 0.8 * (-1.0 / 80.0) * angleDifference
+                for i, motor in enumerate(self.motors):
+                    if i < 2:
+                        motor.pushMotionProfileTrajectory(left_point)
+                    else:
+                        motor.pushMotionProfileTrajectory(right_point)
 
-                    for i, motor in enumerate(self.motors):
-                        if i < 2:
-                            motor.set(left + turn)
-                        else:
-                            motor.set(right - turn)
-                    time.sleep(TIME_DIFF)
+                current_segment += 1
+                time.sleep(self.profile_generator.TIME_DIFF)
+
+    def prepare(self):
+        """
+        Prepare to generate the trajectories
+        """
+        self.profile_generator.generate_all_lists()
+        self.possible_trajectories = self.profile_generator.trajectories
+        self.notifier.startPeriodic(self.profile_generator.TIME_DIFF / 2)
+
+    def _push_trajectory(self):
+        """
+        Push trajectories from the TalonSRX top to lower buffer
+        """
+        for motor in self.motors:
+            motor.processMotionProfileBuffer()
 
     def _bound_half_degrees(self, angle_degrees):
         """
