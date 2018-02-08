@@ -145,6 +145,7 @@ class Robot(magicbot.MagicRobot):
         # Read from joysticks and move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
+        # Stop compressor during rotation to reduce draw
         if abs(self.joystick_right.getX()) > 0.5:
             self.compressor.stop()
         else:
