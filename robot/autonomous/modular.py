@@ -3,6 +3,9 @@ from components import drive, crane
 from magicbot import tunable
 from networktables.util import ntproperty
 
+SWITCH = 0
+SCALE = 1
+
 
 class Modular(AutonomousStateMachine):
     """
