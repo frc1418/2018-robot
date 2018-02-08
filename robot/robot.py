@@ -28,8 +28,8 @@ from components import drive, winch, arm
 from controllers import motion_profile, recorder
 from magicbot import tunable
 
-from robotpy_ext.common_drivers import navx
-from ctre.wpi_talonsrx import WPI_TalonSRX
+from robotpy_ext.common_drivers import navx, pressure_sensors
+from ctre import talonsrx, wpi_talonsrx
 
 
 class Panthera(magicbot.MagicRobot):
@@ -77,10 +77,10 @@ class Panthera(magicbot.MagicRobot):
         # ID SCHEME:
         #   10^1: 1 = left, 2 = right
         #   10^0: 0 = front, 5 = rear
-        self.lf_motor = WPI_TalonSRX(10)
-        self.lr_motor = WPI_TalonSRX(15)
-        self.rf_motor = WPI_TalonSRX(20)
-        self.rr_motor = WPI_TalonSRX(25)
+        self.lf_motor = wpi_talonsrx.WPI_TalonSRX(10)
+        self.lr_motor = wpi_talonsrx.WPI_TalonSRX(15)
+        self.rf_motor = wpi_talonsrx.WPI_TalonSRX(20)
+        self.rr_motor = wpi_talonsrx.WPI_TalonSRX(25)
 
         # Drivetrain
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
@@ -136,7 +136,6 @@ class Panthera(magicbot.MagicRobot):
         # Will fetch a string of three characters ('L' or 'R') denoting position of the current alliance's on the switches and scale, with the nearest structures first.
         # More information: http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details
         self.plates = self.ds.getGameSpecificMessage()
-
         self.compressor.stop()
 
         # Call autonomous
@@ -148,6 +147,7 @@ class Panthera(magicbot.MagicRobot):
         """
         # Reset Gyro to 0
         self.navx.reset()
+        self.pos_controller.prepare()
 
     def disabledPeriodic(self):
         """
@@ -161,7 +161,14 @@ class Panthera(magicbot.MagicRobot):
         """
         Executed when teleoperated mode begins.
         """
+<<<<<<< HEAD
         self.compressor.start()
+=======
+        self.lf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
+        self.lr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
+        self.rf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
+        self.rr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
+>>>>>>> Use TalonSRX motion profile features
 
     def teleopPeriodic(self):
         """
