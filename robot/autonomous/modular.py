@@ -50,7 +50,7 @@ class Modular(AutonomousStateMachine):
 
         :param target: ID of target obstacle.
         """
-        return (self.direction == -1 and self.plates[target] == 'L') or (self.direction == 1 and self.plates[target] == 'R')
+        return (self.direction() == -1 and self.plates[target] == 'L') or (self.direction() == 1 and self.plates[target] == 'R')
 
     @state(first=True)
     def start(self):
