@@ -58,6 +58,7 @@ class Modular(AutonomousStateMachine):
         Decide how to begin the autonomous.
         """
         self.crane.grip()
+        self.crane.retract_forearm()
         if self.optimize:
             if self.position == 'middle':
                 self.next_state('switch_middle_start')
