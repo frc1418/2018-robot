@@ -136,21 +136,21 @@ class Modular(AutonomousStateMachine):
         self.drive.move(0.8, -0.5 * self.direction())
 
     # FOR SCORING ON OPPOSITE SIDE
-    @timed_state(duration=1.7, next_state='switch_side_opposite_rotate')
+    @timed_state(duration=1.75, next_state='switch_side_opposite_rotate')
     def switch_side_opposite_advance(self):
         """
         Give the robot some distance from the starting point.
         """
         self.drive.move(1, 0)
 
-    @timed_state(duration=0.7, next_state='switch_side_opposite_cross')
+    @timed_state(duration=0.65, next_state='switch_side_opposite_cross')
     def switch_side_opposite_rotate(self):
         """
         Rotate robot to face the opposite wall.
         """
-        self.drive.move(0.3, -0.8 * self.direction())
+        self.drive.move(0.3, -0.75 * self.direction())
 
-    @timed_state(duration=1.2, next_state='switch_side_opposite_againstwall')
+    @timed_state(duration=1.4, next_state='switch_side_opposite_againstwall')
     def switch_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the switch.
@@ -165,8 +165,8 @@ class Modular(AutonomousStateMachine):
         """
         Turn against wall.
         """
-        self.crane.move(0.4)
-        self.drive.move(0.8, -0.8 * self.direction())
+        self.crane.move(0.7)
+        self.drive.move(0.6, -1 * self.direction())
 
     @timed_state(duration=0.5, next_state='switch_side_opposite_retreat')
     def switch_side_opposite_drop(self):
@@ -174,13 +174,6 @@ class Modular(AutonomousStateMachine):
         Drop preloaded cube in switch.
         """
         self.crane.release()
-
-    @timed_state(duration=0.4)
-    def switch_side_opposite_retreat(self):
-        """
-        Retreat to prepare for picking up second cube in teleop.
-        """
-        self.drive.move(-0.8, 0)
 
     ########
     # SWITCH
