@@ -200,6 +200,9 @@ class Panthera(magicbot.MagicRobot):
         if self.btn_unified_control.get():
             self.unified_control = not self.unified_control
 
+        print('Lf motor output: ' + str(self.lf_motor.get()))
+        print('Y velocity: ' + str(self.navx.getVelocityY()))
+
         # Winch
         if (self.btn_climb.get() and self.unified_control) or self.btn_climb_alt.get():
             self.winch.run()
