@@ -18,8 +18,12 @@ class Modular(AutonomousStateMachine):
     position = ntproperty('/autonomous/position', '')
     plates = ntproperty('/robot/plates', '')
 
+    # Score on switch?
     switch = tunable(True)
+    # Score on scale?
     scale = tunable(False)
+    # Decide best scoring option automatically?
+    optimize = tunable(False)
 
     def direction(self, target=0):
         """
