@@ -220,7 +220,12 @@ class Modular(AutonomousStateMachine):
         """
         Initialize scale autonomous from side position.
         """
-        self.next_state('scale_side_advance')
+        if self.correct_side(target=SCALE):
+            # We are already on the side of the plate we own.
+            self.next_state('scale_side_advance')
+        else:
+            # We'll need to cross the field before dumping our cube.
+            self.next_state('scale_side_opposite_advance')
 
     @timed_state(duration=2.4, next_state='scale_side_rotate')
     def scale_side_advance(self):
