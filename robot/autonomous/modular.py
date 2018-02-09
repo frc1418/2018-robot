@@ -94,7 +94,7 @@ class Modular(AutonomousStateMachine):
             # We'll need to cross the field before dumping our cube.
             self.next_state('switch_side_opposite_advance')
 
-    @timed_state(duration=1.7, next_state='switch_side_rotate')
+    @timed_state(duration=1.3, next_state='switch_side_rotate')
     def switch_side_advance(self):
         """
         Give the robot some distance from the starting point.
@@ -117,43 +117,29 @@ class Modular(AutonomousStateMachine):
         """
         self.crane.release()
 
-    @timed_state(duration=0.8, next_state='switch_side_second_offwall')
+    @timed_state(duration=1.2, next_state='switch_side_second_offwall')
     def switch_side_retreat(self):
         """
         Retreat to side wall.
         """
-        self.drive.move(-0.8, 0)
-
-    @timed_state(duration=1.2, next_state='switch_side_second_approach')
-    def switch_side_second_offwall(self):
-        """
-        Turn and move toward second cube.
-        """
-        self.drive.move(0.6, 0.8 * self.direction())
-
-    @timed_state(duration=1.2)
-    def switch_side_second_approach(self):
-        """
-        Approach second cube.
-        """
-        self.drive.move(0.8, -0.5 * self.direction())
+        self.drive.move(-0.4, 0)
 
     # FOR SCORING ON OPPOSITE SIDE
-    @timed_state(duration=1.75, next_state='switch_side_opposite_rotate')
+    @timed_state(duration=1.7, next_state='switch_side_opposite_rotate')
     def switch_side_opposite_advance(self):
         """
         Give the robot some distance from the starting point.
         """
         self.drive.move(1, 0)
 
-    @timed_state(duration=0.65, next_state='switch_side_opposite_cross')
+    @timed_state(duration=0.6, next_state='switch_side_opposite_cross')
     def switch_side_opposite_rotate(self):
         """
         Rotate robot to face the opposite wall.
         """
         self.drive.move(0.3, -0.75 * self.direction())
 
-    @timed_state(duration=1.4, next_state='switch_side_opposite_againstwall')
+    @timed_state(duration=1.2, next_state='switch_side_opposite_againstwall')
     def switch_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the switch.
@@ -227,28 +213,28 @@ class Modular(AutonomousStateMachine):
             # We'll need to cross the field before dumping our cube.
             self.next_state('scale_side_opposite_advance')
 
-    @timed_state(duration=2.4, next_state='scale_side_rotate')
+    @timed_state(duration=2.3, next_state='scale_side_rotate')
     def scale_side_advance(self):
         """
         Advance toward scale.
         """
         self.drive.move(1, 0)
 
-    @timed_state(duration=0.7, next_state='scale_side_windup')
+    @timed_state(duration=0.6, next_state='scale_side_windup')
     def scale_side_rotate(self):
         """
         Turn towards scale.
         """
         self.drive.move(0.5, -1 * self.direction())
 
-    @timed_state(duration=1.6, next_state='scale_side_raise')
+    @timed_state(duration=1.5, next_state='scale_side_raise')
     def scale_side_windup(self):
         """
         Move backward toward side wall, raising arm.
         """
         self.drive.move(-0.5, 0)
 
-    @timed_state(duration=1.5, next_state='scale_side_approach')
+    @timed_state(duration=1.3, next_state='scale_side_approach')
     def scale_side_raise(self):
         """
         Raise arm before scoring.
@@ -290,21 +276,21 @@ class Modular(AutonomousStateMachine):
         self.drive.move(0.8, 0.3 * self.direction())
 
     # FOR SCORING ON OPPOSITE SIDE
-    @timed_state(duration=1.75, next_state='scale_side_opposite_rotate')
+    @timed_state(duration=1.8, next_state='scale_side_opposite_rotate')
     def scale_side_opposite_advance(self):
         """
         Give the robot some distance from the starting point.
         """
         self.drive.move(1, 0)
 
-    @timed_state(duration=0.65, next_state='scale_side_opposite_cross')
+    @timed_state(duration=0.5, next_state='scale_side_opposite_cross')
     def scale_side_opposite_rotate(self):
         """
         Rotate robot to face the opposite wall.
         """
         self.drive.move(0.3, -0.75 * self.direction())
 
-    @timed_state(duration=1.5, next_state='scale_side_opposite_curvein')
+    @timed_state(duration=1.6, next_state='scale_side_opposite_curvein')
     def scale_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the scale.
@@ -314,7 +300,7 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.8, 0)
 
-    @timed_state(duration=1.2, next_state='scale_side_opposite_windup')
+    @timed_state(duration=1.4, next_state='scale_side_windup')
     def scale_side_opposite_curvein(self):
         """
         Turn against wall.
@@ -322,4 +308,4 @@ class Modular(AutonomousStateMachine):
         Rather than rewriting the drop process, we'll use this to get into
         position, then begin windup as usual.
         """
-        self.drive.move(0.6, 1 * self.direction())
+        self.drive.move(0.6, 0.7 * self.direction())
