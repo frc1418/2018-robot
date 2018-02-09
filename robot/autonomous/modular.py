@@ -283,3 +283,38 @@ class Modular(AutonomousStateMachine):
         self.crane.retract_forearm()
         self.crane.move(-0.2)
         self.drive.move(0.8, 0.3 * self.direction())
+
+    # FOR SCORING ON OPPOSITE SIDE
+    @timed_state(duration=1.75, next_state='scale_side_opposite_rotate')
+    def scale_side_opposite_advance(self):
+        """
+        Give the robot some distance from the starting point.
+        """
+        self.drive.move(1, 0)
+
+    @timed_state(duration=0.65, next_state='scale_side_opposite_cross')
+    def scale_side_opposite_rotate(self):
+        """
+        Rotate robot to face the opposite wall.
+        """
+        self.drive.move(0.3, -0.75 * self.direction())
+
+    @timed_state(duration=1.5, next_state='scale_side_opposite_curvein')
+    def scale_side_opposite_cross(self):
+        """
+        Cross the field to the opposite side of the scale.
+
+        During this state, we should ideally plow into the line of cubes and
+        get in position to drop the cube.
+        """
+        self.drive.move(0.8, 0)
+
+    @timed_state(duration=1.2, next_state='scale_side_opposite_windup')
+    def scale_side_opposite_curvein(self):
+        """
+        Turn against wall.
+
+        Rather than rewriting the drop process, we'll use this to get into
+        position, then begin windup as usual.
+        """
+        self.drive.move(0.6, 1 * self.direction())
