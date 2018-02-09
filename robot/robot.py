@@ -155,6 +155,7 @@ class Panthera(magicbot.MagicRobot):
         """
         # Reset Gyro to 0
         self.navx.reset()
+        self.pos_controller.disabled = True
         self.pos_controller.prepare()
 
     def disabledPeriodic(self):
@@ -169,14 +170,7 @@ class Panthera(magicbot.MagicRobot):
         """
         Executed when teleoperated mode begins.
         """
-<<<<<<< HEAD
         self.compressor.start()
-=======
-        self.lf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
-        self.lr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
-        self.rf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
-        self.rr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
->>>>>>> Use TalonSRX motion profile features
 
         self.drive.squared_inputs = True
         self.drive.rotational_constant = 0.7

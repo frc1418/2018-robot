@@ -26,8 +26,10 @@ class MotionProfilingTest(AutonomousStateMachine):
     @timed_state(duration=3, first=True)
     def diagonal_move(self, initial_call):
         # Move to a selected waypoint using the pathfinder library
-        self.pos_controller.move_along('test')
-        self.next_state('stop')
+        self.pos_controller.move_along('test', True)
+
+        if not self.pos_controller.isRunning('test'):
+            self.next_state('stop')
 
     @state
     def stop(self):
