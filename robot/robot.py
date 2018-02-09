@@ -138,6 +138,8 @@ class Panthera(magicbot.MagicRobot):
         self.plates = self.ds.getGameSpecificMessage()
         self.compressor.stop()
 
+        self.pos_controller.disabled = False
+
         # Call autonomous
         super().autonomous()
 
@@ -147,6 +149,7 @@ class Panthera(magicbot.MagicRobot):
         """
         # Reset Gyro to 0
         self.navx.reset()
+        self.pos_controller.disabled = True
         self.pos_controller.prepare()
 
     def disabledPeriodic(self):

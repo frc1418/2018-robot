@@ -31,6 +31,7 @@ class PositionController:
         :param right_encoder: Right encoder which hooks into right front motor
         :param left_encoder: Left encoder which hooks into left front motor
         """
+        self.disabled = False
         self.profile_generator = ProfileGenerator()
         self.queued_trajectories = deque()
         self.current_trajectory = None
@@ -56,14 +57,23 @@ class PositionController:
 
         wpilib.Resource._add_global_resource(self)
 
-    def move_along(self, trajectory_name, first=False):
+    def move_along(self, trajectory_name, once=False, first=False):
         """
         Generate path and set path variable
 
         :param trajectory_name: The name of the pre-generated trajectory.
+        :param once: If the trajectory is already in queue to be run, don't add it.
         :param first: Whether or not this path should be completed next.
         """
+        if trajectory_name not in self.possible_trajectories.keys():
+            raise KeyError('The trajectory you specified could not be found.')
+
         trajectory = self.possible_trajectories[trajectory_name]
+
+        if once:
+            if trajectory in self.queued_trajectories or trajectory == self.current_trajectory:
+                return
+
         with self.cond:
             if first:
                 self.queued_trajectories.appendLeft(trajectory)
@@ -79,6 +89,9 @@ class PositionController:
         segments = None
         while True:
             with self.cond:
+                if self.disabled:
+                    continue
+
                 if self.current_trajectory is None:
                     if len(self.queued_trajectories) < 1:
                         self.cond.wait_for(lambda: len(self.queued_trajectories) > 0)
@@ -128,10 +141,18 @@ class PositionController:
 
     def _push_trajectory(self):
         """
-        Push trajectories from the TalonSRX top to lower buffer
+        Push trajectories from the TalonSRX top to lower buffer.
         """
         for motor in self.motors:
             motor.processMotionProfileBuffer()
+
+    def isRunning(self, trajectory_name):
+        """
+        Check if a certain trajectory is currently running.
+
+        :param trajectory_name: The name of the trajectory to check.
+        """
+        return self.current_trajectory == self.possible_trajectories[trajectory_name]
 
     def _bound_half_degrees(self, angle_degrees):
         """
