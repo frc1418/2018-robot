@@ -157,7 +157,7 @@ class Modular(AutonomousStateMachine):
         self.crane.move(0.7)
         self.drive.move(0.6, -1 * self.direction())
 
-    @timed_state(duration=0.5, next_state='switch_side_opposite_retreat')
+    @timed_state(duration=0.5)
     def switch_side_opposite_drop(self):
         """
         Drop preloaded cube in switch.
