@@ -213,7 +213,7 @@ class Modular(AutonomousStateMachine):
             # We'll need to cross the field before dumping our cube.
             self.next_state('scale_side_opposite_advance')
 
-    @timed_state(duration=2.3, next_state='scale_side_rotate')
+    @timed_state(duration=2.2, next_state='scale_side_rotate')
     def scale_side_advance(self):
         """
         Advance toward scale.
@@ -241,7 +241,7 @@ class Modular(AutonomousStateMachine):
         """
         self.crane.move(0.7)
 
-    @timed_state(duration=1.5, next_state='scale_side_drop')
+    @timed_state(duration=1.3, next_state='scale_side_drop')
     def scale_side_approach(self):
         """
         Approach scale from side before scoring.
