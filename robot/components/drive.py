@@ -16,7 +16,7 @@ class Drive:
     rot = will_reset_to(0)
 
     speed_constant = tunable(1.0)
-    rotational_constant = tunable(0.8)
+    rotational_constant = tunable(0.6)
 
     def __init__(self):
         self.enabled = False
