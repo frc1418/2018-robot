@@ -8,3 +8,4 @@ install:
     - "pip install -r tests/requirements.txt"
 script:
     - ./test.sh
+cache: pip
