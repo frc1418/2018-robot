@@ -239,7 +239,7 @@ class Modular(AutonomousStateMachine):
         """
         Raise arm before scoring.
         """
-        self.crane.move(0.6)
+        self.crane.move(0.65)
 
     @timed_state(duration=1.3, next_state='scale_side_drop')
     def scale_side_approach(self):
@@ -273,7 +273,6 @@ class Modular(AutonomousStateMachine):
         """
         self.crane.retract_forearm()
         self.crane.move(-0.2)
-        self.drive.move(0.8, 0.3 * self.direction())
 
     # FOR SCORING ON OPPOSITE SIDE
     @timed_state(duration=1.75, next_state='scale_side_opposite_rotate')
