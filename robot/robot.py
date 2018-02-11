@@ -31,7 +31,7 @@ from robotpy_ext.common_drivers import navx, pressure_sensors
 from ctre.wpi_talonsrx import WPI_TalonSRX
 
 
-class Robot(magicbot.MagicRobot):
+class Panthera(magicbot.MagicRobot):
     drive: drive.Drive
     winch: winch.Winch
     crane: crane.Crane
@@ -169,7 +169,7 @@ class Robot(magicbot.MagicRobot):
 
 
 if __name__ == '__main__':
-    wpilib.run(Robot)
+    wpilib.run(Panthera)
 
     print(r"""
      ___      ___ ________  _______
