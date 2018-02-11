@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.com/frc1418/2018-robot.svg?token=xpnQFTGBHababzyAzqKV&branch=master)](https://travis-ci.com/frc1418/2018-robot)
 
-> Code for Team 1418's 2018 competition robot.
+> Code for Team 1418's 2018 competition robot, Panthera.
 
 ## Robot code features
 TODO
