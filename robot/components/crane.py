@@ -23,6 +23,22 @@ class Crane:
         """
         self._elevator_speed = speed
 
+    def up(self):
+        """
+        Move arm upward.
+
+        Used when controlling crane through buttons.
+        """
+        self._elevator_speed = 1 * self.motion_constant
+
+    def down(self):
+        """
+        Move arm downward.
+
+        Used when controlling crane through buttons.
+        """
+        self._elevator_speed = -1 * self.motion_constant
+
     def extend_forearm(self):
         """
         Extend forearm.
