@@ -1,5 +1,6 @@
 import wpilib
 from magicbot import will_reset_to
+from magicbot import tunable
 
 
 class Crane:
@@ -11,6 +12,8 @@ class Crane:
     claw: wpilib.DoubleSolenoid
 
     _elevator_speed = will_reset_to(0)
+
+    motion_constant = tunable(0.6)
 
     def move(self, speed: float):
         """
