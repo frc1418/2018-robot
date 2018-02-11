@@ -163,9 +163,9 @@ class Robot(magicbot.MagicRobot):
 
         if self.unified_control:
             if self.joystick_right.getRawButton(3):
-                self.crane.move(1)
+                self.crane.up()
             if self.joystick_right.getRawButton(2):
-                self.crane.move(-1)
+                self.crane.down()
 
 
 if __name__ == '__main__':
