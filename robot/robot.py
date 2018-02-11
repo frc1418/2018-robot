@@ -56,6 +56,11 @@ class Robot(magicbot.MagicRobot):
         # Buttons on alternative joystick
         self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
         self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 2)
+
+        # Button for toggling unified control
+        self.btn_unified_control = ButtonDebouncer(self.joystick_alt, 8)
+        self.unified_control = False
+
         # Drive motor controllers
         # ID SCHEME:
         #   10^1: 1 = left, 2 = right
@@ -140,23 +145,27 @@ class Robot(magicbot.MagicRobot):
         # Read from joysticks and move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
+        if self.btn_unified_control.get():
+            self.unified_control = not self.unified_control
+
         # Winch
         if self.joystick_alt.getRawButton(3) or self.joystick_right.getRawButton(11):
             self.winch.run()
 
         # Crane
-        if self.btn_claw.get() or self.btn_claw_alt.get():
+        if (self.btn_claw.get() and self.unified_control) or self.btn_claw_alt.get():
             self.crane.actuate_claw()
 
-        if self.btn_forearm.get() or self.btn_forearm_alt.get():
+        if (self.btn_forearm.get() and self.unified_control) or self.btn_forearm_alt.get():
             self.crane.actuate_forearm()
 
         self.crane.move(-self.joystick_alt.getY())
 
-        if self.joystick_right.getRawButton(3):
-            self.crane.move(1)
-        if self.joystick_right.getRawButton(2):
-            self.crane.move(-1)
+        if self.unified_control:
+            if self.joystick_right.getRawButton(3):
+                self.crane.move(1)
+            if self.joystick_right.getRawButton(2):
+                self.crane.move(-1)
 
 
 if __name__ == '__main__':
