@@ -91,6 +91,7 @@ class Panthera(magicbot.MagicRobot):
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
         self.timer = wpilib.Timer()
+        self.pdp = wpilib.PowerDistributionPanel(0)
         self.pressure_sensor = pressure_sensors.REVAnalogPressureSensor(5)
         self.compressor = wpilib.Compressor()
 
