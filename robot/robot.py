@@ -39,6 +39,7 @@ class Panthera(magicbot.MagicRobot):
     time = tunable(0)
     plates = tunable('')
     pressure = tunable(0)
+    voltage = tunable(0)
 
     def createObjects(self):
         """
@@ -104,6 +105,7 @@ class Panthera(magicbot.MagicRobot):
         """
         self.time = int(self.timer.getMatchTime())
         self.pressure = self.pressure_sensor.pressure
+        self.voltage = self.pdp.getVoltage()
 
     def autonomous(self):
         """
