@@ -115,7 +115,7 @@ class Modular(AutonomousStateMachine):
         """
         self.crane.release()
 
-    @timed_state(duration=1.6, next_state='switch_side_second_offwall')
+    @timed_state(duration=1.6)
     def switch_side_retreat(self):
         """
         Retreat to side wall.
