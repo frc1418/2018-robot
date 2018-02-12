@@ -164,14 +164,11 @@ class Panthera(magicbot.MagicRobot):
         """
         Executed when teleoperated mode begins.
         """
-<<<<<<< HEAD
         self.compressor.start()
-=======
-        self.lf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
-        self.lr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
-        self.rf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
-        self.rr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
->>>>>>> Use TalonSRX motion profile features
+        self.lf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
+        self.rf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
+        self.lr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
+        self.rr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
 
     def teleopPeriodic(self):
         """
