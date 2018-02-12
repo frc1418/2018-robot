@@ -123,21 +123,21 @@ class Modular(AutonomousStateMachine):
         self.drive.move(-0.3, 0)
 
     # FOR SCORING ON OPPOSITE SIDE
-    @timed_state(duration=1.7, next_state='switch_side_opposite_rotate')
+    @timed_state(duration=2.6, next_state='switch_side_opposite_rotate')
     def switch_side_opposite_advance(self):
         """
         Give the robot some distance from the starting point.
         """
-        self.drive.move(1, 0)
+        self.drive.move(0.4, 0)
 
-    @timed_state(duration=0.7, next_state='switch_side_opposite_cross')
+    @timed_state(duration=0.45, next_state='switch_side_opposite_cross')
     def switch_side_opposite_rotate(self):
         """
         Rotate robot to face the opposite wall.
         """
         self.drive.move(0.3, -0.75 * self.direction())
 
-    @timed_state(duration=1.0, next_state='switch_side_opposite_againstwall')
+    @timed_state(duration=1.2, next_state='switch_side_opposite_againstwall')
     def switch_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the switch.
@@ -147,13 +147,13 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.8, 0)
 
-    @timed_state(duration=1.6, next_state='switch_side_opposite_drop')
+    @timed_state(duration=0.8, next_state='switch_side_opposite_drop')
     def switch_side_opposite_againstwall(self):
         """
         Turn against wall.
         """
-        self.crane.move(0.7)
-        self.drive.move(0.3, -1 * self.direction())
+        self.crane.move(0.6)
+        self.drive.move(0.5, -1 * self.direction())
 
     @timed_state(duration=0.5)
     def switch_side_opposite_drop(self):
@@ -287,7 +287,7 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.3, -0.75 * self.direction())
 
-    @timed_state(duration=2.1, next_state='scale_side_opposite_curvein')
+    @timed_state(duration=1.9, next_state='scale_side_opposite_curvein')
     def scale_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the scale.
