@@ -9,7 +9,7 @@ import time
 import wpilib
 
 # TODO Get actual values
-MAX_VELOCITY = 200
+MAX_VELOCITY = 6
 
 # TODO
 # Also add a file + class to generate trajectories in multiple threads. (or 1)
@@ -93,8 +93,13 @@ class PositionController:
                     continue
 
                 if self.current_trajectory is None:
+                    for motor in self.motors:
+                        motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
                     if len(self.queued_trajectories) < 1:
                         self.cond.wait_for(lambda: len(self.queued_trajectories) > 0)
+
+                    for motor in self.motors:
+                        motor.set(talonsrx.TalonSRX.ControlMode.MotionProfile)
                     self.current_trajectory = self.queued_trajectories.popleft()
                     segments = list(zip(self.current_trajectory[0], self.current_trajectory[1]))
 

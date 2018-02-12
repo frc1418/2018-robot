@@ -23,7 +23,7 @@ class MotionProfilingTest(AutonomousStateMachine):
 
     pos_controller = motion_profile.PositionController
 
-    @timed_state(duration=3, first=True)
+    @state(first=True)
     def diagonal_move(self, initial_call):
         # Move to a selected waypoint using the pathfinder library
         self.pos_controller.move_along('test', True)
