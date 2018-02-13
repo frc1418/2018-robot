@@ -97,7 +97,7 @@ class Panthera(magicbot.MagicRobot):
         self.compressor = wpilib.Compressor()
 
         # Camera server
-        wpilib.CameraServer.launch()
+        wpilib.CameraServer.launch('camera/camera.py:main')
 
     def robotPeriodic(self):
         """
