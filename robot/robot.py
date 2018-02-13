@@ -109,11 +109,8 @@ class Panthera(magicbot.MagicRobot):
         self.navx.reset()
 
         # Motion Profiling
-        self.left_encoder = wpilib.Encoder(0, 1)
-        self.right_encoder = wpilib.Encoder(2, 3)
         self.pos_controller = motion_profile.PositionController(self.lf_motor, self.lr_motor, self.rf_motor,
-                                                 self.rr_motor, self.navx, self.right_encoder,
-                                                 self.left_encoder)
+                                                 self.rr_motor, self.navx)
 
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
@@ -193,9 +190,6 @@ class Panthera(magicbot.MagicRobot):
 
         if self.btn_unified_control.get():
             self.unified_control = not self.unified_control
-
-        print('Lf motor output: ' + str(self.lf_motor.get()))
-        print('Y velocity: ' + str(self.navx.getVelocityY()))
 
         # Winch
         if (self.btn_climb.get() and self.unified_control) or self.btn_climb_alt.get():

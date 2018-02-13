@@ -1,6 +1,6 @@
 from collections import deque
 from components import drive
-from ctre.trajectorypoint import TrajectoryPoint
+from ctre import talonsrx, trajectorypoint
 from math import radians, degrees
 import pathfinder as pf
 from .profile_generator import ProfileGenerator
@@ -9,7 +9,7 @@ import time
 import wpilib
 
 # TODO Get actual values
-MAX_VELOCITY = 6
+MAX_VELOCITY = 11
 
 # TODO
 # Also add a file + class to generate trajectories in multiple threads. (or 1)
@@ -21,25 +21,20 @@ class PositionController:
     Controls the position of the robot using motion profile based movement.
     """
 
-    def __init__(self, lf_motor, lr_motor, rf_motor, rr_motor, navx, right_encoder, left_encoder):
+    def __init__(self, lf_motor, lr_motor, rf_motor, rr_motor, navx):
         """
         :param lf_motor: The left front motor
         :param lr_motor: The left rear motor
         :param rf_motor: The right front motor
         :param rr_motor: The right rear motor
         :param navx: The navx
-        :param right_encoder: Right encoder which hooks into right front motor
-        :param left_encoder: Left encoder which hooks into left front motor
         """
-        self.disabled = False
+        self.disabled = True
         self.profile_generator = ProfileGenerator()
         self.queued_trajectories = deque()
         self.current_trajectory = None
 
         self.navx = navx
-
-        self.right_encoder = right_encoder
-        self.left_encoder = left_encoder
 
         self.lock = Lock()
         self.cond = Condition(self.lock)
@@ -57,22 +52,17 @@ class PositionController:
 
         wpilib.Resource._add_global_resource(self)
 
-    def move_along(self, trajectory_name, once=False, first=False):
+    def move_along(self, trajectory_name, first=False):
         """
         Generate path and set path variable
 
         :param trajectory_name: The name of the pre-generated trajectory.
-        :param once: If the trajectory is already in queue to be run, don't add it.
         :param first: Whether or not this path should be completed next.
         """
         if trajectory_name not in self.possible_trajectories.keys():
             raise KeyError('The trajectory you specified could not be found.')
 
         trajectory = self.possible_trajectories[trajectory_name]
-
-        if once:
-            if trajectory in self.queued_trajectories or trajectory == self.current_trajectory:
-                return
 
         with self.cond:
             if first:
@@ -90,16 +80,16 @@ class PositionController:
         while True:
             with self.cond:
                 if self.disabled:
-                    continue
+                    self.cond.wait_for(lambda: not self.disabled)
 
                 if self.current_trajectory is None:
                     for motor in self.motors:
-                        motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput)
+                        motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
                     if len(self.queued_trajectories) < 1:
                         self.cond.wait_for(lambda: len(self.queued_trajectories) > 0)
 
                     for motor in self.motors:
-                        motor.set(talonsrx.TalonSRX.ControlMode.MotionProfile)
+                        motor.set(talonsrx.TalonSRX.ControlMode.MotionProfile, 0)
                     self.current_trajectory = self.queued_trajectories.popleft()
                     segments = list(zip(self.current_trajectory[0], self.current_trajectory[1]))
 
@@ -119,13 +109,13 @@ class PositionController:
                     continue
 
                 seg = segments[current_segment]
-                right_point = TrajectoryPoint(seg[0].position, seg[0].velocity, seg[0].heading,
-                                              0, 1, is_last, True if first[0] == seg[0] else False,
-                                              int(self.profile_generator.TIME_DIFF * 1000))
+                right_point = trajectorypoint.TrajectoryPoint(seg[0].position, seg[0].velocity,
+                                                              seg[0].heading, 0, 1, is_last, first[0] == seg[0],
+                                                              int(self.profile_generator.TIME_DIFF * 1000))
 
-                left_point = TrajectoryPoint(seg[1].position, seg[1].velocity, seg[1].heading,
-                                             0, 1, is_last, True if first[1] == seg[1] else False,
-                                             int(self.profile_generator.TIME_DIFF * 1000))
+                left_point = trajectorypoint.TrajectoryPoint(seg[1].position, seg[1].velocity,
+                                                             seg[1].heading, 0, 1, is_last, first[1] == seg[1],
+                                                             int(self.profile_generator.TIME_DIFF * 1000))
 
                 for i, motor in enumerate(self.motors):
                     if i < 2:
@@ -148,8 +138,9 @@ class PositionController:
         """
         Push trajectories from the TalonSRX top to lower buffer.
         """
-        for motor in self.motors:
-            motor.processMotionProfileBuffer()
+        if not self.disabled:
+            for motor in self.motors:
+                motor.processMotionProfileBuffer()
 
     def isRunning(self, trajectory_name):
         """

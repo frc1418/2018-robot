@@ -1,63 +1,52 @@
 {
-    "pyfrc": {
-        "robot": {
-                "w": 3.1,
-                "h": 3.9,
-                "starting_x": 25,
-                "starting_y": 25,
-                "starting_angle": 180
-            },
-        "analog": {
-            "0": "Left Rotation Encoder",
-            "2": "Right Rotation Encoder",
-            "5": "Pressure Sensor"
-        },
-        "dio": {},
-        "solenoid": {
-            "5": "Winch Dog",
-            "2": "Forearm A",
-            "3": "Forearm B",
-            "0": "Claw A",
-            "1": "Claw B"
-        },
-        "pwm": {
-            "3": "Left Intake Wheel",
-            "4": "Right Intake Wheel",
-            "5": "Elevator",
-            "6": "Left Shoulder",
-            "7": "Left Winch Motor",
-            "8": "Right Winch Motor",
-            "9": "Right Shoulder"
-        },
-        "spark": {
-            "3": "Intake Wheel Left",
-            "4": "Intake Wheel Right"
-        },
-        "CAN": {
-            "10": "Left Front",
-            "15": "Left Rear",
-            "20": "Right Front",
-            "25": "Right Rear"
-        },
-        "joysticks": {
-            "0": {
-                "axes": {
-                    "Y": "Left Side"
-                },
-                "buttons": {}
-            },
-            "1": {
-                "axes": {
-                    "Y": "Right Side"
-                },
-                "buttons": {}
-            }
-        },
-        "field": {
-            "w": 27,
-            "l": 57,
-            "h": 27,
-            "px_per_ft": 10
-        }
-    }
+	"pyfrc": {
+		"robot": {
+			"w": 3,
+			"h": 2,
+			"starting_x": 3,
+			"starting_y": 6,
+			"starting_angle": 0
+		},
+		"analog": {},
+		"dio": {},
+		"solenoid": {
+			"5": "Winch Dog",
+			"2": "Forearm A",
+			"3": "Forearm B",
+			"0": "Claw A",
+			"1": "Claw B"
+
+		},
+		"pwm": {
+			"7": "Winch Motor A",
+			"8": "Winch Motor B",
+			"5": "Elevator",
+			"": "Shoulder Left",
+			"": "Shoulder Right"
+		},
+		"spark": {
+			"3": "Intake Wheel Left",
+			"4": "Intake Wheel Right"
+		},
+		"CAN": {
+			"10": "Left Front",
+			"15": "Left Rear",
+			"20": "Right Front",
+			"25": "Right Rear"
+		},
+		"joysticks": {
+			"0": {
+				"axes": {
+					"Y": "Left Side"
+				},
+				"buttons": {}
+			},
+			"1": {
+				"axes": {
+					"Y": "Right Side"
+				},
+				"buttons": {}
+			}
+		}
+	}
 }
