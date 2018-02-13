@@ -20,6 +20,8 @@ def main():
     intake_server = cscore.MjpegServer('httpserver', 1182)
     intake_server.setSource(intake_camera)
 
+    cscore.waitForever()
+
 
 if __name__ == '__main__':
     main()
