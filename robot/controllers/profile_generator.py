@@ -9,7 +9,7 @@ class ProfileGenerator():
     WHEELBASE_WIDTH = 0.6
 
     waypoint_list = {
-        'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(2, 0, 0)]
+        'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(10, 5, 0)]
     }
 
     def __init__(self):
@@ -33,6 +33,9 @@ class ProfileGenerator():
         Generate every trajectory listed in the constant waypoint_list dictionary.
         """
         for name, points in self.waypoint_list.items():
+            if name in self.trajectories.keys():
+                continue
+
             trajectory = self.generate(points, self.TIME_DIFF, name)
             modifier = pf.modifiers.TankModifier(trajectory).modify(self.WHEELBASE_WIDTH)
             self.trajectories[name] = (modifier.getRightTrajectory(),
