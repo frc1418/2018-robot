@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# You should set the following environment variables:
+#   $DEPLOY_START_NETWORK_PSK: Password/PSK of your current network
+#   $DEPLOY_ROBOT_NETWORK_PSK: ...of your robot network
+
 if [ "$DEPLOY_START_NETWORK_PSK" -eq "" ]; then
     echo "Warning: \$DEPLOY_START_NETWORK_PSK not set."
 fi
