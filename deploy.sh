@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+if [ "$DEPLOY_START_NETWORK_PSK" -eq "" ]; then
+    echo "Warning: \$DEPLOY_START_NETWORK_PSK not set."
+fi
+if [ "$DEPLOY_ROBOT_NETWORK_PSK" -eq "" ]; then
+    echo "Warning: \$DEPLOY_ROBOT_NETWORK_PSK not set."
+fi
+
 start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
 robot_network=1418
 
