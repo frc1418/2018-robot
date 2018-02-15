@@ -111,6 +111,8 @@ class Panthera(magicbot.MagicRobot):
         # Motion Profiling
         self.pos_controller = motion_profile.PositionController(self.lf_motor, self.lr_motor, self.rf_motor,
                                                  self.rr_motor, self.navx)
+        self.right_encoder = wpilib.Encoder(0, 1)
+        self.left_encoder = wpilib.Encoder(2, 3)
 
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
@@ -171,6 +173,8 @@ class Panthera(magicbot.MagicRobot):
 
         self.drive.squared_inputs = True
         self.drive.rotational_constant = 0.7
+
+        self.pos_controller.disabled = True
 
     def teleopPeriodic(self):
         """

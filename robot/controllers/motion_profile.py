@@ -1,6 +1,6 @@
 from collections import deque
 from components import drive
-from ctre import talonsrx, trajectorypoint
+from ctre import wpi_talonsrx, talonsrx, trajectorypoint
 from math import radians, degrees
 import pathfinder as pf
 from .profile_generator import ProfileGenerator
@@ -21,9 +21,9 @@ class PositionController:
     Controls the position of the robot using motion profile based movement.
     """
 
-    def __init__(self, lf_motor, lr_motor, rf_motor, rr_motor, navx):
+    def __init__(self, lf_motor: wpi_talonsrx.TalonSRX, lr_motor, rf_motor, rr_motor, navx):
         """
-        :param lf_motor: The left front motor
+        :param lf_motor: The left front motor (Annotated to give the list the annotation)
         :param lr_motor: The left rear motor
         :param rf_motor: The right front motor
         :param rr_motor: The right rear motor
@@ -48,6 +48,10 @@ class PositionController:
             rr_motor
         ]
 
+        for motor in self.motors:
+            motor.configMotionProfileTrajectoryPeriod(0, 50)
+            motor.configSelectedFeedbackSensor(talonsrx.TalonSRX.FeedbackDevice.QuadEncoder, 0, 0)
+
         self.notifier = wpilib.Notifier(run=self._push_trajectory)
 
         wpilib.Resource._add_global_resource(self)
@@ -59,6 +63,7 @@ class PositionController:
         :param trajectory_name: The name of the pre-generated trajectory.
         :param first: Whether or not this path should be completed next.
         """
+        self.disabled = False
         if trajectory_name not in self.possible_trajectories.keys():
             raise KeyError('The trajectory you specified could not be found.')
 
@@ -101,6 +106,10 @@ class PositionController:
                 if current_segment == len(segments) - 1:
                     is_last = True
                 elif current_segment >= len(segments):
+                    for motor in self.motors:
+                        motor.clearMotionProfileTrajectories()
+                        print(motor.getMotionProfileStatus())
+
                     self.current_trajectory = None
                     current_segment = 0
                     first = None
@@ -138,7 +147,7 @@ class PositionController:
         """
         Push trajectories from the TalonSRX top to lower buffer.
         """
-        if not self.disabled:
+        if not self.disabled and self.current_trajectory is not None:
             for motor in self.motors:
                 motor.processMotionProfileBuffer()
 
