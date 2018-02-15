@@ -38,3 +38,9 @@ class Recorder:
 
         self.voltage = None
         self.frames = []
+
+    def execute(self):
+        """
+        Run periodically when injected through MagicBot.
+        """
+        pass
