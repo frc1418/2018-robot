@@ -2,7 +2,6 @@ from .modular import Modular
 
 
 class Switch(Modular):
-    MODE_NAME = 'Switch'
     switch = True
     scale = False
 
@@ -23,7 +22,6 @@ class SwitchRight(Switch):
 
 
 class Scale(Modular):
-    MODE_NAME = 'Scale'
     switch = False
     scale = True
 
@@ -42,7 +40,6 @@ class Optimum(Modular):
     """
     Given the position of the robot, choose the best path.
     """
-    MODE_NAME = 'Optimum'
     optimize = True
 
 
