@@ -22,6 +22,7 @@ import magicbot
 import wpilib
 import wpilib.drive
 
+from wpilib.buttons import JoystickButton
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
 from autonomous import recorder
 from components import drive, winch, crane
@@ -57,10 +58,14 @@ class Panthera(magicbot.MagicRobot):
         # Buttons
         self.btn_claw = ButtonDebouncer(self.joystick_left, 1)
         self.btn_forearm = ButtonDebouncer(self.joystick_right, 1)
+        self.btn_up = JoystickButton(self.joystick_right, 3)
+        self.btn_down = JoystickButton(self.joystick_right, 2)
+        self.btn_climb = JoystickButton(self.joystick_right, 11)
 
         # Buttons on alternative joystick
         self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
         self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 2)
+        self.btn_climb_alt = JoystickButton(self.joystick_alt, 3)
 
         # Button for toggling unified control
         self.btn_unified_control = ButtonDebouncer(self.joystick_alt, 8)
@@ -162,7 +167,7 @@ class Panthera(magicbot.MagicRobot):
             self.unified_control = not self.unified_control
 
         # Winch
-        if self.joystick_alt.getRawButton(3) or self.joystick_right.getRawButton(11):
+        if self.btn_climb.get() or self.btn_climb_alt.get():
             self.winch.run()
 
         # Crane
@@ -175,9 +180,9 @@ class Panthera(magicbot.MagicRobot):
         self.crane.move(-self.joystick_alt.getY())
 
         if self.unified_control:
-            if self.joystick_right.getRawButton(3):
+            if self.btn_up.get():
                 self.crane.up()
-            if self.joystick_right.getRawButton(2):
+            if self.btn_down.get():
                 self.crane.down()
 
         if self.btn_record.get():
