@@ -38,12 +38,11 @@ class Recorder:
         """
         End recording and save data to file.
         """
-        data = {
-            'voltage': self.voltage,
-            'frames': self.frames,
-        }
         with open(self.directory + '/' + self.recording_name, 'w+') as f:
-            json.dump(data, f)
+            json.dump({
+                'voltage': self.voltage,
+                'frames': self.frames,
+            }, f)
 
         self.voltage = None
         self.frames = []
