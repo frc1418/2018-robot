@@ -11,6 +11,13 @@ class Scale(Modular):
     scale = True
 
 
+class Optimum(Modular):
+    """
+    Given the position of the robot, choose the best path.
+    """
+    optimize = True
+
+
 class Left(Modular):
     position = 'left'
 
@@ -41,13 +48,6 @@ class ScaleLeft(Scale, Left):
 
 class ScaleRight(Scale, Right):
     MODE_NAME = 'ScaleRight'
-
-
-class Optimum(Modular):
-    """
-    Given the position of the robot, choose the best path.
-    """
-    optimize = True
 
 
 class OptimumLeft(Optimum, Left):
