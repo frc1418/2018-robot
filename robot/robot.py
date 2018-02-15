@@ -23,6 +23,7 @@ import wpilib
 import wpilib.drive
 
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
+from autonomous import recorder
 from components import drive, winch, crane
 from controllers import motion_profile
 from magicbot import tunable
@@ -35,6 +36,8 @@ class Panthera(magicbot.MagicRobot):
     drive: drive.Drive
     winch: winch.Winch
     crane: crane.Crane
+
+    recorder: recorder.Recorder
 
     time = tunable(0)
     plates = tunable('')
@@ -62,6 +65,10 @@ class Panthera(magicbot.MagicRobot):
         # Button for toggling unified control
         self.btn_unified_control = ButtonDebouncer(self.joystick_alt, 8)
         self.unified_control = False
+
+        # Button for control recording
+        self.btn_record = ButtonDebouncer(self.joystick_left, 6)
+        self.recording = False
 
         # Drive motor controllers
         # ID SCHEME:
@@ -172,6 +179,17 @@ class Panthera(magicbot.MagicRobot):
                 self.crane.up()
             if self.joystick_right.getRawButton(2):
                 self.crane.down()
+
+        if self.btn_record.get():
+            if self.recording:
+                self.recording = False
+                self.recorder.stop()
+            else:
+                self.recording = True
+                self.recorder.start(self.voltage)
+
+        if self.recording:
+            self.recorder.capture([self.left_joystick, self.right_joystick, self.joystick_alt])
 
 
 if __name__ == '__main__':
