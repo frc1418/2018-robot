@@ -27,14 +27,12 @@ class Recorder:
         :param joysticks: List of joysticks to read.
         """
         data = {
-            joysticks: []
-        }
-        for joystick in joysticks:
-            data['joysticks'].append({
+            'joysticks': [{
                 'axes': [joystick.getRawAxis(axs) for axs in range(joystick.getAxisCount())],
                 'buttons': [joystick.getRawButton(btn) for btn in range(joystick.getButtonCount())],
                 'pov': [joystick.getPOV(pov) for pov in range(joystick.getPOVCount())],
-            })
+            } for joystick in joysticks]
+        }
         self.frames.append(data)
 
     def stop(self):
