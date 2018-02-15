@@ -4,6 +4,9 @@ import json
 
 
 class Recorder:
+    """
+    Record control input for playback as an autonomous mode.
+    """
     directory = tunable('')
     recording_name = tunable('')
 
