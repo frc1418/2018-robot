@@ -36,7 +36,7 @@ class Recorder:
 
     def stop(self):
         """
-        End recording and save data to file.
+        End recording and save recorded data to file.
         """
         with open(self.directory + '/' + self.recording_name, 'w+') as f:
             json.dump({
