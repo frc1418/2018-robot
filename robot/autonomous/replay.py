@@ -14,6 +14,8 @@ class Replay(AutonomousStateMachine):
 
     @state(first=True)
     def start(self):
+        with open('recordings/%s.json' % self.recording_name, 'r') as f:
+            self.recording = json.load(f)
         self.next_state('run')
 
     @timed_state(duration=15)
