@@ -1,5 +1,6 @@
 from magicbot.state_machine import state, timed_state, AutonomousStateMachine
 from magicbot import tunable
+from components import drive, crane
 import json
 
 
@@ -9,6 +10,9 @@ class Replay(AutonomousStateMachine):
     """
     MODE_NAME = 'Replay'
     DEFAULT = False
+
+    drive: drive.Drive
+    crane: crane.Crane
 
     recording_name = tunable('')
     frame_number = 0
