@@ -1,5 +1,6 @@
 from magicbot.state_machine import state, timed_state, AutonomousStateMachine
 from magicbot import tunable
+from networktables.util import ntproperty
 from components import drive, crane
 import json
 
@@ -14,8 +15,25 @@ class Replay(AutonomousStateMachine):
     drive: drive.Drive
     crane: crane.Crane
 
+    voltage = ntproperty('/robot/voltage', 1)
+
     recording_name = tunable('')
+    recording = None
     frame_number = 0
+
+    @property
+    def voltage_multiplier(self):
+        """
+        Get factor by which to multiply motor speeds to account for battery depletion.
+
+        When we replay recorded control input, we'll likely be at a different voltage level
+        from when it was recorded.
+
+        :return: Number by which to multiply motor speeds.
+        """
+        if self.recording is None:
+            return None
+        return self.voltage / self.recording['voltage']
 
     @state(first=True)
     def start(self):
