@@ -52,7 +52,8 @@ class Replay(AutonomousStateMachine):
         self.frame_number += 1
         fr = self.recording[self.frame_number]
 
-        self.drive.move(-fr['joysticks'][0]['axes'][1], fr['joysticks'][1]['axes'][0])
+        self.drive.move(-fr['joysticks'][0]['axes'][1] * self.voltage_multiplier,
+                        fr['joysticks'][1]['axes'][0] * self.voltage_multiplier)
 
         if fr['joysticks'][2]['buttons'][1] and not self.recording[self.frame_number - 1]['joysticks'][2]['buttons'][1]:
             self.crane.actuate_claw()
@@ -60,4 +61,4 @@ class Replay(AutonomousStateMachine):
         if fr['joysticks'][2]['buttons'][2] and not self.recording[self.frame_number - 1]['joysticks'][2]['buttons'][2]:
             self.crane.actuate_forearm()
 
-        self.crane.move(-fr['joysticks'][2]['axes'][1])
+        self.crane.move(-fr['joysticks'][2]['axes'][1] * self.voltage_multiplier)
