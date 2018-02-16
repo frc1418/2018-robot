@@ -38,7 +38,9 @@ class Recorder:
         """
         End recording and save recorded data to file.
         """
-        with open(self.directory + '/' + self.recording_name, 'w+') as f:
+        with open('{directory}/{filename}.json'.format(
+                  directory=self.directory,
+                  filename=self.recording_name), 'w+') as f:
             json.dump({
                 'voltage': self.voltage,
                 'frames': self.frames,
