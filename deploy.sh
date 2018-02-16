@@ -4,14 +4,14 @@
 #   $DEPLOY_START_NETWORK_PSK: Password/PSK of your current network
 #   $DEPLOY_ROBOT_NETWORK_PSK: ...of your robot network
 
-if [ "$(git status --porcelain)" -ne "" ]; then
+if ! [ "$(git status --porcelain)" = "" ]; then
     echo "Warning: You have uncommitted changes!"
 fi
 
-if [ "$DEPLOY_START_NETWORK_PSK" -eq "" ]; then
+if [ "$DEPLOY_START_NETWORK_PSK" = "" ]; then
     echo "Warning: \$DEPLOY_START_NETWORK_PSK not set."
 fi
-if [ "$DEPLOY_ROBOT_NETWORK_PSK" -eq "" ]; then
+if [ "$DEPLOY_ROBOT_NETWORK_PSK" = "" ]; then
     echo "Warning: \$DEPLOY_ROBOT_NETWORK_PSK not set."
 fi
 
