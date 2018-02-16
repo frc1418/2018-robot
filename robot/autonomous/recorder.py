@@ -1,6 +1,7 @@
 import wpilib
 from magicbot import tunable
 import json
+import time
 
 
 class Recorder:
@@ -40,7 +41,7 @@ class Recorder:
         """
         with open('{directory}/{filename}.json'.format(
                   directory=self.directory,
-                  filename=self.recording_name), 'w+') as f:
+                  filename=self.recording_name if self.recording_name else int(time.time())), 'w+') as f:
             json.dump({
                 'voltage': self.voltage,
                 'frames': self.frames,
