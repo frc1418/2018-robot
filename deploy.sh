@@ -5,15 +5,20 @@ set -e
 #   $DEPLOY_START_NETWORK_PSK: Password/PSK of your current network
 #   $DEPLOY_ROBOT_NETWORK_PSK: ...of your robot network
 
+RED="\e[31m"
+YELLOW="\e[33m"
+GREEN="\e[32m"
+RESET="\e[0m"
+
 if ! [ "$(git status --porcelain)" = "" ]; then
-    echo "Warning: You have uncommitted changes!"
+    echo -e "${YELLOW}Warning: You have uncommitted changes!${RESET}"
 fi
 
 if [ "$DEPLOY_START_NETWORK_PSK" = "" ]; then
-    echo "Warning: \$DEPLOY_START_NETWORK_PSK not set."
+    echo -e "${YELLOW}Warning: \$DEPLOY_START_NETWORK_PSK not set.${RESET}"
 fi
 if [ "$DEPLOY_ROBOT_NETWORK_PSK" = "" ]; then
-    echo "Warning: \$DEPLOY_ROBOT_NETWORK_PSK not set."
+    echo -e "${YELLOW}Warning: \$DEPLOY_ROBOT_NETWORK_PSK not set.${RESET}"
 fi
 
 start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
@@ -21,7 +26,7 @@ robot_network=1418
 
 function connect {
     if ! [ "$(networksetup -setairportnetwork en0 $1 $2)" = "" ]; then
-        echo "failed."
+        echo -e "${RED}failed.${RESET}"
         exit 1
     else echo "👍"; fi
 }
