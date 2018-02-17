@@ -21,10 +21,12 @@ robot_network=1418
 
 printf "Connecting to $robot_network... "
 if ! [ "$(networksetup -setairportnetwork en0 $robot_network $DEPLOY_ROBOT_NETWORK_PSK)" = "" ]; then
+    echo "failed."
     exit 1
 else echo "👍"; fi
 python3 robot/robot.py deploy
 printf "Reconnecting to $start_network... "
 if ! [ "$(networksetup -setairportnetwork en0 $start_network $DEPLOY_START_NETWORK_PSK)" = "" ]; then
+    echo "failed."
     exit 1
 else echo "👍"; fi
