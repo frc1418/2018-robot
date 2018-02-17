@@ -40,6 +40,7 @@ class Panthera(magicbot.MagicRobot):
     plates = tunable('')
     pressure = tunable(0)
     voltage = tunable(0)
+    rotation = tunable(0)
 
     def createObjects(self):
         """
@@ -88,6 +89,7 @@ class Panthera(magicbot.MagicRobot):
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
+        self.navx.reset()
 
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
@@ -106,6 +108,7 @@ class Panthera(magicbot.MagicRobot):
         self.time = int(self.timer.getMatchTime())
         self.pressure = self.pressure_sensor.pressure
         self.voltage = self.pdp.getVoltage()
+        self.rotation = self.navx.getAngle() % 360
 
     def autonomous(self):
         """
