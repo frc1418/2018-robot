@@ -6,12 +6,13 @@ set -e
 #   $DEPLOY_ROBOT_NETWORK_PSK: ...of your robot network
 
 RED="\e[31m"
+CYAN="\e[36m"
 YELLOW="\e[33m"
 GREEN="\e[32m"
 EULER="\e^(iπ)+1=0"
 RESET="\e[0m"
 
-function task { printf "$1... "; }
+function task { printf "${CYAN}$1... ${RESET}"; }
 function succ { printf "${GREEN}$1${RESET}\n"; }
 function warn { printf "${YELLOW}Warning: $1${RESET}\n" >&2; }
 function err  { printf "${RED}$1${RESET}\n" >&2; exit 1; }
@@ -32,6 +33,8 @@ start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
 robot_network=1418
 
 function connect {
+    # Even when networksetup fails, exit status will bizarrely be 0.
+    # Thus, consider no output success.
     if ! [ "$(networksetup -setairportnetwork en0 $1 $2)" = "" ]; then
         err "failed."
     else succ "👍"; fi
