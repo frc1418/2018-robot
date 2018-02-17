@@ -108,7 +108,6 @@ class PositionController:
                 elif current_segment >= len(segments):
                     for motor in self.motors:
                         motor.clearMotionProfileTrajectories()
-                        print(motor.getMotionProfileStatus())
 
                     self.current_trajectory = None
                     current_segment = 0
@@ -157,7 +156,8 @@ class PositionController:
 
         :param trajectory_name: The name of the trajectory to check.
         """
-        return self.current_trajectory == self.possible_trajectories[trajectory_name]
+        return (self.current_trajectory == self.possible_trajectories[trajectory_name] or
+                self.possible_trajectories[trajectory_name] == self.queued_trajectories[0])
 
     def _bound_half_degrees(self, angle_degrees):
         """
