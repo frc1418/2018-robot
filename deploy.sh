@@ -11,14 +11,14 @@ GREEN="\e[32m"
 RESET="\e[0m"
 
 if ! [ "$(git status --porcelain)" = "" ]; then
-    echo -e "${YELLOW}Warning: You have uncommitted changes!${RESET}"
+    printf "${YELLOW}Warning: You have uncommitted changes!${RESET}\n"
 fi
 
 if [ "$DEPLOY_START_NETWORK_PSK" = "" ]; then
-    echo -e "${YELLOW}Warning: \$DEPLOY_START_NETWORK_PSK not set.${RESET}"
+    printf "${YELLOW}Warning: \$DEPLOY_START_NETWORK_PSK not set.${RESET}\n"
 fi
 if [ "$DEPLOY_ROBOT_NETWORK_PSK" = "" ]; then
-    echo -e "${YELLOW}Warning: \$DEPLOY_ROBOT_NETWORK_PSK not set.${RESET}"
+    printf "${YELLOW}Warning: \$DEPLOY_ROBOT_NETWORK_PSK not set.${RESET}\n"
 fi
 
 start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
@@ -26,7 +26,7 @@ robot_network=1418
 
 function connect {
     if ! [ "$(networksetup -setairportnetwork en0 $1 $2)" = "" ]; then
-        echo -e "${RED}failed.${RESET}"
+        printf "${RED}failed.${RESET}\n"
         exit 1
     else echo "👍"; fi
 }
