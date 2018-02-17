@@ -225,12 +225,12 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.5, -1 * self.direction())
 
-    @timed_state(duration=1.6, next_state='scale_side_raise')
+    @timed_state(duration=1.8, next_state='scale_side_raise')
     def scale_side_windup(self):
         """
         Move backward toward side wall, raising arm.
         """
-        self.drive.move(-0.4, 0)
+        self.drive.move(-0.3, 0)
 
     @timed_state(duration=1.3, next_state='scale_side_approach')
     def scale_side_raise(self):
@@ -280,14 +280,21 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(1, 0)
 
-    @timed_state(duration=0.6, next_state='scale_side_opposite_cross')
+    @timed_state(duration=0.6, next_state='scale_side_opposite_precross')
     def scale_side_opposite_rotate(self):
         """
         Rotate robot to face the opposite wall.
         """
-        self.drive.move(0.3, -0.75 * self.direction())
+        self.drive.move(0.3, -0.9 * self.direction())
 
-    @timed_state(duration=1.9, next_state='scale_side_opposite_curvein')
+    @timed_state(duration=1.7, next_state='scale_side_opposite_cross')
+    def scale_side_opposite_precross(self):
+        """
+        Move back against the wall so we go straight across the field.
+        """
+        self.drive.move(-0.3, 0)
+
+    @timed_state(duration=1.8, next_state='scale_side_opposite_curvein')
     def scale_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the scale.
@@ -302,7 +309,7 @@ class Modular(AutonomousStateMachine):
         """
         Turn against wall.
         """
-        self.drive.move(0.6, 0.7 * self.direction())
+        self.drive.move(0.8, 0.8 * self.direction())
 
     @state
     def scale_opposite_side_swap(self):

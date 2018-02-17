@@ -14,7 +14,7 @@ RESET="\e[0m"
 function task { printf "$1... "; }
 function succ { printf "${GREEN}$1${RESET}\n"}
 function warn { printf "${YELLOW}Warning: $1${RESET}\n" >&2; }
-function err  { printf "${RED}$1${RESET}\n" >&2; }
+function err  { printf "${RED}$1${RESET}\n" >&2; exit 1; }
 
 if ! [ "$(git status --porcelain)" = "" ]; then
     warn "You have uncommitted changes!"
@@ -33,7 +33,6 @@ robot_network=1418
 function connect {
     if ! [ "$(networksetup -setairportnetwork en0 $1 $2)" = "" ]; then
         err "failed."
-        exit 1
     else succ "👍"; fi
 }
 
