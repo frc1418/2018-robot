@@ -8,7 +8,7 @@ class Recorder:
     """
     Record control input for playback as an autonomous mode.
     """
-    directory = tunable('/home/admin/recordings')
+    directory = tunable('/tmp')
     recording_name = tunable('')
 
     frames = []
