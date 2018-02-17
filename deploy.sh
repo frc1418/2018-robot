@@ -33,6 +33,7 @@ start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
 robot_network=1418
 
 function connect {
+    task "Connecting to $1"
     # Even when networksetup fails, exit status will bizarrely be 0.
     # Thus, consider no output success.
     if ! [ "$(networksetup -setairportnetwork en0 $1 $2)" = "" ]; then
@@ -40,8 +41,6 @@ function connect {
     else succ "👍"; fi
 }
 
-task "Connecting to $robot_network"
 connect $robot_network $DEPLOY_ROBOT_NETWORK_PSK
 python3 robot/robot.py deploy
-task "Reconnecting to $start_network"
 connect $start_network $DEPLOY_START_NETWORK_PSK
