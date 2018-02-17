@@ -19,14 +19,15 @@ fi
 start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
 robot_network=1418
 
+function connect {
+    if ! [ "$(networksetup -setairportnetwork en0 $1 $2)" = "" ]; then
+        echo "failed."
+        exit 1
+    else echo "👍"; fi
+}
+
 printf "Connecting to $robot_network... "
-if ! [ "$(networksetup -setairportnetwork en0 $robot_network $DEPLOY_ROBOT_NETWORK_PSK)" = "" ]; then
-    echo "failed."
-    exit 1
-else echo "👍"; fi
+connect $robot_network $DEPLOY_ROBOT_NETWORK_PSK
 python3 robot/robot.py deploy
 printf "Reconnecting to $start_network... "
-if ! [ "$(networksetup -setairportnetwork en0 $start_network $DEPLOY_START_NETWORK_PSK)" = "" ]; then
-    echo "failed."
-    exit 1
-else echo "👍"; fi
+connect $start_network $DEPLOY_START_NETWORK_PSK
