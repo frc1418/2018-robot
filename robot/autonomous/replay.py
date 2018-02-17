@@ -37,7 +37,7 @@ class Replay(AutonomousStateMachine):
 
     @state(first=True)
     def start(self):
-        with open('recordings/%s.json' % self.recording_name, 'r') as f:
+        with open('/tmp/%s.json' % self.recording_name, 'r') as f:
             self.recording = json.load(f)
         self.next_state('run')
 
@@ -50,15 +50,18 @@ class Replay(AutonomousStateMachine):
         """
         # TODO: Rather than manually controlling components, run teleopPeriodic with recorded input.
         self.frame_number += 1
-        fr = self.recording[self.frame_number]
+        if self.frame_number > len(self.recording['frames']) - 1:
+            self.next_state(None)
+
+        fr = self.recording['frames'][self.frame_number]
 
         self.drive.move(-fr['joysticks'][0]['axes'][1] * self.voltage_multiplier,
                         fr['joysticks'][1]['axes'][0] * self.voltage_multiplier)
 
-        if fr['joysticks'][2]['buttons'][1] and not self.recording[self.frame_number - 1]['joysticks'][2]['buttons'][1]:
+        if fr['joysticks'][2]['buttons'][1] and not self.recording['frames'][self.frame_number - 1]['joysticks'][2]['buttons'][1]:
             self.crane.actuate_claw()
 
-        if fr['joysticks'][2]['buttons'][2] and not self.recording[self.frame_number - 1]['joysticks'][2]['buttons'][2]:
+        if fr['joysticks'][2]['buttons'][2] and not self.recording['frames'][self.frame_number - 1]['joysticks'][2]['buttons'][2]:
             self.crane.actuate_forearm()
 
         self.crane.move(-fr['joysticks'][2]['axes'][1] * self.voltage_multiplier)
