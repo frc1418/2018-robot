@@ -13,7 +13,7 @@ EULER="\e^(iπ)+1=0"
 RESET="\e[0m"
 
 function task { printf "${CYAN}$1... ${RESET}"; }
-function succ { printf "${GREEN}$1${RESET}\n"; }
+function succ { printf "${GREEN}success.${RESET}\n"; }
 function warn { printf "${YELLOW}Warning: $1${RESET}\n" >&2; }
 function fail { printf "${RED}failed.${RESET}\n" >&2; exit 1; }
 
