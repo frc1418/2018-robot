@@ -1,7 +1,7 @@
 from pyfrc.physics.drivetrains import four_motor_drivetrain
 
 
-class PhysicsEngine(object):
+class PhysicsEngine():
     """
     Simulates a 4-wheel robot using Tank Drive joystick control
     """
@@ -14,9 +14,6 @@ class PhysicsEngine(object):
         self.controller = controller
         self.controller.add_device_gyro_channel('navxmxp_spi_4_angle')
 
-        self.rf_rotate_encoder = 0
-        self.lf_rotate_encoder = 0
-
     def update_sim(self, hal_data, now, tm_diff):
         """
         Called when the simulation parameters for the program need to be
@@ -26,12 +23,6 @@ class PhysicsEngine(object):
         :param tm_diff: The amount of time that has passed since the last
                             time that this function was called
         """
-
-        try:
-            hal_data['analog_in'][0]['avg_voltage'] = self.lf_rotate_encoder
-            hal_data['analog_in'][2]['avg_voltage'] = self.rf_rotate_encoder
-        except Exception:
-            pass
 
         # LF Motor
         hal_data['CAN'][10]['quad_position'] += hal_data['CAN'][10]['value'] / 1023 * tm_diff * 300000

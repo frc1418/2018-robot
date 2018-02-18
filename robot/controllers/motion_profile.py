@@ -1,19 +1,13 @@
 from collections import deque
 from components import drive
 from ctre import wpi_talonsrx, talonsrx, trajectorypoint
-from math import radians, degrees
 import pathfinder as pf
 from .profile_generator import ProfileGenerator
+from robotpy_ext.misc.precise_delay import PreciseDelay
 from threading import Lock, Condition, Thread
-import time
 import wpilib
 
-# TODO Get actual values
 MAX_VELOCITY = 11
-
-# TODO
-# Also add a file + class to generate trajectories in multiple threads. (or 1)
-# Save these trajectories to files or have them generate when robot is disabled
 
 
 class PositionController:
@@ -23,7 +17,7 @@ class PositionController:
 
     def __init__(self, lf_motor: wpi_talonsrx.TalonSRX, lr_motor, rf_motor, rr_motor, navx):
         """
-        :param lf_motor: The left front motor (Annotated to give the list the annotation)
+        :param lf_motor: The left front motor (Annotated for autocompletion)
         :param lr_motor: The left rear motor
         :param rf_motor: The right front motor
         :param rr_motor: The right rear motor
@@ -82,19 +76,19 @@ class PositionController:
         """
         current_segment = 0
         segments = None
+        delay = PreciseDelay(self.profile_generator.TIME_DIFF)
         while True:
             with self.cond:
-                if self.disabled:
-                    self.cond.wait_for(lambda: not self.disabled)
+                self.cond.wait_for(lambda: not self.disabled)
 
                 if self.current_trajectory is None:
                     for motor in self.motors:
                         motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
-                    if len(self.queued_trajectories) < 1:
-                        self.cond.wait_for(lambda: len(self.queued_trajectories) > 0)
+
+                    self.cond.wait_for(lambda: len(self.queued_trajectories) > 0)
 
                     for motor in self.motors:
-                        motor.set(talonsrx.TalonSRX.ControlMode.MotionProfile, 0)
+                        motor.set(talonsrx.TalonSRX.ControlMode.MotionProfile, 1)
                     self.current_trajectory = self.queued_trajectories.popleft()
                     segments = list(zip(self.current_trajectory[0], self.current_trajectory[1]))
 
@@ -107,6 +101,7 @@ class PositionController:
                     is_last = True
                 elif current_segment >= len(segments):
                     for motor in self.motors:
+                        motor.set(talonsrx.TalonSRX.ControlMode.MotionProfile, 0)
                         motor.clearMotionProfileTrajectories()
 
                     self.current_trajectory = None
@@ -132,7 +127,7 @@ class PositionController:
                         motor.pushMotionProfileTrajectory(right_point)
 
                 current_segment += 1
-                time.sleep(self.profile_generator.TIME_DIFF)
+                delay.wait()
 
     def prepare(self):
         """
@@ -156,18 +151,6 @@ class PositionController:
 
         :param trajectory_name: The name of the trajectory to check.
         """
+        queue_first = None if len(self.queued_trajectories) < 1 else self.queued_trajectories[0]
         return (self.current_trajectory == self.possible_trajectories[trajectory_name] or
-                self.possible_trajectories[trajectory_name] == self.queued_trajectories[0])
-
-    def _bound_half_degrees(self, angle_degrees):
-        """
-        Python implementation of pathfinder boundHalfDegrees method.
-
-        :param angle_degrees: Degrees to bind.
-        """
-        while angle_degrees >= 180.0:
-            angle_degrees -= 360.0
-        while angle_degrees < -180.0:
-            angle_degrees += 360.0
-
-        return angle_degrees
+                self.possible_trajectories[trajectory_name] == queue_first)

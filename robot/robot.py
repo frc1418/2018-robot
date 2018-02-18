@@ -89,11 +89,6 @@ class Panthera(magicbot.MagicRobot):
         # Winch
         self.winch_motors = wpilib.SpeedControllerGroup(wpilib.Victor(7), wpilib.Victor(8))
 
-        # Motion Profiling
-        self.position_controller = motion_profile.PositionController()
-        self.left_encoder = wpilib.Encoder(0, 1)
-        self.right_encoder = wpilib.Encoder(2, 3)
-
         # Arm
         self.elevator = wpilib.Victor(5)
         self.forearm = wpilib.DoubleSolenoid(2, 3)
@@ -105,7 +100,7 @@ class Panthera(magicbot.MagicRobot):
 
         # Motion Profiling
         self.pos_controller = motion_profile.PositionController(self.lf_motor, self.lr_motor, self.rf_motor,
-                                                 self.rr_motor, self.navx)
+                                                                self.rr_motor, self.navx)
         self.right_encoder = wpilib.Encoder(0, 1)
         self.left_encoder = wpilib.Encoder(2, 3)
 
@@ -164,12 +159,12 @@ class Panthera(magicbot.MagicRobot):
         Executed when teleoperated mode begins.
         """
         self.compressor.start()
+        self.pos_controller.disabled = True
+
         self.lf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
         self.rf_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
         self.lr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
         self.rr_motor.set(talonsrx.TalonSRX.ControlMode.PercentOutput, 0)
-
-        self.pos_controller.disabled = True
 
     def teleopPeriodic(self):
         """

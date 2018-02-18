@@ -28,8 +28,4 @@ class MotionProfilingTest(AutonomousStateMachine):
             self.pos_controller.move_along('test')
 
         if not self.pos_controller.isRunning('test'):
-            self.next_state('stop')
-
-    @state
-    def stop(self):
-        pass
+            self.done()
