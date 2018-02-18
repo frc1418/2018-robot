@@ -17,7 +17,7 @@ class Replay(AutonomousStateMachine):
 
     voltage = ntproperty('/robot/voltage', 1)
 
-    recording_name = tunable('')
+    source = tunable('')
     recording = None
 
     @property
@@ -34,14 +34,15 @@ class Replay(AutonomousStateMachine):
             return None
         return self.voltage / self.recording['voltage']
 
-    @state(first=True)
-    def start(self):
-        with open('/tmp/%s.json' % self.recording_name, 'r') as f:
+    def on_enable(self):
+        """
+        Read recorded data from file and prepare to run autonomous.
+        """
+        with open('/tmp/%s.json' % self.source, 'r') as f:
             self.recording = json.load(f)
         self.frame_number = 0
-        self.next_state('run')
 
-    @state
+    @state(first=True)
     def run(self):
         """
         Execute recorded instructions.
