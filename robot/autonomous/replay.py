@@ -19,7 +19,6 @@ class Replay(AutonomousStateMachine):
 
     recording_name = tunable('')
     recording = None
-    frame_number = 0
 
     @property
     def voltage_multiplier(self):
@@ -39,6 +38,7 @@ class Replay(AutonomousStateMachine):
     def start(self):
         with open('/tmp/%s.json' % self.recording_name, 'r') as f:
             self.recording = json.load(f)
+        self.frame_number = 0
         self.next_state('run')
 
     @timed_state(duration=15)

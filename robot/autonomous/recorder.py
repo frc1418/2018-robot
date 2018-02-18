@@ -30,6 +30,7 @@ class Recorder:
         self.frames.append({
             'joysticks': [{
                 'axes': [joystick.getRawAxis(axs) for axs in range(joystick.getAxisCount())],
+                # TODO: Buttons are one-indexed. Trying to interact with the 0th button will throw.
                 'buttons': [joystick.getRawButton(btn) for btn in range(joystick.getButtonCount())],
                 'pov': [joystick.getPOV(pov) for pov in range(joystick.getPOVCount())],
             } for joystick in joysticks]
