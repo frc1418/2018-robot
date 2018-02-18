@@ -1,4 +1,4 @@
-from magicbot.state_machine import state, timed_state, AutonomousStateMachine
+from magicbot.state_machine import state, AutonomousStateMachine
 from magicbot import tunable
 from networktables.util import ntproperty
 from components import drive, crane
