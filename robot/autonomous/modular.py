@@ -173,27 +173,70 @@ class Modular(AutonomousStateMachine):
         """
         self.next_state('switch_middle_advance_initial')
 
-    @timed_state(duration=1.2, next_state='switch_middle_advance_final')
+    @timed_state(duration=1.1, next_state='switch_middle_advance_final')
     def switch_middle_advance_initial(self):
         """
         Get off wall and turn toward correct goal.
         """
         self.drive.move(0.6, 0.3 * self.direction())
 
-    @timed_state(duration=1.3, next_state='switch_middle_drop')
+    @timed_state(duration=1.4, next_state='switch_middle_drop')
     def switch_middle_advance_final(self):
         """
         Turn back to switch and approach.
         """
-        self.crane.move(0.6)
-        self.drive.move(0.7, -1 * self.direction())
+        self.crane.move(0.5)
+        self.drive.move(0.5, -0.5 * self.direction())
 
-    @timed_state(duration=0.5)
+    @timed_state(duration=0.5, next_state='switch_middle_rewind_initial')
     def switch_middle_drop(self):
         """
         Drop in switch from middle position.
         """
         self.crane.release()
+
+    @timed_state(duration=0.95, next_state='switch_middle_rewind_final')
+    def switch_middle_rewind_initial(self):
+        """
+        Go backward and end up in the middle to prepare for grabbing second cube.
+        """
+        self.drive.move(-0.7, 0.65 * self.direction())
+
+    @timed_state(duration=1.4, next_state='switch_middle_second_align')
+    def switch_middle_rewind_final(self):
+        """
+        Go backward and end up in the middle to prepare for grabbing second cube.
+        """
+        self.drive.move(-0.4, -0.4 * self.direction())
+
+    @timed_state(duration=0.6, next_state='switch_middle_second_approach')
+    def switch_middle_second_align(self):
+        """
+        Push against wall to get in line.
+        """
+        self.drive.move(-0.3, 0)
+
+    @timed_state(duration=1.6, next_state='switch_middle_second_extend')
+    def switch_middle_second_approach(self):
+        """
+        Approach second cube before grabbing.
+        """
+        self.drive.move(0.3, 0)
+
+    @timed_state(duration=0.5, next_state='switch_middle_second_grip')
+    def switch_middle_second_extend(self):
+        """
+        Extend forearm to grab second cube.
+        """
+        self.crane.extend_forearm()
+
+    @timed_state(duration=1.5, next_state='switch_middle_start')
+    def switch_middle_second_grip(self):
+        """
+        Drop and go backward, get in position for final approach.
+        """
+        self.crane.grip()
+        self.drive.move(-0.3, 0)
 
     ########
     # SCALE
@@ -218,21 +261,21 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(1, 0)
 
-    @timed_state(duration=0.7, next_state='scale_side_windup')
+    @timed_state(duration=0.6, next_state='scale_side_windup')
     def scale_side_rotate(self):
         """
         Turn towards scale.
         """
         self.drive.move(0.5, -1 * self.direction())
 
-    @timed_state(duration=1.8, next_state='scale_side_raise')
+    @timed_state(duration=2.1, next_state='scale_side_raise')
     def scale_side_windup(self):
         """
         Move backward toward side wall, raising arm.
         """
-        self.drive.move(-0.3, 0)
+        self.drive.move(-0.2, 0)
 
-    @timed_state(duration=1.3, next_state='scale_side_approach')
+    @timed_state(duration=1.2, next_state='scale_side_approach')
     def scale_side_raise(self):
         """
         Raise arm before scoring.
@@ -304,7 +347,7 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.8, 0)
 
-    @timed_state(duration=1.6, next_state='scale_opposite_side_swap')
+    @timed_state(duration=1.3, next_state='scale_opposite_side_swap')
     def scale_side_opposite_curvein(self):
         """
         Turn against wall.
