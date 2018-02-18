@@ -24,9 +24,8 @@ import wpilib.drive
 
 from wpilib.buttons import JoystickButton
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from autonomous import recorder
 from components import drive, winch, crane
-from controllers import motion_profile
+from controllers import motion_profile, recorder
 from magicbot import tunable
 
 from robotpy_ext.common_drivers import navx, pressure_sensors
