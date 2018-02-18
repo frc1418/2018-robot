@@ -49,10 +49,6 @@ class Replay(AutonomousStateMachine):
         TODO: No real reason for this to be stateful.
         """
         # TODO: Rather than manually controlling components, run teleopPeriodic with recorded input.
-        self.frame_number += 1
-        if self.frame_number > len(self.recording['frames']) - 1:
-            self.next_state(None)
-
         fr = self.recording['frames'][self.frame_number]
 
         self.drive.move(-fr['joysticks'][0]['axes'][1] * self.voltage_multiplier,
@@ -65,3 +61,7 @@ class Replay(AutonomousStateMachine):
             self.crane.actuate_forearm()
 
         self.crane.move(-fr['joysticks'][2]['axes'][1] * self.voltage_multiplier)
+
+        self.frame_number += 1
+        if self.frame_number == len(self.recording['frames']):
+            self.done()
