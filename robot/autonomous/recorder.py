@@ -9,7 +9,7 @@ class Recorder:
     Record control input for playback as an autonomous mode.
     """
     directory = tunable('/tmp')
-    recording_name = tunable('')
+    title = tunable('')
 
     frames = []
 
@@ -42,7 +42,7 @@ class Recorder:
         """
         with open('{directory}/{filename}.json'.format(
                   directory=self.directory,
-                  filename=self.recording_name if self.recording_name else int(time.time())), 'w+') as f:
+                  filename=self.title if self.title else int(time.time())), 'w+') as f:
             json.dump({
                 'voltage': self.voltage,
                 'frames': self.frames,
