@@ -41,7 +41,7 @@ class Replay(AutonomousStateMachine):
         self.frame_number = 0
         self.next_state('run')
 
-    @timed_state(duration=15)
+    @state
     def run(self):
         """
         Execute recorded instructions.
