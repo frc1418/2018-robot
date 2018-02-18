@@ -304,7 +304,7 @@ class Modular(AutonomousStateMachine):
         """
         Retract crane and move away from plate.
         """
-        self.drive.move(-0.6, 1.0 * self.direction())
+        self.drive.move(-0.6, 1.0 * self.direction(target=SCALE))
         self.crane.move(0.2)
 
     @timed_state(duration=2)
@@ -347,23 +347,11 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.8, 0)
 
-    @timed_state(duration=1.3, next_state='scale_opposite_side_swap')
+    @timed_state(duration=1.3, next_state='scale_side_windup')
     def scale_side_opposite_curvein(self):
         """
         Turn against wall.
+
+        Continue with normal side scale autonomous rather than duplicating it here.
         """
         self.drive.move(0.8, 0.8 * self.direction())
-
-    @state
-    def scale_opposite_side_swap(self):
-        """
-        Switch our position and continue.
-
-        Rather than rewriting the drop process, we'll use this to get into
-        position, then begin windup as usual.
-        """
-        if self.position == 'left':
-            self.position = 'right'
-        elif self.position == 'right':
-            self.position = 'left'
-        self.next_state('scale_side_windup')
