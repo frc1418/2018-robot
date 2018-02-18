@@ -21,7 +21,7 @@ class Replay(AutonomousStateMachine):
     recording = None
 
     @property
-    def voltage_multiplier(self):
+    def compensation(self):
         """
         Get factor by which to multiply motor speeds to account for battery depletion.
 
@@ -30,8 +30,6 @@ class Replay(AutonomousStateMachine):
 
         :return: Number by which to multiply motor speeds.
         """
-        if self.recording is None:
-            return None
         return self.voltage / self.recording['voltage']
 
     def on_enable(self):
@@ -40,29 +38,26 @@ class Replay(AutonomousStateMachine):
         """
         with open('/tmp/%s.json' % self.source, 'r') as f:
             self.recording = json.load(f)
-        self.frame_number = 0
+        self.frame = 0
 
     @state(first=True)
     def run(self):
         """
         Execute recorded instructions.
-
-        TODO: No real reason for this to be stateful.
         """
         # TODO: Rather than manually controlling components, run teleopPeriodic with recorded input.
-        fr = self.recording['frames'][self.frame_number]
 
-        self.drive.move(-fr['joysticks'][0]['axes'][1] * self.voltage_multiplier,
-                        fr['joysticks'][1]['axes'][0] * self.voltage_multiplier)
+        self.drive.move(-self.recording['frames'][self.frame]['joysticks'][0]['axes'][1] * self.compensation,
+                        self.recording['frames'][self.frame]['joysticks'][1]['axes'][0] * self.compensation)
 
-        if fr['joysticks'][2]['buttons'][1] and not self.recording['frames'][self.frame_number - 1]['joysticks'][2]['buttons'][1]:
+        if self.recording['frames'][self.frame]['joysticks'][2]['buttons'][1] and not self.recording['frames'][self.frame - 1]['joysticks'][2]['buttons'][1]:
             self.crane.actuate_claw()
 
-        if fr['joysticks'][2]['buttons'][2] and not self.recording['frames'][self.frame_number - 1]['joysticks'][2]['buttons'][2]:
+        if self.recording['frames'][self.frame]['joysticks'][2]['buttons'][2] and not self.recording['frames'][self.frame - 1]['joysticks'][2]['buttons'][2]:
             self.crane.actuate_forearm()
 
-        self.crane.move(-fr['joysticks'][2]['axes'][1] * self.voltage_multiplier)
+        self.crane.move(-self.recording['frames'][self.frame]['joysticks'][2]['axes'][1] * self.compensation)
 
-        self.frame_number += 1
-        if self.frame_number == len(self.recording['frames']):
+        self.frame += 1
+        if self.frame == len(self.recording['frames']):
             self.done()
