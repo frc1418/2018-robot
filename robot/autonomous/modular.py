@@ -1,5 +1,5 @@
 from magicbot.state_machine import state, timed_state, AutonomousStateMachine
-from components import drive, crane
+from components import drive, arm
 from magicbot import tunable
 from networktables.util import ntproperty
 
@@ -16,7 +16,7 @@ class Modular(AutonomousStateMachine):
     DEFAULT = False
 
     drive = drive.Drive
-    crane = crane.Crane
+    arm = arm.Arm
 
     position = ntproperty('/autonomous/position', '')
     plates = ntproperty('/robot/plates', '')
@@ -57,7 +57,7 @@ class Modular(AutonomousStateMachine):
         """
         Decide how to begin the autonomous.
         """
-        self.crane.grip()
+        self.arm.grip()
         if self.optimize:
             if self.position == 'middle':
                 # If in the middle, score on appropriate side of switch.
@@ -105,7 +105,7 @@ class Modular(AutonomousStateMachine):
         """
         Rotate robot to face the switch.
         """
-        self.crane.move(0.7)
+        self.arm.move(0.7)
         self.drive.move(0.4, -1.0 * self.direction())
 
     @timed_state(duration=0.5, next_state='switch_side_retreat')
@@ -113,7 +113,7 @@ class Modular(AutonomousStateMachine):
         """
         Drop preloaded cube in switch.
         """
-        self.crane.release()
+        self.arm.release()
 
     @timed_state(duration=1.6)
     def switch_side_retreat(self):
@@ -152,7 +152,7 @@ class Modular(AutonomousStateMachine):
         """
         Turn against wall.
         """
-        self.crane.move(0.6)
+        self.arm.move(0.6)
         self.drive.move(0.5, -1 * self.direction())
 
     @timed_state(duration=0.5)
@@ -160,7 +160,7 @@ class Modular(AutonomousStateMachine):
         """
         Drop preloaded cube in switch.
         """
-        self.crane.release()
+        self.arm.release()
 
     ########
     # SWITCH
@@ -185,7 +185,7 @@ class Modular(AutonomousStateMachine):
         """
         Turn back to switch and approach.
         """
-        self.crane.move(0.5)
+        self.arm.move(0.5)
         self.drive.move(0.5, -0.5 * self.direction())
 
     @timed_state(duration=0.5, next_state='switch_middle_rewind_initial')
@@ -193,7 +193,7 @@ class Modular(AutonomousStateMachine):
         """
         Drop in switch from middle position.
         """
-        self.crane.release()
+        self.arm.release()
 
     @timed_state(duration=0.95, next_state='switch_middle_rewind_final')
     def switch_middle_rewind_initial(self):
@@ -228,14 +228,14 @@ class Modular(AutonomousStateMachine):
         """
         Extend forearm to grab second cube.
         """
-        self.crane.extend_forearm()
+        self.arm.extend_forearm()
 
     @timed_state(duration=1.5, next_state='switch_middle_start')
     def switch_middle_second_grip(self):
         """
         Drop and go backward, get in position for final approach.
         """
-        self.crane.grip()
+        self.arm.grip()
         self.drive.move(-0.3, 0)
 
     ########
@@ -280,15 +280,15 @@ class Modular(AutonomousStateMachine):
         """
         Raise arm before scoring.
         """
-        self.crane.move(0.7)
+        self.arm.move(0.7)
 
     @timed_state(duration=0.9, next_state='scale_side_drop')
     def scale_side_approach(self):
         """
         Approach scale from side before scoring.
         """
-        self.crane.extend_forearm()
-        self.crane.move(0.2)
+        self.arm.extend_forearm()
+        self.arm.move(0.2)
         self.drive.move(0.3, 0)
 
     @timed_state(duration=1, next_state='scale_side_retreat')
@@ -296,24 +296,24 @@ class Modular(AutonomousStateMachine):
         """
         Drop cube on scale.
         """
-        self.crane.move(0.1)
-        self.crane.release()
+        self.arm.move(0.1)
+        self.arm.release()
 
     @timed_state(duration=1, next_state='scale_side_retract')
     def scale_side_retreat(self):
         """
-        Retract crane and move away from plate.
+        Retract arm and move away from plate.
         """
         self.drive.move(-0.6, 1.0 * self.direction(target=SCALE))
-        self.crane.move(0.2)
+        self.arm.move(0.2)
 
     @timed_state(duration=2)
     def scale_side_retract(self):
         """
         Move back toward driverstation in preparation for teleop.
         """
-        self.crane.retract_forearm()
-        self.crane.move(-0.2)
+        self.arm.retract_forearm()
+        self.arm.move(-0.2)
 
     # FOR SCORING ON OPPOSITE SIDE
     @timed_state(duration=1.8, next_state='scale_side_opposite_rotate')
