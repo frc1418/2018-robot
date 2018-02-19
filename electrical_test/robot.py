@@ -27,6 +27,8 @@ class TestRobot(magicbot.MagicRobot):
         self.drive = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_victor, self.lr_victor, self.lf_talon, self.lr_talon),
                                                     wpilib.SpeedControllerGroup(self.rf_victor, self.rr_victor, self.rf_talon, self.rr_talon))
 
+        wpilib.CameraServer.launch()
+
     def teleopPeriodic(self):
         """
         Spin all motors at full speed.
