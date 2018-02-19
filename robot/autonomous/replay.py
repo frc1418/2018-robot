@@ -1,7 +1,7 @@
 from magicbot.state_machine import state, AutonomousStateMachine
 from magicbot import tunable
 from networktables.util import ntproperty
-from components import drive, crane
+from components import drive, arm
 import json
 
 
@@ -13,7 +13,7 @@ class Replay(AutonomousStateMachine):
     DEFAULT = False
 
     drive: drive.Drive
-    crane: crane.Crane
+    arm: arm.Arm
 
     voltage = ntproperty('/robot/voltage', 1)
 
@@ -51,12 +51,12 @@ class Replay(AutonomousStateMachine):
                         self.recording['frames'][self.frame]['joysticks'][1]['axes'][0] * self.compensation)
 
         if self.recording['frames'][self.frame]['joysticks'][2]['buttons'][1] and not self.recording['frames'][self.frame - 1]['joysticks'][2]['buttons'][1]:
-            self.crane.actuate_claw()
+            self.arm.actuate_claw()
 
         if self.recording['frames'][self.frame]['joysticks'][2]['buttons'][2] and not self.recording['frames'][self.frame - 1]['joysticks'][2]['buttons'][2]:
-            self.crane.actuate_forearm()
+            self.arm.actuate_forearm()
 
-        self.crane.move(-self.recording['frames'][self.frame]['joysticks'][2]['axes'][1] * self.compensation)
+        self.arm.move(-self.recording['frames'][self.frame]['joysticks'][2]['axes'][1] * self.compensation)
 
         self.frame += 1
         if self.frame == len(self.recording['frames']):
