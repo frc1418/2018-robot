@@ -3,7 +3,7 @@ from magicbot import will_reset_to
 from magicbot import tunable
 
 
-class Crane:
+class Arm:
     """
     Operate robot arm (all components).
     """
@@ -27,7 +27,7 @@ class Crane:
         """
         Move arm upward.
 
-        Used when controlling crane through buttons.
+        Used when controlling arm through buttons.
         """
         self._elevator_speed = 1 * self.motion_constant
 
@@ -35,7 +35,7 @@ class Crane:
         """
         Move arm downward.
 
-        Used when controlling crane through buttons.
+        Used when controlling arm through buttons.
         """
         self._elevator_speed = -1 * self.motion_constant
 

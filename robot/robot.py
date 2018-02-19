@@ -24,7 +24,7 @@ import wpilib.drive
 
 from wpilib.buttons import JoystickButton
 from robotpy_ext.control.button_debouncer import ButtonDebouncer
-from components import drive, winch, crane
+from components import drive, winch, arm
 from controllers import motion_profile, recorder
 from magicbot import tunable
 
@@ -35,7 +35,7 @@ from ctre.wpi_talonsrx import WPI_TalonSRX
 class Panthera(magicbot.MagicRobot):
     drive: drive.Drive
     winch: winch.Winch
-    crane: crane.Crane
+    arm: arm.Arm
 
     recorder: recorder.Recorder
 
@@ -93,7 +93,7 @@ class Panthera(magicbot.MagicRobot):
         # Motion Profiling
         self.position_controller = motion_profile.PositionController()
 
-        # Crane
+        # Arm
         self.elevator = wpilib.Victor(5)
         self.forearm = wpilib.DoubleSolenoid(2, 3)
         self.claw = wpilib.DoubleSolenoid(0, 1)
@@ -169,20 +169,20 @@ class Panthera(magicbot.MagicRobot):
         if self.btn_climb.get() or self.btn_climb_alt.get():
             self.winch.run()
 
-        # Crane
+        # Arm
         if (self.btn_claw.get() and self.unified_control) or self.btn_claw_alt.get():
-            self.crane.actuate_claw()
+            self.arm.actuate_claw()
 
         if (self.btn_forearm.get() and self.unified_control) or self.btn_forearm_alt.get():
-            self.crane.actuate_forearm()
+            self.arm.actuate_forearm()
 
-        self.crane.move(-self.joystick_alt.getY())
+        self.arm.move(-self.joystick_alt.getY())
 
         if self.unified_control:
             if self.btn_up.get():
-                self.crane.up()
+                self.arm.up()
             if self.btn_down.get():
-                self.crane.down()
+                self.arm.down()
 
         if self.btn_record.get():
             if self.recording:
