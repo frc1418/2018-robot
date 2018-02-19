@@ -48,6 +48,7 @@ class Recorder:
                 'frames': self.frames,
             }, f)
 
+        self.title = ''
         self.voltage = None
         self.frames = []
 
