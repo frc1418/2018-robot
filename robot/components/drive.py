@@ -23,7 +23,7 @@ class Drive:
 
     def setup(self):
         """
-        Set control threshold.
+        Set input threshold.
         """
         self.train.setDeadband(0.1)
 

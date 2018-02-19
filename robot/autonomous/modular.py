@@ -228,7 +228,7 @@ class Modular(AutonomousStateMachine):
         """
         Extend forearm to grab second cube.
         """
-        self.arm.extend_forearm()
+        self.arm.extend()
 
     @timed_state(duration=1.5, next_state='switch_middle_start')
     def switch_middle_second_grip(self):
@@ -287,7 +287,7 @@ class Modular(AutonomousStateMachine):
         """
         Approach scale from side before scoring.
         """
-        self.arm.extend_forearm()
+        self.arm.extend()
         self.arm.move(0.2)
         self.drive.move(0.3, 0)
 
@@ -312,7 +312,7 @@ class Modular(AutonomousStateMachine):
         """
         Move back toward driverstation in preparation for teleop.
         """
-        self.arm.retract_forearm()
+        self.arm.retract()
         self.arm.move(-0.2)
 
     # FOR SCORING ON OPPOSITE SIDE
