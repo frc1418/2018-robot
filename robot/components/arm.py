@@ -39,13 +39,13 @@ class Arm:
         """
         self._elevator_speed = -1 * self.motion_constant
 
-    def extend_forearm(self):
+    def extend(self):
         """
         Extend forearm.
         """
         self.forearm.set(2)
 
-    def retract_forearm(self):
+    def retract(self):
         """
         Retract forearm.
         """
