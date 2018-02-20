@@ -18,6 +18,7 @@ function fail { printf "${RED}failed.${RESET}\n" >&2; exit 1; }
 
 # Default options
 reconnect=false
+if ifconfig en3 >/dev/null 2>&1; then ethernet=true; else ethernet=false; fi
 
 # Parse flags
 while getopts "r" opt; do
@@ -40,6 +41,7 @@ start_network=$(networksetup -getairportnetwork en0 | cut -d ' ' -f 4)
 robot_network=1418
 
 function connect {
+    if $ethernet; then return; fi
     if [ $start_network = $robot_network ]; then return; fi
     task "Connecting to $1"
     # Even when networksetup fails, exit status will bizarrely be 0.
