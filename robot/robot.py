@@ -131,6 +131,8 @@ class Panthera(magicbot.MagicRobot):
         # More information: http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details
         self.plates = self.ds.getGameSpecificMessage()
 
+        self.compressor.stop()
+
         # Call autonomous
         super().autonomous()
 
@@ -153,7 +155,7 @@ class Panthera(magicbot.MagicRobot):
         """
         Executed when teleoperated mode begins.
         """
-        pass
+        self.compressor.start()
 
     def teleopPeriodic(self):
         """
