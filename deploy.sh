@@ -16,6 +16,16 @@ function succ { printf "${GREEN}success.${RESET}\n"; }
 function warn { printf "${YELLOW}Warning: $1${RESET}\n" >&2; }
 function fail { printf "${RED}failed.${RESET}\n" >&2; exit 1; }
 
+reconnect=false
+
+while getopts "r" opt; do
+    case "$opt" in
+    r)
+        reconnect=true
+        ;;
+    esac
+done
+
 if [ -n "$(git status --porcelain)" ]; then
     warn "You have uncommitted changes!"
     git status --short
