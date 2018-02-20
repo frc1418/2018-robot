@@ -21,10 +21,13 @@ reconnect=false
 if ifconfig en3 >/dev/null 2>&1; then ethernet=true; else ethernet=false; fi
 
 # Parse flags
-while getopts "r" opt; do
+while getopts "rw" opt; do
     case "$opt" in
     r)
         reconnect=true
+        ;;
+    w)
+        ethernet=false
         ;;
     esac
 done
