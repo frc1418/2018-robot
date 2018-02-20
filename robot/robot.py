@@ -28,7 +28,7 @@ from components import drive, winch, arm
 from controllers import motion_profile, recorder
 from magicbot import tunable
 
-from robotpy_ext.common_drivers import navx, pressure_sensors
+from robotpy_ext.common_drivers import navx
 from ctre.wpi_talonsrx import WPI_TalonSRX
 
 
@@ -41,7 +41,6 @@ class Panthera(magicbot.MagicRobot):
 
     time = tunable(0)
     plates = tunable('')
-    pressure = tunable(0)
     voltage = tunable(0)
     rotation = tunable(0)
 
@@ -106,7 +105,6 @@ class Panthera(magicbot.MagicRobot):
         self.ds = wpilib.DriverStation.getInstance()
         self.timer = wpilib.Timer()
         self.pdp = wpilib.PowerDistributionPanel(0)
-        self.pressure_sensor = pressure_sensors.REVAnalogPressureSensor(5)
         self.compressor = wpilib.Compressor()
 
         # Camera server
@@ -117,7 +115,6 @@ class Panthera(magicbot.MagicRobot):
         Executed periodically regardless of mode.
         """
         self.time = int(self.timer.getMatchTime())
-        self.pressure = self.pressure_sensor.pressure
         self.voltage = self.pdp.getVoltage()
         self.rotation = self.navx.getAngle() % 360
 
