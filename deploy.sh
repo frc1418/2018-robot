@@ -16,8 +16,10 @@ function succ { printf "${GREEN}success.${RESET}\n"; }
 function warn { printf "${YELLOW}Warning: $1${RESET}\n" >&2; }
 function fail { printf "${RED}failed.${RESET}\n" >&2; exit 1; }
 
+# Default options
 reconnect=false
 
+# Parse flags
 while getopts "r" opt; do
     case "$opt" in
     r)
@@ -47,4 +49,4 @@ function connect {
 
 connect $robot_network $DEPLOY_ROBOT_NETWORK_PSK
 python3 robot/robot.py deploy
-connect $start_network $DEPLOY_START_NETWORK_PSK
+if $reconnect; then connect $start_network $DEPLOY_START_NETWORK_PSK; fi
