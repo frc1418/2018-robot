@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 # You should set the following environment variables:
 #   $DEPLOY_START_NETWORK_PSK: Password/PSK of your current network
