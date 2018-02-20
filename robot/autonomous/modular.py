@@ -185,7 +185,7 @@ class Modular(AutonomousStateMachine):
         """
         Get off wall and turn toward correct goal.
         """
-        self.drive.move(0.8, 0.4 * self.direction())
+        self.drive.move(0.8, 0.3 * self.direction())
 
     @timed_state(duration=1.4, next_state='switch_middle_drop')
     def switch_middle_advance_final(self):
@@ -193,35 +193,21 @@ class Modular(AutonomousStateMachine):
         Turn back to switch and approach.
         """
         self.arm.move(0.5)
-        self.drive.move(0.5, -0.5 * self.direction())
+        self.drive.move(0.5, -0.4 * self.direction())
 
-    @timed_state(duration=0.5, next_state='switch_middle_rewind_initial')
+    @timed_state(duration=0.5, next_state='switch_middle_rewind')
     def switch_middle_drop(self):
         """
         Drop in switch from middle position.
         """
         self.arm.release()
 
-    @timed_state(duration=0.9, next_state='switch_middle_rewind_final')
-    def switch_middle_rewind_initial(self):
+    @timed_state(duration=1)
+    def switch_middle_rewind(self):
         """
         Go backward and end up in the middle to prepare for grabbing second cube.
         """
-        self.drive.move(-0.5, 0.6 * self.direction())
-
-    @timed_state(duration=1.6, next_state='switch_middle_second_align')
-    def switch_middle_rewind_final(self):
-        """
-        Go backward and end up in the middle to prepare for grabbing second cube.
-        """
-        self.drive.move(-0.5, -0.3 * self.direction())
-
-    @timed_state(duration=1, next_state='switch_middle_second_approach')
-    def switch_middle_second_align(self):
-        """
-        Push against wall to get in line.
-        """
-        self.drive.move(-0.1, 0)
+        self.drive.move(-0.4, 0)
 
     ########
     # SCALE
