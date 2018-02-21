@@ -44,6 +44,17 @@ class Modular(AutonomousStateMachine):
             if self.plates[target] == 'R':
                 return 1
 
+    def target_direction(self, target=SWITCH):
+        """
+        Return directional multiplier based on TARGET ownership.
+
+        :param target: ID of target obstacle.
+        """
+        if self.plates[target] == 'L':
+            return -1
+        elif self.plates[target] == 'R':
+            return 1
+
     def correct_side(self, target=SWITCH):
         """
         Return whether robot is on correct side to score on given target.
