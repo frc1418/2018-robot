@@ -286,8 +286,8 @@ class Modular(AutonomousStateMachine):
         """
         Retract arm and move away from plate.
         """
-        # TODO: Turning wrong way on right when crossing
-        self.drive.move(-0.6, 0.7 * self.direction(target=SCALE))
+        # TODO: Check for inversion
+        self.drive.move(-0.6, 0.7 * self.target_direction(target=SCALE))
         self.arm.move(0.2)
 
     @timed_state(duration=2)
