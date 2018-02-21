@@ -159,7 +159,7 @@ class Modular(AutonomousStateMachine):
         """
         Turn against wall.
         """
-        self.arm.move(0.8)
+        self.arm.move(0.6)
         self.drive.move(0.3, -1 * self.direction())
 
     @timed_state(duration=0.5)
@@ -192,7 +192,7 @@ class Modular(AutonomousStateMachine):
         """
         Turn back to switch and approach.
         """
-        self.arm.move(0.5)
+        self.arm.move(0.6)
         self.drive.move(0.5, -0.4 * self.direction())
 
     @timed_state(duration=0.5, next_state='switch_middle_rewind')
@@ -260,7 +260,7 @@ class Modular(AutonomousStateMachine):
         """
         self.arm.extend()
         self.arm.move(0.2)
-        self.drive.move(0.3, 0)
+        self.drive.move(0.25, 0)
 
     @timed_state(duration=1, next_state='scale_side_retreat')
     def scale_side_drop(self):
@@ -276,7 +276,7 @@ class Modular(AutonomousStateMachine):
         Retract arm and move away from plate.
         """
         # TODO: Turning wrong way on right when crossing
-        self.drive.move(-0.6, 0.7 * -self.direction(target=SCALE))
+        self.drive.move(-0.6, 0.7 * self.direction(target=SCALE))
         self.arm.move(0.2)
 
     @timed_state(duration=2)
@@ -327,3 +327,5 @@ class Modular(AutonomousStateMachine):
         Continue with normal side scale autonomous rather than duplicating it here.
         """
         self.drive.move(0.8, 0.5 * self.direction())
+        # TODO: Can cause issues if rerun
+        self.position = 'left' if self.position == 'right' else 'right'
