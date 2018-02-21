@@ -338,5 +338,3 @@ class Modular(AutonomousStateMachine):
         Continue with normal side scale autonomous rather than duplicating it here.
         """
         self.drive.move(0.8, 0.5 * self.direction())
-        # TODO: Can cause issues if rerun
-        self.position = 'left' if self.position == 'right' else 'right'
