@@ -31,10 +31,10 @@ class PhysicsEngine():
         """
 
         # Simulate the drivetrain
-        lf_motor = hal_data['CAN'][10]['value']
-        lr_motor = hal_data['CAN'][15]['value']
-        rf_motor = hal_data['CAN'][20]['value']
-        rr_motor = hal_data['CAN'][25]['value']
+        lf_motor = hal_data['CAN'][10]['value'] / 1023
+        lr_motor = hal_data['CAN'][15]['value'] / 1023
+        rf_motor = hal_data['CAN'][20]['value'] / 1023
+        rr_motor = hal_data['CAN'][25]['value'] / 1023
 
         speed, rotation = self.drivetrain.get_vector(-lr_motor, -rr_motor, -lf_motor, -rf_motor)
 
