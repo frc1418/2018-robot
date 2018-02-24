@@ -324,9 +324,6 @@ class Modular(AutonomousStateMachine):
     def scale_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the scale.
-
-        During this state, we should ideally plow into the line of cubes and
-        get in position to drop the cube.
         """
         self.drive.move(0.8, 0)
 
