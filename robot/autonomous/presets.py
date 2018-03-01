@@ -66,10 +66,6 @@ class ScaleRight(Scale, Right):
     MODE_NAME = 'ScaleRight'
 
 
-class OptimumMiddle(Optimum, Middle):
-    MODE_NAME = 'OptimumMiddle'
-
-
 class OptimumSwitchLeft(OptimumSwitch, Left):
     MODE_NAME = 'OptimumSwitchLeft'
 
