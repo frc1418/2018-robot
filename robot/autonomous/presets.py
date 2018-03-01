@@ -16,6 +16,22 @@ class Optimum(Modular):
     Given the position of the robot, choose the best path.
     """
     optimize = True
+    switch = False
+    scale = False
+
+
+class OptimumSwitch(Optimum, Switch):
+    """
+    Optimize, with priority for switch.
+    """
+    pass
+
+
+class OptimumScale(Optimum, Scale):
+    """
+    Optimize, with priority for scale.
+    """
+    pass
 
 
 class Left(Modular):
@@ -50,13 +66,21 @@ class ScaleRight(Scale, Right):
     MODE_NAME = 'ScaleRight'
 
 
-class OptimumLeft(Optimum, Left):
-    MODE_NAME = 'OptimumLeft'
-
-
 class OptimumMiddle(Optimum, Middle):
     MODE_NAME = 'OptimumMiddle'
 
 
-class OptimumRight(Optimum, Right):
-    MODE_NAME = 'OptimumRight'
+class OptimumSwitchLeft(OptimumSwitch, Left):
+    MODE_NAME = 'OptimumSwitchLeft'
+
+
+class OptimumSwitchRight(OptimumSwitch, Right):
+    MODE_NAME = 'OptimumSwitchRight'
+
+
+class OptimumScaleLeft(OptimumScale, Left):
+    MODE_NAME = 'OptimumScaleLeft'
+
+
+class OptimumScaleRight(OptimumScale, Right):
+    MODE_NAME = 'OptimumScaleRight'
