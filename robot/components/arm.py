@@ -79,13 +79,13 @@ class Arm:
         """
         Extend forearm.
         """
-        self.forearm.set(2)
+        self.forearm.set(wpilib.DoubleSolenoid.Value.kForward)
 
     def retract(self):
         """
         Retract forearm.
         """
-        self.forearm.set(1)
+        self.forearm.set(wpilib.DoubleSolenoid.Value.kReverse)
 
     def actuate_forearm(self):
         """
@@ -100,13 +100,13 @@ class Arm:
         """
         Grip cube in claw.
         """
-        self.claw.set(2)
+        self.claw.set(wpilib.DoubleSolenoid.Value.kForward)
 
     def release(self):
         """
         Release cube from claw.
         """
-        self.claw.set(1)
+        self.claw.set(wpilib.DoubleSolenoid.Value.kReverse)
 
     def actuate_claw(self):
         """
