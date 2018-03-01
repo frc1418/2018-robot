@@ -91,7 +91,10 @@ class Arm:
         """
         Extend or retract forearm based on current position.
         """
-        self.forearm.set(1 if self.forearm.get() == 2 else 2)
+        if self.is_retracted:
+            self.extend()
+        else:
+            self.retract()
 
     def grip(self):
         """
@@ -109,7 +112,10 @@ class Arm:
         """
         Grip or release cube based on current state.
         """
-        self.claw.set(1 if self.claw.get() == 2 else 2)
+        if self.is_open:
+            self.grip()
+        else:
+            self.release()
 
     def execute(self):
         """
