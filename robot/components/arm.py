@@ -15,6 +15,42 @@ class Arm:
 
     motion_constant = tunable(0.6)
 
+    @property
+    def is_open(self):
+        """
+        Is claw open?
+
+        :return: Are claw pistons extended to open the arm?
+        """
+        return self.claw.get() == 1
+
+    @property
+    def is_closed(self):
+        """
+        Is claw closed?
+
+        :return: Are claw pistons retracted to close the arm?
+        """
+        return self.claw.get() == 2
+
+    @property
+    def is_extended(self):
+        """
+        Is forearm extended?
+
+        :return: Is forearm piston extended so as to do the same to the arm?
+        """
+        return self.forearm.get() == 1
+
+    @property
+    def is_retracted(self):
+        """
+        Is forearm retracted?
+
+        :return: Is forearm piston retracted so as to do the same to the arm?
+        """
+        return self.forearm.get() == 2
+
     def move(self, speed: float):
         """
         Set the motor speed of claw elbow.
