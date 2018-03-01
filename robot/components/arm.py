@@ -100,13 +100,13 @@ class Arm:
         """
         Grip cube in claw.
         """
-        self.claw.set(wpilib.DoubleSolenoid.Value.kForward)
+        self.claw.set(wpilib.DoubleSolenoid.Value.kReverse)
 
     def release(self):
         """
         Release cube from claw.
         """
-        self.claw.set(wpilib.DoubleSolenoid.Value.kReverse)
+        self.claw.set(wpilib.DoubleSolenoid.Value.kForward)
 
     def actuate_claw(self):
         """
