@@ -70,9 +70,6 @@ class Modular(AutonomousStateMachine):
         """
         self.arm.grip()
         if self.optimize:
-            if self.position == 'middle':
-                # If in the middle, score on appropriate side of switch.
-                self.next_state('switch_middle_start')
             if self.switch:
                 if self.correct_side(target=SCALE) and not self.correct_side(target=SWITCH):
                     self.next_state('scale_side_start')
