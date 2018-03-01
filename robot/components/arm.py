@@ -22,7 +22,7 @@ class Arm:
 
         :return: Are claw pistons extended to open the arm?
         """
-        return self.claw.get() == 1
+        return self.claw.get() == wpilib.DoubleSolenoid.Value.kForward
 
     @property
     def is_closed(self):
@@ -31,7 +31,7 @@ class Arm:
 
         :return: Are claw pistons retracted to close the arm?
         """
-        return self.claw.get() == 2
+        return self.claw.get() == wpilib.DoubleSolenoid.Value.kReverse
 
     @property
     def is_extended(self):
@@ -40,7 +40,7 @@ class Arm:
 
         :return: Is forearm piston extended so as to do the same to the arm?
         """
-        return self.forearm.get() == 1
+        return self.forearm.get() == wpilib.DoubleSolenoid.Value.kForward
 
     @property
     def is_retracted(self):
@@ -49,7 +49,7 @@ class Arm:
 
         :return: Is forearm piston retracted so as to do the same to the arm?
         """
-        return self.forearm.get() == 2
+        return self.forearm.get() == wpilib.DoubleSolenoid.Value.kReverse
 
     def move(self, speed: float):
         """
