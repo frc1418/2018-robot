@@ -74,12 +74,12 @@ class Modular(AutonomousStateMachine):
                 # If in the middle, score on appropriate side of switch.
                 self.next_state('switch_middle_start')
             if self.switch:
-                if self.correct_side(target=SCALE):
+                if self.correct_side(target=SCALE) and not self.correct_side(target=SWITCH):
                     self.next_state('scale_side_start')
                 else:
                     self.next_state('switch_side_start')
             if self.scale:
-                if self.correct_side(target=SWITCH):
+                if self.correct_side(target=SWITCH) and not self.correct_side(target=SCALE):
                     self.next_state('switch_side_start')
                 else:
                     self.next_state('scale_side_start')
