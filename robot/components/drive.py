@@ -17,6 +17,7 @@ class Drive:
 
     speed_constant = tunable(1.0)
     rotational_constant = tunable(0.5)
+    squared_inputs = tunable(False)
 
     def __init__(self):
         self.enabled = False
@@ -43,4 +44,4 @@ class Drive:
         """
         self.train.arcadeDrive(self.speed_constant * self.y,
                                self.rotational_constant * self.rot,
-                               squaredInputs=False)
+                               squaredInputs=self.squared_inputs)
