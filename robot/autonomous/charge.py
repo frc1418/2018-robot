@@ -16,12 +16,16 @@ class Charge(AutonomousStateMachine):
 
 
 class MotionProfilingTest(AutonomousStateMachine):
-    MODE_NAME = 'ChargePlanned'
+    MODE_NAME = 'MotionProfilingTest'
     DEFAULT = False
 
-    position_controller = motion_profile.PositionController()
+    pos_controller = motion_profile.PositionController
 
-    @timed_state(duration=3, first=True)
+    @state(first=True)
     def diagonal_move(self, initial_call):
         # Move to a selected waypoint using the pathfinder library
-        self.position_controller.move_to(4, 4)
+        if initial_call:
+            self.pos_controller.move_along('test')
+
+        if not self.pos_controller.isRunning('test'):
+            self.done()
