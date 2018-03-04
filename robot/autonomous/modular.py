@@ -27,6 +27,8 @@ class Modular(AutonomousStateMachine):
     scale = tunable(False)
     # Decide best scoring option automatically?
     optimize = tunable(False)
+    # In optimize, skip crossing?
+    cross = tunable(True)
 
     def direction(self, target=SWITCH):
         """
@@ -68,24 +70,22 @@ class Modular(AutonomousStateMachine):
         """
         Decide how to begin the autonomous.
         """
+        print('Scale: %r' % self.scale)
+        print('Switch: %r' % self.switch)
+        print('Cross: %r' % self.cross)
         self.arm.grip()
         if self.optimize:
-            if self.switch:
-                if self.correct_side(target=SCALE) and not self.correct_side(target=SWITCH):
-                    self.next_state('scale_side_start')
-                else:
-                    self.next_state('switch_side_start')
-            if self.scale:
-                if self.correct_side(target=SWITCH) and not self.correct_side(target=SCALE):
-                    self.next_state('switch_side_start')
-                else:
-                    self.next_state('scale_side_start')
             if self.correct_side(target=SCALE):
-                # If we own this side of the scale, score there
                 self.next_state('scale_side_start')
-            else:
-                # If not, score on other side
+            elif self.correct_side(target=SWITCH):
                 self.next_state('switch_side_start')
+            else:
+                if not self.cross:
+                    self.next_state('charge')
+                elif self.scale:
+                    self.next_state('scale_side_start')
+                elif self.switch:
+                    self.next_state('switch_side_start')
         if self.switch:
             if self.position == 'middle':
                 self.next_state('switch_middle_start')
@@ -94,6 +94,11 @@ class Modular(AutonomousStateMachine):
         elif self.scale:
             # Assume robot is on side
             self.next_state('scale_side_start')
+
+    @timed_state(duration=1)
+    def charge(self):
+        # Move forward then stop.
+        self.drive.move(0.6, 0)
 
     ########
     # SWITCH
@@ -162,7 +167,7 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(-0.3, 0)
 
-    @timed_state(duration=1.7, next_state='switch_side_opposite_againstwall')
+    @timed_state(duration=1.65, next_state='switch_side_opposite_againstwall')
     def switch_side_opposite_cross(self):
         """
         Cross the field to the opposite side of the switch.
@@ -178,7 +183,7 @@ class Modular(AutonomousStateMachine):
         Turn against wall.
         """
         self.arm.move(0.6)
-        self.drive.move(0.3, -1 * self.direction())
+        self.drive.move(0.5, -0.8 * self.direction())
 
     @timed_state(duration=0.5)
     def switch_side_opposite_drop(self):
@@ -198,12 +203,12 @@ class Modular(AutonomousStateMachine):
         """
         self.next_state('switch_middle_advance_initial')
 
-    @timed_state(duration=0.9, next_state='switch_middle_advance_final')
+    @timed_state(duration=1.0, next_state='switch_middle_advance_final')
     def switch_middle_advance_initial(self):
         """
         Get off wall and turn toward correct goal.
         """
-        self.drive.move(0.8, 0.3 * self.direction())
+        self.drive.move(0.9, 0.4 * self.direction())
 
     @timed_state(duration=1.4, next_state='switch_middle_drop')
     def switch_middle_advance_final(self):
@@ -211,7 +216,7 @@ class Modular(AutonomousStateMachine):
         Turn back to switch and approach.
         """
         self.arm.move(0.6)
-        self.drive.move(0.5, -0.4 * self.direction())
+        self.drive.move(0.5, -0.5 * self.direction())
 
     @timed_state(duration=0.5, next_state='switch_middle_rewind')
     def switch_middle_drop(self):
@@ -269,7 +274,7 @@ class Modular(AutonomousStateMachine):
         """
         Raise arm before scoring.
         """
-        self.arm.move(0.75)
+        self.arm.move(0.7)
 
     @timed_state(duration=1, next_state='scale_side_drop')
     def scale_side_approach(self):
