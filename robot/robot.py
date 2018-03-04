@@ -130,6 +130,9 @@ class Panthera(magicbot.MagicRobot):
 
         self.compressor.stop()
 
+        self.drive.squared_inputs = False
+        self.drive.rotational_constant = 0.5
+
         # Call autonomous
         super().autonomous()
 
@@ -153,6 +156,9 @@ class Panthera(magicbot.MagicRobot):
         Executed when teleoperated mode begins.
         """
         self.compressor.start()
+
+        self.drive.squared_inputs = True
+        self.drive.rotational_constant = 0.7
 
     def teleopPeriodic(self):
         """
