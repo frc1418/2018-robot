@@ -22,13 +22,11 @@ class Modular(AutonomousStateMachine):
     plates = ntproperty('/robot/plates', '')
 
     # Score on switch?
-    switch = tunable(True)
+    switch = False
     # Score on scale?
-    scale = tunable(False)
+    scale = False
     # Decide best scoring option automatically?
-    optimize = tunable(False)
-    # In optimize, skip crossing?
-    cross = tunable(True)
+    optimize = False
 
     def direction(self, target=SWITCH):
         """
@@ -72,7 +70,6 @@ class Modular(AutonomousStateMachine):
         """
         print('Scale: %r' % self.scale)
         print('Switch: %r' % self.switch)
-        print('Cross: %r' % self.cross)
         self.arm.grip()
         if self.optimize:
             if self.correct_side(target=SCALE):
@@ -80,12 +77,12 @@ class Modular(AutonomousStateMachine):
             elif self.correct_side(target=SWITCH):
                 self.next_state('switch_side_start')
             else:
-                if not self.cross:
-                    self.next_state('charge')
-                elif self.scale:
+                if self.scale:
                     self.next_state('scale_side_start')
                 elif self.switch:
                     self.next_state('switch_side_start')
+                else:
+                    self.next_state('charge')
         if self.switch:
             if self.position == 'middle':
                 self.next_state('switch_middle_start')

@@ -4,13 +4,11 @@ from .modular import Modular
 class Switch(Modular):
     switch = True
     scale = False
-    cross = True
 
 
 class Scale(Modular):
     switch = False
     scale = True
-    cross = True
 
 
 class Optimum(Modular):
@@ -18,8 +16,6 @@ class Optimum(Modular):
     Given the position of the robot, choose the best path.
     """
     optimize = True
-    switch = False
-    scale = False
 
 
 class OptimumSwitch(Optimum, Switch):
@@ -34,13 +30,6 @@ class OptimumScale(Optimum, Scale):
     Optimize, with priority for scale.
     """
     pass
-
-
-class OptimumNone(Optimum):
-    """
-    Optimize, but if we don't own anything on this side just charge.
-    """
-    cross = False
 
 
 class Left(Modular):
@@ -91,9 +80,9 @@ class OptimumScaleRight(OptimumScale, Right):
     MODE_NAME = 'OptimumScaleRight'
 
 
-class OptimumNoneLeft(OptimumNone, Left):
+class OptimumNoneLeft(Optimum, Left):
     MODE_NAME = 'OptimumNoneLeft'
 
 
-class OptimumNoneRight(OptimumNone, Right):
+class OptimumNoneRight(Optimum, Right):
     MODE_NAME = 'OptimumNoneRight'
