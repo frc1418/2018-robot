@@ -9,7 +9,7 @@
 TODO
 
 ## Deploying onto the robot
-Before deploying, you must install [`pyfrc`](https://github.com/robotpy/pyfrc) on your robot.
+Before deploying, you must [install robotpy](http://robotpy.readthedocs.io/en/stable/install/robot.html#install-robotpy) on your robot.
 
 You may then deploy code at any time:
 
