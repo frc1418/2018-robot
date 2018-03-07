@@ -173,10 +173,8 @@ class Panthera(magicbot.MagicRobot):
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
 
         if self.stabilize:
-            if self.navx.getPitch() > self.stabilizer_threshold:
-                self.drive.move(1, 0)
-            elif self.navx.getPitch() < -self.stabilizer_threshold:
-                self.drive.move(-1, 0)
+            if abs(self.navx.getPitch()) > self.stabilizer_threshold:
+                self.drive.move(self.navx.getPitch() / 180 * 10, 0)
 
         if self.btn_unified_control.get():
             self.unified_control = not self.unified_control
