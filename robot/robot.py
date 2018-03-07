@@ -44,7 +44,6 @@ class Panthera(magicbot.MagicRobot):
     voltage = tunable(0)
     rotation = tunable(0)
 
-    # Activation of control features
     unified_control = tunable(False)
     recording = tunable(False)
     stabilize = tunable(False)
@@ -73,13 +72,9 @@ class Panthera(magicbot.MagicRobot):
         self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 2)
         self.btn_climb_alt = JoystickButton(self.joystick_alt, 3)
 
-        # Button for toggling unified control
+        # Buttons for toggling control options and aides
         self.btn_unified_control = ButtonDebouncer(self.joystick_alt, 8)
-
-        # Button for control recording
         self.btn_record = ButtonDebouncer(self.joystick_left, 6)
-
-        # Button for toggling stabilizer
         self.btn_stabilize = ButtonDebouncer(self.joystick_alt, 12)
 
         # Drive motor controllers
