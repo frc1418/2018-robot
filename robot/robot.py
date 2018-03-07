@@ -73,6 +73,10 @@ class Panthera(magicbot.MagicRobot):
         self.btn_record = ButtonDebouncer(self.joystick_left, 6)
         self.recording = False
 
+        # Button for toggling stabilizer
+        self.btn_stabilize = ButtonDebouncer(self.joystick_alt, 12)
+        self.stabilize = False
+
         # Drive motor controllers
         # ID SCHEME:
         #   10^1: 1 = left, 2 = right
@@ -166,6 +170,12 @@ class Panthera(magicbot.MagicRobot):
         """
         # Read from joysticks and move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
+
+        if self.stabilize:
+            if self.navx.getPitch() > 30:
+                self.drive.move(1)
+            elif self.navx.getPitch() < 30:
+                self.drive.move(-1)
 
         if self.btn_unified_control.get():
             self.unified_control = not self.unified_control
