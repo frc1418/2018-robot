@@ -43,13 +43,15 @@ This will set up hooks to run tests before committing to help avoid easy-to-fix 
     robot/
     	The robot code lives here.
         automations/
-            Several automatic scripts for performing common functions.
+            Automatic scripts for performing common functions.
         autonomous/
             Autonomous modes.
         common/
             New robotpy components.
         components/
             Abstractions for major robot systems.
+		controllers/
+			Software implementations not corresponding to physical robot components.
 	tests/
 		py.test-based unit tests that test the code and can be run via pyfrc.
 
