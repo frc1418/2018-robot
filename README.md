@@ -9,18 +9,16 @@
 TODO
 
 ## Deploying onto the robot
-Before deploying, you must install [pyfrc](https://github.com/robotpy/pyfrc) on your robot.
+Before deploying, you must install [`pyfrc`](https://github.com/robotpy/pyfrc) on your robot.
 
-You may then deploy code at any time by running
+You may then deploy code at any time:
 
 	python3 robot.py deploy
 
 During development of this year's robot code, we created a Bash script `deploy.sh` to automate some tasks related to code deploy. The script's featureset swelled significantly, and we elected to spin the tool off into a season-independent command line tool. You can find that tool, `dep`, [here](https://github.com/frc1418/dep). We recommend that you make use of it to simplify your deploy process and remove pesky steps like changing your WiFi network.
 
 ## Testing/Simulation
-The robot code has full integration with pyfrc. Make sure you have pyfrc
-installed, and then you can use the various simulation/testing options
-of the code by running robot.py directly.
+You may run the `pyfrc` simulator to test this code thus:
 
     python3 robot.py sim
 
