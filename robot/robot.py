@@ -76,6 +76,7 @@ class Panthera(magicbot.MagicRobot):
         # Button for toggling stabilizer
         self.btn_stabilize = ButtonDebouncer(self.joystick_alt, 12)
         self.stabilizer_threshold = tunable(30)
+        self.stabilizer_aggression = tunable(5)
         self.stabilize = False
 
         # Drive motor controllers
@@ -174,7 +175,7 @@ class Panthera(magicbot.MagicRobot):
 
         if self.stabilize:
             if abs(self.navx.getPitch()) > self.stabilizer_threshold:
-                self.drive.move(self.navx.getPitch() / 180 * 10, 0)
+                self.drive.move(self.navx.getPitch() / 180 * self.stabilizer_aggression, 0)
 
         if self.btn_unified_control.get():
             self.unified_control = not self.unified_control
