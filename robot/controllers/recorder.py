@@ -25,7 +25,7 @@ class Recorder:
         """
         Make snapshot of joystick inputs during this cycle.
 
-        :param joysticks: List of joysticks to read.
+        :param joysticks: Tuple of joysticks to read.
         """
         self.frames.append({
             'joysticks': [{
