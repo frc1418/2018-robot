@@ -44,6 +44,9 @@ class Panthera(magicbot.MagicRobot):
     voltage = tunable(0)
     rotation = tunable(0)
 
+    stabilizer_threshold = tunable(30)
+    stabilizer_aggression = tunable(5)
+
     def createObjects(self):
         """
         Initialize robot components.
@@ -75,8 +78,6 @@ class Panthera(magicbot.MagicRobot):
 
         # Button for toggling stabilizer
         self.btn_stabilize = ButtonDebouncer(self.joystick_alt, 12)
-        self.stabilizer_threshold = tunable(30)
-        self.stabilizer_aggression = tunable(5)
         self.stabilize = False
 
         # Drive motor controllers
