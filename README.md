@@ -34,7 +34,7 @@ We use three total joysticks to control the robot:
 
 `git` hooks change the process of committing by adding processes before or after the process of committing. After cloning, you should run
 
-		./setup.sh
+	./setup.sh
 
 This will set up hooks to run tests before committing to help avoid easy-to-fix errors in the code.
 
