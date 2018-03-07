@@ -198,7 +198,7 @@ class Panthera(magicbot.MagicRobot):
                 self.recorder.start(self.voltage)
 
         if self.recording:
-            self.recorder.capture([self.joystick_left, self.joystick_right, self.joystick_alt])
+            self.recorder.capture((self.joystick_left, self.joystick_right, self.joystick_alt))
 
 
 if __name__ == '__main__':
