@@ -63,8 +63,8 @@ class Panthera(magicbot.MagicRobot):
         # Buttons
         self.btn_claw = ButtonDebouncer(self.joystick_left, 1)
         self.btn_forearm = ButtonDebouncer(self.joystick_right, 1)
-        self.btn_up = JoystickButton(self.joystick_right, 3)
-        self.btn_down = JoystickButton(self.joystick_right, 2)
+        self.btn_up = JoystickButton(self.joystick_left, 3)
+        self.btn_down = JoystickButton(self.joystick_left, 2)
         self.btn_climb = JoystickButton(self.joystick_right, 11)
 
         # Buttons on alternative joystick
