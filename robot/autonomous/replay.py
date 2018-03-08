@@ -36,6 +36,7 @@ class Replay(AutonomousStateMachine):
         """
         Read recorded data from file and prepare to run autonomous.
         """
+        super().on_enable()
         try:
             with open('/tmp/%s.json' % self.source, 'r') as f:
                 self.recording = json.load(f)
