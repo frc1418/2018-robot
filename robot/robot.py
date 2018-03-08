@@ -76,6 +76,7 @@ class Panthera(magicbot.MagicRobot):
         self.btn_unified_control = ButtonDebouncer(self.joystick_alt, 8)
         self.btn_record = ButtonDebouncer(self.joystick_left, 6)
         self.btn_stabilize = ButtonDebouncer(self.joystick_alt, 12)
+        self.btn_fine_rotation = JoystickButton(self.joystick_right, 2)
 
         # Drive motor controllers
         # ID SCHEME:
@@ -169,7 +170,8 @@ class Panthera(magicbot.MagicRobot):
         Executed periodically while robot is in teleoperated mode.
         """
         # Read from joysticks and move drivetrain accordingly
-        self.drive.move(-self.joystick_left.getY(), self.joystick_right.getX())
+        self.drive.move(-self.joystick_left.getY(),
+                        self.joystick_right.getX() * (0.5 if self.btn_fine_rotation else 1))
 
         if self.stabilize:
             if abs(self.navx.getPitch()) > self.stabilizer_threshold:
