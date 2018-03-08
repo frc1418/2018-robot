@@ -182,7 +182,7 @@ class Panthera(magicbot.MagicRobot):
             self.unified_control = not self.unified_control
 
         # Winch
-        if self.btn_climb.get() or self.btn_climb_alt.get():
+        if (self.btn_climb.get() and self.unified_control) or self.btn_climb_alt.get():
             self.winch.run()
 
         # Arm
