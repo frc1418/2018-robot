@@ -36,8 +36,12 @@ class Replay(AutonomousStateMachine):
         """
         Read recorded data from file and prepare to run autonomous.
         """
-        with open('/tmp/%s.json' % self.source, 'r') as f:
-            self.recording = json.load(f)
+        try:
+            with open('/tmp/%s.json' % self.source, 'r') as f:
+                self.recording = json.load(f)
+        except FileNotFoundError:
+            # Terminate autonomous mode
+            self.done()
         self.frame = 0
 
     @state(first=True)
