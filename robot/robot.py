@@ -51,6 +51,8 @@ class Panthera(magicbot.MagicRobot):
     stabilizer_threshold = tunable(30)
     stabilizer_aggression = tunable(5)
 
+    fine_rotation_multiplier = tunable(0.5)
+
     def createObjects(self):
         """
         Initialize robot components.
@@ -171,7 +173,7 @@ class Panthera(magicbot.MagicRobot):
         """
         # Read from joysticks and move drivetrain accordingly
         self.drive.move(-self.joystick_left.getY(),
-                        self.joystick_right.getX() * (0.5 if self.btn_fine_rotation else 1))
+                        self.joystick_right.getX() * (self.fine_rotation_multiplier if self.btn_fine_rotation.get() else 1))
 
         if self.stabilize:
             if abs(self.navx.getPitch()) > self.stabilizer_threshold:
