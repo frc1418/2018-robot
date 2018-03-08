@@ -37,7 +37,7 @@ class PositionController:
         waypoint = pf.Waypoint(float(x_position),
                                float(y_position), radians(angle))
 
-        info, trajectory = pf.generate([waypoint],
+        info, trajectory = pf.generate([pf.Waypoint(0, 0, 0), waypoint],
                                        pf.FIT_HERMITE_CUBIC, pf.SAMPLES_HIGH,
                                        0.05, 1.7, 2.0, 60.0)
 
