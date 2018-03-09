@@ -13,15 +13,3 @@ class Charge(AutonomousStateMachine):
     def charge(self, initial_call):
         # Move forward
         self.drive.move(0.6, 0)
-
-
-class MotionProfilingTest(AutonomousStateMachine):
-    MODE_NAME = 'ChargePlanned'
-    DEFAULT = False
-
-    position_controller = motion_profile.PositionController()
-
-    @timed_state(duration=3, first=True)
-    def diagonal_move(self, initial_call):
-        # Move to a selected waypoint using the pathfinder library
-        self.position_controller.move_to(4, 4)
