@@ -253,7 +253,7 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(0.1, -1 * self.direction())
 
-    @timed_state(duration=2.1, next_state='scale_side_raise')
+    @timed_state(duration=2.6, next_state='scale_side_raise')
     def scale_side_windup(self):
         """
         Move backward toward side wall, raising arm.
