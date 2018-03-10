@@ -216,7 +216,7 @@ class Modular(AutonomousStateMachine):
         self.arm.move(0.5)
         self.drive.move(0.5, -0.5 * self.direction())
 
-    @timed_state(duration=0.5, next_state='switch_middle_rewind')
+    @timed_state(duration=0.5)
     def switch_middle_drop(self):
         """
         Drop in switch from middle position.
