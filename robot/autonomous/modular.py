@@ -214,7 +214,7 @@ class Modular(AutonomousStateMachine):
         Turn back to switch and approach.
         """
         self.arm.move(0.5)
-        self.drive.move(0.5, -0.5 * self.direction())
+        self.drive.move(0.6, -(0.4 if self.target_direction(target=SWITCH) == -1 else 0.5) * self.direction())
 
     @timed_state(duration=0.5)
     def switch_middle_drop(self):
