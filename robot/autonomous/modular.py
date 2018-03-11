@@ -205,7 +205,7 @@ class Modular(AutonomousStateMachine):
         """
         Get off wall and turn toward correct goal.
         """
-        self.arm.move(0.3)
+        self.arm.move(0.4)
         self.drive.move(0.7, 0.4 * self.direction())
 
     @timed_state(duration=1.2, next_state='switch_middle_drop')
@@ -213,7 +213,7 @@ class Modular(AutonomousStateMachine):
         """
         Turn back to switch and approach.
         """
-        self.arm.move(0.5)
+        self.arm.move(0.6)
         self.drive.move(0.6, -(0.4 if self.target_direction(target=SWITCH) == -1 else 0.5) * self.direction())
 
     @timed_state(duration=0.5)
