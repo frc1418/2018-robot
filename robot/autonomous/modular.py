@@ -208,13 +208,21 @@ class Modular(AutonomousStateMachine):
         self.arm.move(0.4)
         self.drive.move(0.7, 0.4 * self.direction())
 
-    @timed_state(duration=1.2, next_state='switch_middle_drop')
+    @timed_state(duration=1.2, next_state='switch_middle_advance_press')
     def switch_middle_advance_final(self):
         """
         Turn back to switch and approach.
         """
         self.arm.move(0.6)
         self.drive.move(0.6, -(0.4 if self.target_direction(target=SWITCH) == -1 else 0.5) * self.direction())
+
+    @timed_state(duration=0.5, next_state='switch_middle_drop')
+    def switch_middle_advance_press(self):
+        """
+        Press front against switch. This way if we bounce a little we'll still be fine.
+        """
+        self.arm.move(0.6)
+        self.drive.move(0.4, 0)
 
     @timed_state(duration=0.5)
     def switch_middle_drop(self):
