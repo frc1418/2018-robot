@@ -27,6 +27,7 @@ from robotpy_ext.control.button_debouncer import ButtonDebouncer
 from components import drive, winch, arm
 from controllers import motion_profile, recorder
 from magicbot import tunable
+import math
 
 from robotpy_ext.common_drivers import navx, pressure_sensors
 from ctre import talonsrx, wpi_talonsrx
@@ -104,12 +105,13 @@ class Panthera(magicbot.MagicRobot):
         self.navx.reset()
 
         # Motion Profiling
-        self.right_encoder = wpilib.Encoder(1, 0)
+        self.right_encoder = wpilib.Encoder(0, 1)
+        self.right_encoder.setDistancePerPulse((math.pi * 0.5) / 360)
         self.left_encoder = wpilib.Encoder(2, 3)
-
+        self.left_encoder.setDistancePerPulse((math.pi * 0.5) / 360)
         self.pos_controller = motion_profile.PositionController(self.lf_motor, self.lr_motor, self.rf_motor,
-                                                                self.rr_motor, self.navx, self.right_encoder,
-                                                                self.left_encoder)
+                                                                self.rr_motor, self.navx, self.train,
+                                                                self.right_encoder, self.left_encoder)
 
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
@@ -141,6 +143,10 @@ class Panthera(magicbot.MagicRobot):
 
         self.drive.squared_inputs = False
         self.drive.rotational_constant = 0.5
+
+        with self.pos_controller.cond:
+            self.pos_controller.disabled = False
+            self.pos_controller.cond.notify()
 
         # Call autonomous
         super().autonomous()
