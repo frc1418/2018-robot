@@ -45,6 +45,8 @@ class PositionController:
         self.lock = Lock()
         self.cond = Condition(self.lock)
         self.thread = Thread(target=self._control_loop, daemon=True)
+        self.thread.start()
+        self.stop = False
 
         self.motors = [
             lf_motor,
@@ -104,7 +106,12 @@ class PositionController:
             left_ouput = self.left_follower.calculate(self.left_encoder.get())
             right_output = self.right_follower.calculate(self.right_encoder.get())
 
-            gyro_heading = -(self.navx.getAngle() % 360)
+            gyro_heading = None
+            if self.stop:
+                gyro_heading = -(self.navx.getAngle() % 360)
+
+            if gyro_heading is None:
+                return
             desired_heading = pf.r2d(self.left_follower.getHeading())
 
             angleDifference = pf.boundHalfDegrees(desired_heading - gyro_heading)
@@ -122,7 +129,12 @@ class PositionController:
         """
         self.profile_generator.generate_all_lists()
         self.possible_trajectories = self.profile_generator.trajectories
-        self.thread.start()
+
+    def free(self):
+        """
+        Free the control loop thread
+        """
+        self.thread.stop = True
 
     def configure_followers(self):
         """
