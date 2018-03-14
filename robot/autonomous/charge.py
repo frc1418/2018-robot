@@ -26,3 +26,6 @@ class MotionProfilingTest(AutonomousStateMachine):
         # Move to a selected waypoint using the pathfinder library
         if initial_call:
             self.pos_controller.move_along('test')
+
+        if not self.pos_controller.isRunning('test'):
+            self.done()

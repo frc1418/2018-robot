@@ -10,7 +10,7 @@ class ProfileGenerator():
     WHEELBASE_WIDTH = 1.6
 
     waypoint_list = {
-        'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(5, -4, 45)]
+        'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(9, 5, 0)]
     }
 
     def __init__(self):
