@@ -14,6 +14,7 @@ class Arm:
     _elevator_speed = will_reset_to(0)
 
     motion_constant = tunable(0.6)
+    extended = tunable(False)
 
     @property
     def is_open(self):
@@ -95,6 +96,8 @@ class Arm:
             self.extend()
         else:
             self.retract()
+
+        self.extended = self.is_extended
 
     def grip(self):
         """
