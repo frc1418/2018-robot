@@ -6,10 +6,10 @@ from .profile_generator import ProfileGenerator
 from robotpy_ext.misc.precise_delay import PreciseDelay
 from threading import Lock, Condition, Thread
 import wpilib
-import time
+from datetime import datetime
 
 MAX_VELOCITY = 9
-ENCODER_TICKS = 360
+ENCODER_TICKS = 1440
 WHEEL_DIAMETER = 0.5
 
 
@@ -88,6 +88,7 @@ class PositionController:
         """
         delay = PreciseDelay(0.05)
         while True:
+            old_time = datetime.now()
             with self.cond:
                 self.cond.wait_for(lambda: not self.disabled)
 
@@ -117,7 +118,7 @@ class PositionController:
             right_output = right_output - turn
 
             self.drive.tankDrive(-left_ouput, -right_output)
-            delay.delay(0.05)
+            delay.delay(0.05 - ((datetime.now().microsecond - old_time.microsecond) / 1000000))
 
     def prepare(self):
         """
