@@ -101,6 +101,7 @@ class Panthera(magicbot.MagicRobot):
         self.elevator = wpilib.Victor(5)
         self.forearm = wpilib.DoubleSolenoid(2, 3)
         self.claw = wpilib.DoubleSolenoid(0, 1)
+        self.intake = wpilib.Spark(4)
 
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
