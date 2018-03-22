@@ -12,7 +12,10 @@ class TestRobot(magicbot.MagicRobot):
         """
         Initialize testbench components.
         """
+        self.joystick = wpilib.Joystick(0)
+
         self.brushless = wpilib.NidecBrushless(9, 9)
+        self.spark = wpilib.Spark(4)
 
         self.lf_victor = wpilib.Victor(0)
         self.lr_victor = wpilib.Victor(1)
@@ -35,6 +38,7 @@ class TestRobot(magicbot.MagicRobot):
         """
         self.drive.arcadeDrive(1, 0)
         self.brushless.set(1)
+        self.spark.set(self.joystick.getY())
 
 
 if __name__ == '__main__':
