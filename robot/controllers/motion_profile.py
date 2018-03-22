@@ -1,6 +1,5 @@
 from collections import deque
 from components import drive
-from ctre import TalonSRX
 import pathfinder as pf
 from .profile_generator import ProfileGenerator
 from robotpy_ext.misc.precise_delay import PreciseDelay
@@ -18,7 +17,7 @@ class PositionController:
     Controls the position of the robot using motion profile based movement.
     """
 
-    def __init__(self, lf_motor: TalonSRX, lr_motor, rf_motor, rr_motor, navx, drive, r_encoder, l_encoder):
+    def __init__(self, navx, drive, r_encoder, l_encoder):
         """
         :param lf_motor: The left front motor (Annotated for autocompletion)
         :param lr_motor: The left rear motor
@@ -47,13 +46,6 @@ class PositionController:
         self.thread = Thread(target=self._control_loop, daemon=True)
         self.thread.start()
         self.stop = False
-
-        self.motors = [
-            lf_motor,
-            lr_motor,
-            rf_motor,
-            rr_motor
-        ]
 
         wpilib.Resource._add_global_resource(self)
 
@@ -118,13 +110,16 @@ class PositionController:
             right_output = right_output - turn
 
             self.drive.tankDrive(-left_ouput, -right_output)
-            delay.delay(0.05 - ((datetime.now().microsecond - old_time.microsecond) / 1000000))
+            delay.delay(max(0.05 - ((datetime.now().microsecond - old_time.microsecond) / 1000000), 0))
 
     def prepare(self):
         """
         Prepare to generate the trajectories
         """
-        self.profile_generator.generate_all_lists()
+        if wpilib.RobotBase.isSimulation():
+            self.profile_generator.generate_all_lists()
+        else:
+            self.profile_generator.load_trajectories()
         self.possible_trajectories = self.profile_generator.trajectories
 
     def configure_followers(self):

@@ -1,4 +1,6 @@
+import os.path
 import pathfinder as pf
+import pickle
 import wpilib
 
 
@@ -12,6 +14,7 @@ class ProfileGenerator():
     waypoint_list = {
         'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(9, 5, 0)]
     }
+    pickle_file = os.path.join(os.path.dirname(__file__), 'trajectories.pickle')
 
     def __init__(self):
         self.trajectories = {}
@@ -51,3 +54,13 @@ class ProfileGenerator():
             self.trajectories[name] = (modifier.getRightTrajectory(),
                                        modifier.getLeftTrajectory())
             print(len(modifier.getRightTrajectory()))
+
+        with open(self.pickle_file, 'wb') as f:
+            pickle.dump(self.trajectories, f)
+
+    def load_trajectories(self):
+        """
+        Load all the trajectories listed in the trajectories.pickle file.
+        """
+        with open(self.pickle_file, 'rb') as f:
+            self.trajectories = pickle.load(f)
