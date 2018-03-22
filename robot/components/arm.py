@@ -126,4 +126,4 @@ class Arm:
         Run elevator motors.
         """
         self.elevator.set(-self._elevator_speed)
-        self.intake.set(-1 if self.is_extended and self.is_closed else 0)
+        self.intake.set(-1 if self.is_extended and self.is_open else 0)
