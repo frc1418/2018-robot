@@ -109,8 +109,7 @@ class Panthera(magicbot.MagicRobot):
         self.right_encoder.setDistancePerPulse((math.pi * 0.5) / 1440)
         self.left_encoder = wpilib.Encoder(2, 3)
         self.left_encoder.setDistancePerPulse((math.pi * 0.5) / 1440)
-        self.pos_controller = motion_profile.PositionController(self.lf_motor, self.lr_motor, self.rf_motor,
-                                                                self.rr_motor, self.navx, self.train,
+        self.pos_controller = motion_profile.PositionController(self.navx, self.train,
                                                                 self.right_encoder, self.left_encoder)
 
         # Utility

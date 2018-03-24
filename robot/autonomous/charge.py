@@ -5,7 +5,7 @@ from controllers import motion_profile
 
 class Charge(AutonomousStateMachine):
     MODE_NAME = 'Charge'
-    DEFAULT = False
+    DEFAULT = True
 
     drive = drive.Drive
 
@@ -17,7 +17,7 @@ class Charge(AutonomousStateMachine):
 
 class MotionProfilingTest(AutonomousStateMachine):
     MODE_NAME = 'MotionProfilingTest'
-    DEFAULT = True
+    DEFAULT = False
 
     pos_controller = motion_profile.PositionController
 

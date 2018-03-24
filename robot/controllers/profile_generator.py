@@ -14,7 +14,7 @@ class ProfileGenerator():
     waypoint_list = {
         'test': [pf.Waypoint(0, 0, 0), pf.Waypoint(9, 5, 0)]
     }
-    pickle_file = os.path.join(os.path.dirname(__file__), 'trajectories.pickle')
+    pickle_file = os.path.join(os.path.dirname(__file__) + '/trajectories', 'trajectories.pickle')
 
     def __init__(self):
         self.trajectories = {}
@@ -27,7 +27,7 @@ class ProfileGenerator():
         :param name: The name of the trajectory
         """
         _, trajectory = pf.generate(waypoints, pf.FIT_HERMITE_CUBIC,
-                                    pf.SAMPLES_HIGH, self.TIME_DIFF, 9, 12, 120.0)
+                                    pf.SAMPLES_HIGH, self.TIME_DIFF, 7, 12, 120.0)
         print('Generated Trajectory: ' + name)
 
         modifier = pf.modifiers.TankModifier(trajectory).modify(self.WHEELBASE_WIDTH)

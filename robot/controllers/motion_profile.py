@@ -5,7 +5,6 @@ from .profile_generator import ProfileGenerator
 from robotpy_ext.misc.precise_delay import PreciseDelay
 from threading import Lock, Condition, Thread
 import wpilib
-from datetime import datetime
 
 MAX_VELOCITY = 9
 ENCODER_TICKS = 1440
@@ -16,13 +15,8 @@ class PositionController:
     """
     Controls the position of the robot using motion profile based movement.
     """
-
     def __init__(self, navx, drive, r_encoder, l_encoder):
         """
-        :param lf_motor: The left front motor (Annotated for autocompletion)
-        :param lr_motor: The left rear motor
-        :param rf_motor: The right front motor
-        :param rr_motor: The right rear motor
         :param navx: The navx
         :param drive: Drive system for the robot
         :param r_encoder: The right encoder on the robot
@@ -43,15 +37,15 @@ class PositionController:
 
         self.lock = Lock()
         self.cond = Condition(self.lock)
+        self.freed = False
         self.thread = Thread(target=self._control_loop, daemon=True)
         self.thread.start()
-        self.stop = False
 
         wpilib.Resource._add_global_resource(self)
 
     def move_along(self, trajectory_name, first=False):
         """
-        Generate path and set path variable
+        Set trajectory to move along.
 
         :param trajectory_name: The name of the pre-generated trajectory.
         :param first: Whether or not this path should be completed next.
@@ -76,11 +70,12 @@ class PositionController:
 
     def _control_loop(self):
         """
-        Pushes trajectory points to the TalonSRX top level buffer
+        Actually move the robot along the path.
         """
-        delay = PreciseDelay(0.05)
+        delay = PreciseDelay(self.profile_generator.TIME_DIFF)
         while True:
-            old_time = datetime.now()
+            if self.freed:
+                break
             with self.cond:
                 self.cond.wait_for(lambda: not self.disabled)
 
@@ -109,8 +104,11 @@ class PositionController:
             left_ouput = left_ouput + turn
             right_output = right_output - turn
 
-            self.drive.tankDrive(-left_ouput, -right_output)
-            delay.delay(max(0.05 - ((datetime.now().microsecond - old_time.microsecond) / 1000000), 0))
+            self.drive.tankDrive(left_ouput, right_output)
+            delay.wait()
+
+            # Set next_delay manually to prevent permanent lag behind if one wait() call is behind.
+            delay.next_delay = delay.get_now() + delay.delay_period
 
     def prepare(self):
         """
@@ -140,5 +138,15 @@ class PositionController:
         with self.cond:
             queue_first = None if len(self.queued_trajectories) < 1 else self.queued_trajectories[0]
             current = self.current_trajectory
-        return (current == self.possible_trajectories[trajectory_name] or
-                self.possible_trajectories[trajectory_name] == queue_first)
+        try:
+            self.trajectory = self.possible_trajectories[trajectory_name]
+        except IndexError:
+            return False
+        return (current == self.trajectory or queue_first == self.trajectory)
+
+    def free(self):
+        """
+        Frees resources of this object.
+        """
+        self.freed = True
+        del self.profile_generator
