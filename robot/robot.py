@@ -71,6 +71,8 @@ class Panthera(magicbot.MagicRobot):
         self.btn_claw_alt = ButtonDebouncer(self.joystick_alt, 1)
         self.btn_forearm_alt = ButtonDebouncer(self.joystick_alt, 2)
         self.btn_climb_alt = JoystickButton(self.joystick_alt, 3)
+        self.btn_intake = JoystickButton(self.joystick_alt, 4)
+        self.btn_output = JoystickButton(self.joystick_alt, 6)
 
         # Buttons for toggling control options and aides
         self.btn_unified_control = ButtonDebouncer(self.joystick_alt, 8)
@@ -195,6 +197,11 @@ class Panthera(magicbot.MagicRobot):
 
         if (self.btn_forearm.get() and self.unified_control) or self.btn_forearm_alt.get():
             self.arm.actuate_forearm()
+
+        if self.btn_intake.get():
+            self.arm.spin_in()
+        elif self.btn_output.get():
+            self.arm.spin_out()
 
         self.arm.move(-self.joystick_alt.getY())
 
