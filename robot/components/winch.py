@@ -10,7 +10,7 @@ class Winch:
 
     _climb_speed = will_reset_to(0)
 
-    def run(self, speed: float=1):
+    def run(self, speed: float = 1):
         """
         Set the motor speed of each climbing motor.
 

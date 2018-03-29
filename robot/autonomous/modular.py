@@ -34,15 +34,18 @@ class Modular(AutonomousStateMachine):
 
         :param target: ID of target obstacle.
         """
-        if self.position == 'left':
-            return -1
-        elif self.position == 'right':
-            return 1
-        else:
-            if self.plates[target] == 'L':
+        try:
+            if self.position == 'left':
                 return -1
-            if self.plates[target] == 'R':
+            elif self.position == 'right':
                 return 1
+            else:
+                if self.plates[target] == 'L':
+                    return -1
+                if self.plates[target] == 'R':
+                    return 1
+        except IndexError:
+            self.next_state('charge')
 
     def target_direction(self, target=SWITCH):
         """
@@ -50,10 +53,13 @@ class Modular(AutonomousStateMachine):
 
         :param target: ID of target obstacle.
         """
-        if self.plates[target] == 'L':
-            return -1
-        elif self.plates[target] == 'R':
-            return 1
+        try:
+            if self.plates[target] == 'L':
+                return -1
+            elif self.plates[target] == 'R':
+                return 1
+        except IndexError:
+            self.next_state('charge')
 
     def correct_side(self, target=SWITCH):
         """
@@ -61,7 +67,10 @@ class Modular(AutonomousStateMachine):
 
         :param target: ID of target obstacle.
         """
-        return (self.direction(target) == -1 and self.plates[target] == 'L') or (self.direction(target) == 1 and self.plates[target] == 'R')
+        try:
+            return (self.direction(target) == -1 and self.plates[target] == 'L') or (self.direction(target) == 1 and self.plates[target] == 'R')
+        except IndexError:
+            self.next_state('charge')
 
     @state(first=True)
     def start(self):
@@ -92,7 +101,7 @@ class Modular(AutonomousStateMachine):
             # Assume robot is on side
             self.next_state('scale_side_start')
 
-    @timed_state(duration=1)
+    @timed_state(duration=0.8)
     def charge(self):
         # Move forward then stop.
         self.drive.move(0.6, 0)
@@ -213,16 +222,16 @@ class Modular(AutonomousStateMachine):
         """
         Turn back to switch and approach.
         """
-        self.arm.move(0.6)
-        self.drive.move(0.6, -(0.4 if self.target_direction(target=SWITCH) == -1 else 0.5) * self.direction())
+        self.arm.move(0.5)
+        self.drive.move(0.4, -(0.2 if self.target_direction(target=SWITCH) == -1 else 0.3) * self.direction())
 
     @timed_state(duration=0.5, next_state='switch_middle_drop')
     def switch_middle_advance_press(self):
         """
         Press front against switch. This way if we bounce a little we'll still be fine.
         """
-        self.arm.move(0.6)
-        self.drive.move(0.4, 0)
+        self.arm.move(0.5)
+        self.drive.move(0.3, 0)
 
     @timed_state(duration=0.5)
     def switch_middle_drop(self):
@@ -273,15 +282,15 @@ class Modular(AutonomousStateMachine):
         """
         Raise arm before scoring.
         """
-        self.arm.move(0.7)
+        self.arm.move(0.73)
 
-    @timed_state(duration=1, next_state='scale_side_drop')
+    @timed_state(duration=0.95, next_state='scale_side_drop')
     def scale_side_approach(self):
         """
         Approach scale from side before scoring.
         """
         self.arm.extend()
-        self.arm.move(0.2)
+        self.arm.move(0.27)
         self.drive.move(0.25, 0)
 
     @timed_state(duration=1, next_state='scale_side_retreat')

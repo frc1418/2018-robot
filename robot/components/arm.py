@@ -10,10 +10,8 @@ class Arm:
     elevator: wpilib.Victor
     forearm: wpilib.DoubleSolenoid
     claw: wpilib.DoubleSolenoid
-    intake: wpilib.Spark
 
     _elevator_speed = will_reset_to(0)
-    _intake_speed = will_reset_to(0)
 
     motion_constant = tunable(0.6)
     extended = tunable(False)
@@ -122,21 +120,8 @@ class Arm:
         else:
             self.release()
 
-    def spin_in(self):
-        """
-        Spin the intake wheels inwards.
-        """
-        self._intake_speed = -1
-
-    def spin_out(self):
-        """
-        Spin the intake wheels outwards.
-        """
-        self._intake_speed = 1
-
     def execute(self):
         """
         Run elevator motors.
         """
         self.elevator.set(-self._elevator_speed)
-        self.intake.set(self._intake_speed)
