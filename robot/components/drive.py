@@ -32,7 +32,7 @@ class Drive:
         """
         self.train.setDeadband(0.1)
 
-    def move(self, y: float, rot: float, fine_movement: bool=False):
+    def move(self, y: float, rot: float, fine_movement: bool = False):
         """
         Move robot.
 
