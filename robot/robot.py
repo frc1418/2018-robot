@@ -31,6 +31,9 @@ from magicbot import tunable
 from robotpy_ext.common_drivers import navx
 from ctre.wpi_talonsrx import WPI_TalonSRX
 
+import logging
+import time
+
 
 class Panthera(magicbot.MagicRobot):
     drive: drive.Drive
@@ -134,12 +137,15 @@ class Panthera(magicbot.MagicRobot):
         # 3.10: "The FMS provides the ALLIANCE color assigned to each PLATE to the Driver Station software. Immediately following the assignment of PLATE color prior to the start of AUTO."
         # Will fetch a string of three characters ('L' or 'R') denoting position of the current alliance's on the switches and scale, with the nearest structures first.
         # More information: http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details
-        self.plates = self.ds.getGameSpecificMessage()
-
         self.compressor.stop()
 
         self.drive.squared_inputs = False
         self.drive.rotational_constant = 0.5
+
+        while not self.plates and self.time > 130:
+            self.plates = self.ds.getGameSpecificMessage()
+            print(self.ds.getGameSpecificMessage())
+            time.sleep(0.5)
 
         # Call autonomous
         super().autonomous()
