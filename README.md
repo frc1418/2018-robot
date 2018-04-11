@@ -7,7 +7,7 @@
 
 ## Robot code features
 * *Modular Autonomous:* Through our [dashboard], drivers can select individual components of an autonomous mode. Or, they can select from several premade modes which inherit from modular with various preexisting configurations. "Optimum autonomous" may also be selected, which will choose the best target in which to score based on decisions made immediately after receiving plate ownership data from the FMS.
-* *Autonomous Replay:* In addition to hard-coded modular paths, the autonomous code has a replay feature, which records joystick input and saves it as an autonomous path as a JSON file. This way, a driver can drive the robot in the desired path for autonomous, and it will use that same route when selected in autonomous. It measures the voltage that the battery is at when recording, and alters the speed when replaying according to the voltage factor.
+* *Autonomous Replay:* In addition to hard-coded modular paths, the autonomous code has a replay feature, which records joystick input and stores that data in a JSON file. This way, a driver can drive the robot in the desired path for autonomous, and it will use that same route when selected in autonomous. Voltage data is recorded alongside joystick input, and that data is used to scale output voltages during replay to prevent speed fluctuation caused by voltage variation.
 * *Balancing system:* In order to prevent any tipping or imbalance issues, the robot code equips the robot with a rebalancing system. It counteracts any leaning or instability the robot may have.
 
 ## Deploying onto the robot
