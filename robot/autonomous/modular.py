@@ -34,18 +34,15 @@ class Modular(AutonomousStateMachine):
 
         :param target: ID of target obstacle.
         """
-        try:
-            if self.position == 'left':
+        if self.position == 'left':
+            return -1
+        elif self.position == 'right':
+            return 1
+        else:
+            if self.plates[target] == 'L':
                 return -1
-            elif self.position == 'right':
+            if self.plates[target] == 'R':
                 return 1
-            else:
-                if self.plates[target] == 'L':
-                    return -1
-                if self.plates[target] == 'R':
-                    return 1
-        except IndexError:
-            self.next_state('charge')
 
     def target_direction(self, target=SWITCH):
         """
@@ -53,13 +50,10 @@ class Modular(AutonomousStateMachine):
 
         :param target: ID of target obstacle.
         """
-        try:
-            if self.plates[target] == 'L':
-                return -1
-            elif self.plates[target] == 'R':
-                return 1
-        except IndexError:
-            self.next_state('charge')
+        if self.plates[target] == 'L':
+            return -1
+        elif self.plates[target] == 'R':
+            return 1
 
     def correct_side(self, target=SWITCH):
         """
@@ -67,10 +61,7 @@ class Modular(AutonomousStateMachine):
 
         :param target: ID of target obstacle.
         """
-        try:
-            return (self.direction(target) == -1 and self.plates[target] == 'L') or (self.direction(target) == 1 and self.plates[target] == 'R')
-        except IndexError:
-            self.next_state('charge')
+        return (self.direction(target) == -1 and self.plates[target] == 'L') or (self.direction(target) == 1 and self.plates[target] == 'R')
 
     @state(first=True)
     def start(self):
