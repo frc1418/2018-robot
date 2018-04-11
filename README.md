@@ -6,7 +6,12 @@
 > Code for Team 1418's 2018 competition robot, Panthera.
 
 ## Robot code features
-TODO
+#### Modular Autonomous
+You can select which autonomous module you want to use depending on your placement during a game, with left, middle, and right versions of scoring on the switch and scale on both sides. You can also select an optimal autonomous mode, which decides automatically which path to use depending on position and priority.
+#### Replay system
+In addition to hard-coded modular paths, the autonomous code has a replay feature, which records joystick input and saves it as an autonomous path as a JSON file. This way, a driver can drive the robot in the desired path for autonomous, and it will use that same route when selected in autonomous. It measures the voltage that the battery is at when recording, and alters the speed when replaying according to the voltage factor.
+#### Balancing system
+In order to prevent any tipping or imbalance issues, the robot code equips the robot with a rebalancing system. It counteracts any leaning or instability the robot may have.
 
 ## Deploying onto the robot
 Before deploying, you must [install robotpy](http://robotpy.readthedocs.io/en/stable/install/robot.html#install-robotpy) on your robot.
