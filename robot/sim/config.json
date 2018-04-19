@@ -1,13 +1,16 @@
 {
 	"pyfrc": {
 		"robot": {
-			"w": 3,
-			"h": 2,
-			"starting_x": 25,
-			"starting_y": 25,
-			"starting_angle": 180
-		},
+	  	  "w": 3,
+	  	  "h": 2,
+	      "starting_x": 1.8,
+	      "starting_y": 14
+	    },
 		"analog": {},
+		"encoder": {
+			"0": "right_encoder",
+	        "1": "left_encoder"
+		},
 		"dio": {},
 		"solenoid": {
 			"5": "Winch Dog",
@@ -29,10 +32,10 @@
 			"4": "Intake Wheel Right"
 		},
 		"CAN": {
-			"10": "Left Front",
-			"15": "Left Rear",
-			"20": "Right Front",
-			"25": "Right Rear"
+			"10": "lf_motor",
+			"15": "lr_motor",
+			"20": "rf_motor",
+			"25": "rr_motor"
 		},
 		"joysticks": {
 			"0": {

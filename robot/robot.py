@@ -27,9 +27,10 @@ from robotpy_ext.control.button_debouncer import ButtonDebouncer
 from components import drive, winch, arm
 from controllers import motion_profile, recorder
 from magicbot import tunable
+import math
 
-from robotpy_ext.common_drivers import navx
-from ctre.wpi_talonsrx import WPI_TalonSRX
+from robotpy_ext.common_drivers import navx, pressure_sensors
+from ctre import talonsrx, wpi_talonsrx
 
 
 class Panthera(magicbot.MagicRobot):
@@ -82,10 +83,10 @@ class Panthera(magicbot.MagicRobot):
         # ID SCHEME:
         #   10^1: 1 = left, 2 = right
         #   10^0: 0 = front, 5 = rear
-        self.lf_motor = WPI_TalonSRX(10)
-        self.lr_motor = WPI_TalonSRX(15)
-        self.rf_motor = WPI_TalonSRX(20)
-        self.rr_motor = WPI_TalonSRX(25)
+        self.lf_motor = wpi_talonsrx.WPI_TalonSRX(10)
+        self.lr_motor = wpi_talonsrx.WPI_TalonSRX(15)
+        self.rf_motor = wpi_talonsrx.WPI_TalonSRX(20)
+        self.rr_motor = wpi_talonsrx.WPI_TalonSRX(25)
 
         # Drivetrain
         self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
@@ -93,9 +94,6 @@ class Panthera(magicbot.MagicRobot):
 
         # Winch
         self.winch_motors = wpilib.SpeedControllerGroup(wpilib.Victor(7), wpilib.Victor(8))
-
-        # Motion Profiling
-        self.position_controller = motion_profile.PositionController()
 
         # Arm
         self.elevator = wpilib.Victor(5)
@@ -105,6 +103,14 @@ class Panthera(magicbot.MagicRobot):
         # NavX (purple board on top of the RoboRIO)
         self.navx = navx.AHRS.create_spi()
         self.navx.reset()
+
+        # Motion Profiling
+        self.right_encoder = wpilib.Encoder(0, 1)
+        self.right_encoder.setDistancePerPulse((math.pi * 0.5) / 1440)
+        self.left_encoder = wpilib.Encoder(2, 3)
+        self.left_encoder.setDistancePerPulse((math.pi * 0.5) / 1440)
+        self.pos_controller = motion_profile.PositionController(self.navx, self.train,
+                                                                self.right_encoder, self.left_encoder)
 
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
@@ -132,11 +138,14 @@ class Panthera(magicbot.MagicRobot):
         # Will fetch a string of three characters ('L' or 'R') denoting position of the current alliance's on the switches and scale, with the nearest structures first.
         # More information: http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details
         self.plates = self.ds.getGameSpecificMessage()
-
         self.compressor.stop()
 
         self.drive.squared_inputs = False
         self.drive.rotational_constant = 0.5
+
+        with self.pos_controller.cond:
+            self.pos_controller.disabled = False
+            self.pos_controller.cond.notify()
 
         # Call autonomous
         super().autonomous()
@@ -147,6 +156,8 @@ class Panthera(magicbot.MagicRobot):
         """
         # Reset Gyro to 0
         self.navx.reset()
+        self.pos_controller.disabled = True
+        self.pos_controller.prepare()
 
     def disabledPeriodic(self):
         """

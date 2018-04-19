@@ -1,72 +1,152 @@
 from collections import deque
 from components import drive
-from math import radians
 import pathfinder as pf
+from .profile_generator import ProfileGenerator
+from robotpy_ext.misc.precise_delay import PreciseDelay
 from threading import Lock, Condition, Thread
 import wpilib
+
+MAX_VELOCITY = 9
+ENCODER_TICKS = 1440
+WHEEL_DIAMETER = 0.5
 
 
 class PositionController:
     """
     Controls the position of the robot using motion profile based movement.
     """
-    train: wpilib.drive.DifferentialDrive
+    def __init__(self, navx, drive, r_encoder, l_encoder):
+        """
+        :param navx: The navx
+        :param drive: Drive system for the robot
+        :param r_encoder: The right encoder on the robot
+        :param l_encoder: The left encoder on the robot
+        """
+        self.disabled = True
+        self.profile_generator = ProfileGenerator()
+        self.queued_trajectories = deque()
+        self.current_trajectory = None
 
-    def __init__(self):
-        self.trajectories = deque()
+        self.navx = navx
 
-        self.right_follower = None
         self.left_follower = None
+        self.right_follower = None
+        self.drive = drive
+        self.right_encoder = r_encoder
+        self.left_encoder = l_encoder
 
         self.lock = Lock()
         self.cond = Condition(self.lock)
-        self.thread = Thread(target=self._run, daemon=True)
+        self.freed = False
+        self.thread = Thread(target=self._control_loop, daemon=True)
         self.thread.start()
 
         wpilib.Resource._add_global_resource(self)
 
-    def move_to(self, x_position, y_position, angle=0, first=False):
+    def move_along(self, trajectory_name, first=False):
         """
-        Generate path and set path variable
+        Set trajectory to move along.
 
-        :param x_position: The x distance.
-        :param y_position: The y distance.
-        :param angle: The angle difference in degrees.
+        :param trajectory_name: The name of the pre-generated trajectory.
         :param first: Whether or not this path should be completed next.
         """
-        waypoint = pf.Waypoint(float(x_position),
-                               float(y_position), radians(angle))
+        if trajectory_name not in self.possible_trajectories.keys():
+            raise KeyError('The trajectory you specified could not be found.')
 
-        info, trajectory = pf.generate([pf.Waypoint(0, 0, 0), waypoint],
-                                       pf.FIT_HERMITE_CUBIC, pf.SAMPLES_HIGH,
-                                       0.05, 1.7, 2.0, 60.0)
+        trajectory = self.possible_trajectories[trajectory_name]
 
-        modifier = pf.modifiers.TankModifier(trajectory).modify(0.5)
-        right_trajectory = modifier.getRightTrajectory()
-        left_trajectory = modifier.getLeftTrajectory()
+        if self.left_follower is None or self.right_follower is None:
+            self.right_follower = pf.followers.EncoderFollower(trajectory[0])
+            self.left_follower = pf.followers.EncoderFollower(trajectory[1])
+
+        if first:
+            self.queued_trajectories.appendLeft(trajectory)
+        else:
+            self.queued_trajectories.append(trajectory)
 
         with self.cond:
-            if self.left_follower or self.right_follower is None:
-                self.right_follower = pf.followers.EncoderFollower(right_trajectory)
-                self.left_follower = pf.followers.EncoderFollower(left_trajectory)
-
-            if first:
-                self.trajectories.appendLeft({'right': right_trajectory,
-                                              'left': left_trajectory})
-            else:
-                self.trajectories.append({'right': right_trajectory, 'left': left_trajectory})
+            self.disabled = False
             self.cond.notify()
 
-    def _run(self):
+    def _control_loop(self):
         """
         Actually move the robot along the path.
         """
+        delay = PreciseDelay(self.profile_generator.TIME_DIFF)
         while True:
+            if self.freed:
+                break
             with self.cond:
-                if len(self.trajectories) < 1:
-                    self.cond.wait_for(lambda: len(self.trajectories) > 0)
+                self.cond.wait_for(lambda: not self.disabled)
 
-                if self.right_follower.isFinished() and self.left_follower.isFinished():
-                    trajectory = self.trajectories.popleft()
-                    self.right_follower.setTrajectory(trajectory['right'])
-                    self.left_follower.setTrajectory(trajectory['left'])
+                if self.current_trajectory is None:
+                    self.cond.wait_for(lambda: len(self.queued_trajectories) > 0)
+
+                    self.current_trajectory = self.queued_trajectories.popleft()
+                    self.right_follower.setTrajectory(self.current_trajectory[0])
+                    self.left_follower.setTrajectory(self.current_trajectory[1])
+                    self.configure_followers()
+
+                elif self.left_follower.isFinished() and self.right_follower.isFinished():
+                    self.current_trajectory = None
+                    continue
+
+            left_ouput = self.left_follower.calculate(self.left_encoder.get())
+            right_output = self.right_follower.calculate(self.right_encoder.get())
+
+            gyro_heading = -(self.navx.getAngle() % 360)
+
+            desired_heading = pf.r2d(self.left_follower.getHeading())
+
+            angleDifference = pf.boundHalfDegrees(desired_heading - gyro_heading)
+            turn = 5 * (-1.0 / 80.0) * angleDifference
+
+            left_ouput = left_ouput + turn
+            right_output = right_output - turn
+
+            self.drive.tankDrive(left_ouput, right_output)
+            delay.wait()
+
+            # Set next_delay manually to prevent permanent lag behind if one wait() call is behind.
+            delay.next_delay = delay.get_now() + delay.delay_period
+
+    def prepare(self):
+        """
+        Prepare to generate the trajectories
+        """
+        if wpilib.RobotBase.isSimulation():
+            self.profile_generator.generate_all_lists()
+        else:
+            self.profile_generator.load_trajectories()
+        self.possible_trajectories = self.profile_generator.trajectories
+
+    def configure_followers(self):
+        """
+        Configure the followers for another trajectory.
+        """
+        self.left_follower.configureEncoder(self.left_encoder.get(), ENCODER_TICKS, WHEEL_DIAMETER)
+        self.right_follower.configureEncoder(self.right_encoder.get(), ENCODER_TICKS, WHEEL_DIAMETER)
+        self.right_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
+        self.left_follower.configurePIDVA(1.0, 0.0, 0.0, 1 / MAX_VELOCITY, 0)
+
+    def isRunning(self, trajectory_name):
+        """
+        Check if a certain trajectory is currently running.
+
+        :param trajectory_name: The name of the trajectory to check.
+        """
+        with self.cond:
+            queue_first = None if len(self.queued_trajectories) < 1 else self.queued_trajectories[0]
+            current = self.current_trajectory
+        try:
+            self.trajectory = self.possible_trajectories[trajectory_name]
+        except IndexError:
+            return False
+        return (current == self.trajectory or queue_first == self.trajectory)
+
+    def free(self):
+        """
+        Frees resources of this object.
+        """
+        self.freed = True
+        del self.profile_generator
