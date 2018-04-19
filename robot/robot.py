@@ -87,9 +87,12 @@ class Panthera(magicbot.MagicRobot):
         self.rf_motor = WPI_TalonSRX(20)
         self.rr_motor = WPI_TalonSRX(25)
 
+        # Follow front wheels with rear to save CAN packets
+        self.lr_motor.follow(self.lf_motor)
+        self.rr_motor.follow(self.rf_motor)
+
         # Drivetrain
-        self.train = wpilib.drive.DifferentialDrive(wpilib.SpeedControllerGroup(self.lf_motor, self.lr_motor),
-                                                    wpilib.SpeedControllerGroup(self.rf_motor, self.rr_motor))
+        self.train = wpilib.drive.DifferentialDrive(self.lf_motor, self.rf_motor)
 
         # Winch
         self.winch_motors = wpilib.SpeedControllerGroup(wpilib.Victor(7), wpilib.Victor(8))
