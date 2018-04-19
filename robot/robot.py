@@ -111,6 +111,7 @@ class Panthera(magicbot.MagicRobot):
 
         # Utility
         self.ds = wpilib.DriverStation.getInstance()
+        wpilib.LiveWindow().setEnabled(False)
         self.timer = wpilib.Timer()
         self.pdp = wpilib.PowerDistributionPanel(0)
         self.compressor = wpilib.Compressor()
