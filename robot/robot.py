@@ -31,7 +31,6 @@ from magicbot import tunable
 from robotpy_ext.common_drivers import navx
 from ctre.wpi_talonsrx import WPI_TalonSRX
 
-import logging
 import time
 
 
@@ -144,7 +143,6 @@ class Panthera(magicbot.MagicRobot):
 
         while not self.plates and self.time > 130:
             self.plates = self.ds.getGameSpecificMessage()
-            print(self.ds.getGameSpecificMessage())
             time.sleep(0.5)
 
         # Call autonomous
