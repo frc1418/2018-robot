@@ -27,6 +27,8 @@ class Modular(AutonomousStateMachine):
     scale = False
     # Decide best scoring option automatically?
     optimize = False
+    # Change scoring priority depending on side?
+    side_dependence = False
 
     def direction(self, target=SWITCH):
         """
@@ -81,17 +83,20 @@ class Modular(AutonomousStateMachine):
         print('Switch: %r' % self.switch)
         self.arm.grip()
         if self.optimize:
-            if self.correct_side(target=SCALE):
-                self.next_state('scale_side_start')
-            elif self.correct_side(target=SWITCH):
-                self.next_state('switch_side_start')
-            else:
-                if self.scale:
+            if self.scale:
+                if self.correct_side(target=SCALE):
                     self.next_state('scale_side_start')
-                elif self.switch:
+                elif self.correct_side(target=SWITCH) or self.side_dependency:
                     self.next_state('switch_side_start')
                 else:
-                    self.next_state('charge')
+                    self.next_state('scale_side_start')
+            else:
+                if self.correct_side(target=SWITCH):
+                    self.next_state('switch_side_start')
+                elif self.correct_side(target=SCALE) or self.side_dependency:
+                    self.next_state('scale_side_start')
+                else:
+                    self.next_state('switch_side_start')
         if self.switch:
             if self.position == 'middle':
                 self.next_state('switch_middle_start')
