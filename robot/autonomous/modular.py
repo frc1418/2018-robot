@@ -28,7 +28,9 @@ class Modular(AutonomousStateMachine):
     # Decide best scoring option automatically?
     optimize = False
     # Change scoring priority depending on side?
-    side_dependence = False
+    mismatch_priority = False
+    # Use charge autonomous rather than going to opposite side?
+    none = False
 
     def direction(self, target=SWITCH):
         """
@@ -86,17 +88,21 @@ class Modular(AutonomousStateMachine):
             if self.scale:
                 if self.correct_side(target=SCALE):
                     self.next_state('scale_side_start')
-                elif self.correct_side(target=SWITCH) or self.side_dependency:
+                elif self.correct_side(target=SWITCH) or self.mismatch_priority:
                     self.next_state('switch_side_start')
-                else:
+                elif not self.none:
                     self.next_state('scale_side_start')
-            else:
+                else:
+                    self.next_state('charge')
+            else if self.switch:
                 if self.correct_side(target=SWITCH):
                     self.next_state('switch_side_start')
-                elif self.correct_side(target=SCALE) or self.side_dependency:
+                elif self.correct_side(target=SCALE) or self.mismatch_priority:
                     self.next_state('scale_side_start')
-                else:
+                elif not self.none:
                     self.next_state('switch_side_start')
+                else:
+                    self.next_state('charge')
         if self.switch:
             if self.position == 'middle':
                 self.next_state('switch_middle_start')
@@ -105,6 +111,8 @@ class Modular(AutonomousStateMachine):
         elif self.scale:
             # Assume robot is on side
             self.next_state('scale_side_start')
+        else:
+            self.next_state('charge')
 
     @timed_state(duration=0.8)
     def charge(self):

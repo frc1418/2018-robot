@@ -1,4 +1,4 @@
-only switchfrom .modular import Modular
+from .modular import Modular
 
 
 class Switch(Modular):
@@ -17,11 +17,18 @@ class Optimum(Modular):
     """
     optimize = True
 
-class SideDependence():
+class MismatchPriority(Modular):
     """
     Set different priority depending on whether robot is scoring on same or opposite side.
     """
-    side_dependence = True
+    mismatch_priority = True
+
+
+class None(Modular):
+    """
+    If neither switch nor scale are owned on robot's side, use charge autonomous.
+    """
+    charge = True
 
 
 class OptimumScaleSwitch(Optimum, Scale, Switch):
@@ -111,29 +118,57 @@ class OptimumScaleRight(Optimum, Scale, Right):
     MODE_NAME = 'OptimumScaleRight'
 
 
-class OptimumSwitchScaleLeft(Optimum, Switch, SideDependence, Left):
+class OptimumSwitchScaleLeft(Optimum, Switch, MismatchPriority, Left):
     """
     Score with preference for switch on left side, and preference for scale on right side.
     """
     MODE_NAME = 'OptimumSwitchScaleLeft'
 
 
-class OptimumSwitchScaleRight(Optimum, Switch, SideDependence, Right):
+class OptimumSwitchScaleRight(Optimum, Switch, MismatchPriority, Right):
     """
     Score with preference for switch on right side, and preference for scale on left side.
     """
     MODE_NAME = 'OptimumSwitchScaleRight'
 
 
-class OptimumScaleSwitchLeft(Optimum, Scale, SideDependence, Left):
+class OptimumScaleSwitchLeft(Optimum, Scale, MismatchPriority, Left):
     """
     Score with preference for scale on left side, and preference for switch on right side.
     """
     MODE_NAME = 'OptimumScaleSwitchLeft'
 
 
-class OptimumScaleSwitchRight(Optimum, Switch, SideDependence, Right):
+class OptimumScaleSwitchRight(Optimum, Switch, MismatchPriority, Right):
     """
     Score with preference for scale on right side, and preference for switch on left side.
     """
     MODE_NAME = 'OptimumScaleSwitchRight'
+
+
+class OptimumNoneScaleLeft(Optimum, None, Left):
+    """
+    Score with preference for scale, and if neither scale or switch are available on the left, charge.
+    """
+    MODE_NAME = 'OptimumNoneScaleLeft'
+
+
+class OptimumNoneScaleRight(Optimum, None, Scale, Right):
+    """
+    Score with preference for scale, and if neither scale or switch are available on the right, charge.
+    """
+    MODE_NAME = 'OptimumNoneScaleRight'
+
+
+class OptimumNoneSwitchLeft(Optimum, None, Switch, Right):
+    """
+    Score with preference for switch, and if neither switch or scale are available on the left, charge.
+    """
+    MODE_NAME = 'OptimumNoneSwitchLeft'
+
+
+class OptimumNoneSwitchRight(Optimum, None, Switch, Right):
+    """
+    Score with preference for switch, and if neither switch or scale are available on the right, charge.
+    """
+    MODE_NAME = 'OptimumNoneSwitchRight'
