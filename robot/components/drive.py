@@ -15,7 +15,7 @@ class Drive:
     y = will_reset_to(0)
     rot = will_reset_to(0)
 
-    speed_constant = tunable(1.0)
+    speed_constant = tunable(1.05)
     rotational_constant = tunable(0.5)
     squared_inputs = tunable(False)
 
