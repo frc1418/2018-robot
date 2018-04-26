@@ -70,6 +70,7 @@ class Modular(AutonomousStateMachine):
         """
         print('Scale: %r' % self.scale)
         print('Switch: %r' % self.switch)
+        print('Optimize: %r' % self.optimize)
         self.arm.grip()
         if self.optimize:
             if self.correct_side(target=SCALE):
@@ -83,7 +84,7 @@ class Modular(AutonomousStateMachine):
                     self.next_state('switch_side_start')
                 else:
                     self.next_state('charge')
-        if self.switch:
+        elif self.switch:
             if self.position == 'middle':
                 self.next_state('switch_middle_start')
             else:
