@@ -287,7 +287,7 @@ class Modular(AutonomousStateMachine):
         Approach scale from side before scoring.
         """
         self.arm.extend()
-        self.arm.move(0.23)
+        self.arm.move(0.26)
         self.drive.move(0.3, 0)
 
     @timed_state(duration=1, next_state='scale_side_drop')
