@@ -68,6 +68,9 @@ class Modular(AutonomousStateMachine):
         """
         Decide how to begin the autonomous.
         """
+        if not self.plates:
+            self.next_state('charge')
+            return
         print('Scale: %r' % self.scale)
         print('Switch: %r' % self.switch)
         print('Optimize: %r' % self.optimize)
