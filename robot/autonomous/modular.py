@@ -95,6 +95,8 @@ class Modular(AutonomousStateMachine):
         elif self.scale:
             # Assume robot is on side
             self.next_state('scale_side_start')
+        else:
+            self.next_state('charge')
 
     @timed_state(duration=0.8)
     def charge(self):
