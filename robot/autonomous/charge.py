@@ -9,7 +9,7 @@ class Charge(AutonomousStateMachine):
 
     drive = drive.Drive
 
-    @timed_state(duration=0.8, first=True)
+    @timed_state(duration=1, first=True)
     def charge(self, initial_call):
         # Move forward
         self.drive.move(0.6, 0)
