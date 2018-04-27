@@ -98,7 +98,7 @@ class Modular(AutonomousStateMachine):
         else:
             self.next_state('charge')
 
-    @timed_state(duration=0.8)
+    @timed_state(duration=1)
     def charge(self):
         # Move forward then stop.
         self.drive.move(0.6, 0)
@@ -279,16 +279,23 @@ class Modular(AutonomousStateMachine):
         """
         Raise arm before scoring.
         """
-        self.arm.move(0.73)
+        self.arm.move(0.65)
 
-    @timed_state(duration=0.95, next_state='scale_side_drop')
+    @timed_state(duration=1, next_state='scale_side_wait')
     def scale_side_approach(self):
         """
         Approach scale from side before scoring.
         """
         self.arm.extend()
-        self.arm.move(0.27)
-        self.drive.move(0.25, 0)
+        self.arm.move(0.23)
+        self.drive.move(0.3, 0)
+
+    @timed_state(duration=1, next_state='scale_side_drop')
+    def scale_side_wait(self):
+        """
+        Wait for arm to extend.
+        """
+        pass
 
     @timed_state(duration=1, next_state='scale_side_retreat')
     def scale_side_drop(self):
