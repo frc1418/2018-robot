@@ -31,8 +31,6 @@ from magicbot import tunable
 from robotpy_ext.common_drivers import navx
 from ctre.wpi_talonsrx import WPI_TalonSRX
 
-import time
-
 
 class Panthera(magicbot.MagicRobot):
     drive: drive.Drive
