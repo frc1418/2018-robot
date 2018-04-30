@@ -140,8 +140,10 @@ class Panthera(magicbot.MagicRobot):
         self.drive.rotational_constant = 0.5
 
         self.plates = ''
-        wpilib.Timer.delay(1)
         self.plates = self.ds.getGameSpecificMessage()
+        if not self.plates:
+            wpilib.Timer.delay(1)
+            self.plates = self.ds.getGameSpecificMessage()
 
         # Call autonomous
         super().autonomous()
