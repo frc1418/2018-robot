@@ -10,6 +10,14 @@
 * *Autonomous Replay:* In addition to hard-coded modular paths, the autonomous code has a replay feature, which records joystick input and stores that data in a JSON file. This way, a driver can drive the robot in the desired path for autonomous, and it will use that same route when selected in autonomous. Voltage data is recorded alongside joystick input, and that data is used to scale output voltages during replay to prevent speed fluctuation caused by voltage variation.
 * *Balancing system:* In order to prevent tipping, the robot constantly monitors its rotation in the pitch axis through our NavX, and in the event of an apparent tip, the drivetrain will spin in the opposite direction to pull the robot back down to the ground. Motor speeds will be scaled to prevent overshooting.
 
+## Lessons Learned
+We had fun with this year's robot and in our competitions using it. Each and every member of our team grew in their skillset and life experience during our 2018 season, and we [performed well in competition](http://1418.team/robot/2018). However, to quote pragmatist and American educational philosopher John Dewey:
+
+> Failure is instructive. The person who really thinks learns quite as much from his failures as from his successes.
+
+In accordance with this precept, here are several mistakes we made this year, which we will work to next year not make again.
+* We should not have relied on dead-reckoning autonomous. In order to quickly get an autonomous mode up and running for demonstration, we used simple time and speed based dead-reckoning control to score during autonomous. This worked okay, but we quickly built up a reliance on using dead-reckoning. This fact capped our accuracy in autonomous mode: though we installed encoders on our robot and worked on motion profiling code, we ended up never tuning the system because doing so would require abandoning all the hard work we'd already done on our dead-reckoning system. Not putting substantial effort into developing a viable motion profiling system prevented us from doing as well as we could have done during autonomous mode and in competition.
+
 ## Deploying onto the robot
 Before deploying, you must [install robotpy](http://robotpy.readthedocs.io/en/stable/install/robot.html#install-robotpy) on your robot.
 
