@@ -62,5 +62,7 @@ This will set up hooks to run tests before committing to help avoid easy-to-fix 
 * [Andrew Lester](https://github.com/AndrewLester)
 * [Joe Carpenter](https://github.com/JosephCarpenter)
 
+Special thanks goes to [Tim Winters](https://github.com/Twinters007), former 1418 Programming Captain, who tirelessly worked as a mentor to help us reach new heights with this year's robot code.
+
 ## Licensing
 In-season, use of this software is restricted by the FRC rules. After the season ends, the [MIT License](LICENSE) applies instead.
