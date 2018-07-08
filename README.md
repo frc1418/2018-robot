@@ -58,7 +58,9 @@ This will set up hooks to run tests before committing to help avoid easy-to-fix 
 		py.test-based unit tests that test the code and can be run via pyfrc.
 
 ## Authors
-* [Erik Boesen](https://github.com/ErikBoesen)
+* [Erik Boesen](https://github.com/ErikBoesen), Programming Captain
+* [Andrew Lester](https://github.com/AndrewLester)
+* [Joe Carpenter](https://github.com/JosephCarpenter)
 
 ## Licensing
 In-season, use of this software is restricted by the FRC rules. After the season ends, the [MIT License](LICENSE) applies instead.
