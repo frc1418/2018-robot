@@ -7,7 +7,7 @@ if ! head -1 "$1" | grep -q '^[^a-z]'; then
 fi
 
 if head -1 "$1" | grep -q '\.$'; then
-    echo "Commit message may not end with a period or be structured as a sentence!"
+    echo "Commit message may not end with a period!"
     exit 1
 fi
 
