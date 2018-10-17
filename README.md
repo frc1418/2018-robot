@@ -28,7 +28,7 @@ You may then deploy code at any time:
 
 	python3 robot.py deploy
 
-During development of this year's robot code, we created a Bash script `deploy.sh` to automate some tasks related to code deploy. The script's featureset swelled significantly, and we elected to spin the tool off into a season-independent command line tool. You can find that tool, `dep`, [here](https://github.com/frc1418/dep). We recommend that you make use of it to simplify your deploy process and remove pesky steps like changing your WiFi network.
+During development of this year's robot code, we created a Bash script `deploy.sh` to automate some tasks related to code deploy. The script's featureset swelled significantly, and we elected to spin the tool off into a season-independent command line tool. You can find that tool, `dep`, [here](https://github.com/frc1418/dep). We recommend that you make use of it to simplify your deploy process and remove pesky steps like manually changing your WiFi network.
 
 ## Testing/Simulation
 You may run the `pyfrc` simulator to test this code thus:
