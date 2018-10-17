@@ -130,10 +130,6 @@ class Panthera(magicbot.MagicRobot):
         """
         Prepare for and start autonomous mode.
         """
-        # Read data on plate colors from FMS.
-        # 3.10: "The FMS provides the ALLIANCE color assigned to each PLATE to the Driver Station software. Immediately following the assignment of PLATE color prior to the start of AUTO."
-        # Will fetch a string of three characters ('L' or 'R') denoting position of the current alliance's on the switches and scale, with the nearest structures first.
-        # More information: http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details
         self.compressor.stop()
 
         self.drive.squared_inputs = False
@@ -141,6 +137,10 @@ class Panthera(magicbot.MagicRobot):
 
         self.plates = ''
         wpilib.Timer.delay(1)
+        # Read data on plate colors from FMS.
+        # 3.10: "The FMS provides the ALLIANCE color assigned to each PLATE to the Driver Station software. Immediately following the assignment of PLATE color prior to the start of AUTO."
+        # Will fetch a string of three characters ('L' or 'R') denoting position of the current alliance's on the switches and scale, with the nearest structures first.
+        # More information: http://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details
         self.plates = self.ds.getGameSpecificMessage()
 
         # Call autonomous
