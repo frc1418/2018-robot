@@ -19,6 +19,8 @@ In accordance with this precept, here are several mistakes we made this year, wh
 * We should not have relied on dead-reckoning autonomous. In order to quickly get an autonomous mode up and running for demonstration, we used simple time and speed based dead-reckoning control to score during autonomous. This worked okay, but we quickly built up a reliance on using dead-reckoning. This fact capped our accuracy in autonomous mode: though we installed encoders on our robot and worked on motion profiling code, we ended up never tuning the system because doing so would require abandoning all the hard work we'd already done on our dead-reckoning system. Not putting substantial effort into developing a viable motion profiling system prevented us from doing as well as we could have done during autonomous mode and in competition.
 * We should have made our autonomous even more modular. When we arrived at competition we realized we had neglected to support not crossing the field to score if neither goal ownership was on the robot's current side. This led to a conflict with another team's autonomous mode, nearly losing us a match. In the future, we should create modular presets for every situation we could possibly require (and, in our modular logic, support every chain of actions which could be taken).
 
+Here's to an even better 2019.
+
 ## Deploying onto the robot
 Before deploying, you must [install robotpy](http://robotpy.readthedocs.io/en/stable/install/robot.html#install-robotpy) on your robot.
 
