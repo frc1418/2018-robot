@@ -274,7 +274,7 @@ class Modular(AutonomousStateMachine):
         """
         self.drive.move(-0.2, 0)
 
-    @timed_state(duration=1.2, next_state='scale_side_approach')
+    @timed_state(duration=1.6, next_state='scale_side_approach')
     def scale_side_raise(self):
         """
         Raise arm before scoring.
