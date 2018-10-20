@@ -168,7 +168,7 @@ class Panthera(magicbot.MagicRobot):
         self.compressor.start()
 
         self.drive.squared_inputs = True
-        self.drive.rotational_constant = 0.7
+        self.drive.rotational_constant = 0.5
 
     def teleopPeriodic(self):
         """
